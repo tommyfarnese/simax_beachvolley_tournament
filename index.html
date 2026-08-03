@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIMAX Beach Volley – Tornei</title>
+  <meta name="description" content="Iscriviti ai tornei di beach volley SIMAX. Categorie Silver e Gold, format 2x2 e 3x3. Divertiti, vinci, fai squadra!" />
+  <link rel="icon" href="Tornei/logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===========================
+       VARIABLES & RESET
+    =========================== */
+    :root {
+      --navy:        #0b1740;
+      --navy-mid:    #152060;
+      --navy-light:  #1e2f80;
+      --gold:        #f5b800;
+      --gold-dark:   #c99200;
+      --gold-light:  #ffe066;
+      --sand:        #fdf6e3;
+      --white:       #ffffff;
+      --text-light:  #c8d4f0;
+      --text-muted:  #8a9bbf;
+      --card-bg:     rgba(21, 32, 96, 0.85);
+      --radius:      14px;
+      --shadow:      0 8px 32px rgba(0,0,0,0.35);
+      --transition:  0.3s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+    a { text-decoration: none; color: inherit; }
+
+    img { max-width: 100%; }
+
+    /* ===========================
+       SCROLLBAR
+    =========================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ===========================
+       NAVBAR
+    =========================== */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+      background: rgba(11, 23, 64, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(245,184,0,0.15);
+      transition: box-shadow var(--transition);
+    }
+
+    #navbar.scrolled {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+    }
+
+    .nav-logo img {
+      height: 44px;
+      width: auto;
+      filter: drop-shadow(0 0 6px rgba(245,184,0,0.4));
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(245,184,0,0.08);
+    }
+
+    .nav-links .btn-nav {
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 9px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .nav-links .btn-nav:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger */
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+    }
+
+    #hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    #hamburger.open span:nth-child(2) { opacity: 0; }
+    #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav */
+    #mobile-nav {
+      display: none;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(11, 23, 64, 0.98);
+      backdrop-filter: blur(16px);
+      z-index: 999;
+      padding: 20px 5% 28px;
+      border-bottom: 2px solid var(--gold);
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    #mobile-nav.open {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #mobile-nav a {
+      display: block;
+      padding: 14px 0;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-light);
+      border-bottom: 1px solid rgba(245,184,0,0.1);
+      transition: color var(--transition);
+    }
+
+    #mobile-nav a:hover { color: var(--gold); }
+
+    #mobile-nav .btn-mobile {
+      display: block;
+      margin-top: 16px;
+      text-align: center;
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* ===========================
+       HERO
+    =========================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245,184,0,0.12) 0%, transparent 70%),
+        linear-gradient(170deg, #0b1740 0%, #0d1f5e 50%, #091530 100%);
+    }
+
+    /* Animated sand particles */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(245,184,0,0.06) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(245,184,0,0.08) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5b800' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* Volleyball net line */
+    #hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,184,0,0.12);
+      border: 1px solid rgba(245,184,0,0.3);
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      animation: fadeInDown 0.6s ease both;
+    }
+
+    .hero-badge i { font-size: 0.75rem; }
+
+    .hero-logo {
+      height: 120px;
+      width: auto;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 0 30px rgba(245,184,0,0.5));
+      animation: fadeInDown 0.7s ease 0.1s both;
+    }
+
+    #hero h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      animation: fadeInUp 0.7s ease 0.2s both;
+    }
+
+    #hero h1 span { color: var(--gold); }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--text-light);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+      animation: fadeInUp 0.7s ease 0.3s both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeInUp 0.7s ease 0.4s both;
+    }
+
+    /* ===========================
+       BUTTONS
+    =========================== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 15px 32px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 20px rgba(245,184,0,0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(245,184,0,0.5);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* ===========================
+       COUNTDOWN
+    =========================== */
+    #countdown-section {
+      padding: 20px 5% 40px;
+      text-align: center;
+      background: linear-gradient(180deg, #091530 0%, #0b1740 100%);
+    }
+
+    .countdown-label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .countdown-grid {
+      display: inline-flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .countdown-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.2);
+      border-radius: var(--radius);
+      padding: 16px 24px;
+      min-width: 80px;
+      backdrop-filter: blur(8px);
+    }
+
+    .countdown-number {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .countdown-unit {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ===========================
+       SECTIONS
+    =========================== */
+    section { scroll-margin-top: 70px; }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      background: rgba(245,184,0,0.12);
+      border: 1px solid rgba(245,184,0,0.3);
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .section-title span { color: var(--gold); }
+
+    .section-desc {
+      color: var(--text-light);
+      font-size: 1.05rem;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .section-pad { padding: 90px 5%; }
+
+    /* ===========================
+       TORNEI – CALENDAR
+    =========================== */
+    #tornei { background: linear-gradient(180deg, #0b1740 0%, #0d1f5e 100%); }
+
+    .events-list { display: flex; flex-direction: column; gap: 40px; max-width: 960px; margin: 0 auto; }
+
+    .event-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.18);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 32px;
+      border-bottom: 1px solid rgba(245,184,0,0.12);
+      flex-wrap: wrap;
+    }
+
+    .event-date-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--gold);
+      color: var(--navy);
+      border-radius: 12px;
+      padding: 10px 18px;
+      min-width: 72px;
+      flex-shrink: 0;
+    }
+
+    .event-date-badge .day {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .event-date-badge .month {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .event-info { flex: 1; }
+
+    .event-info h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .event-meta {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .event-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .event-meta span i { color: var(--gold); }
+
+    .event-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-open { color: #4ade80; }
+    .status-open::before { content: ''; display: block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 8px #4ade80; animation: pulse-green 1.5s infinite; }
+    .status-soon { color: var(--gold); }
+    .status-soon::before { content: ''; display: block; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; }
+    .status-full { color: #f87171; }
+    .status-full::before { content: ''; display: block; width: 8px; height: 8px; background: #f87171; border-radius: 50%; }
+
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 6px #4ade80; }
+      50% { box-shadow: 0 0 14px #4ade80; }
+    }
+
+    /* Tournament tabs */
+    .tournament-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(245,184,0,0.12);
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 16px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      transition: color var(--transition), background var(--transition);
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: var(--white); background: rgba(255,255,255,0.03); }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+      background: rgba(245,184,0,0.05);
+    }
+
+    .tab-content { display: none; padding: 28px 32px; }
+    .tab-content.active { display: block; }
+
+    .tournament-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .info-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .info-cell .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+    }
+
+    .info-cell .value {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .info-cell .value.gold { color: var(--gold); font-weight: 700; }
+
+    /* Spots progress bar */
+    .spots-bar-wrap { margin-bottom: 24px; }
+
+    .spots-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .spots-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .spots-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+      transition: width 1s ease;
+    }
+
+    .tab-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ===========================
+       HOW IT WORKS
+    =========================== */
+    #come-funziona {
+      background: linear-gradient(180deg, #0d1f5e 0%, #0b1740 100%);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Connector line */
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 44px;
+      left: calc(100% / 6);
+      right: calc(100% / 6);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.3;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 32px 24px;
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.12);
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+      position: relative;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(245,184,0,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 1.6rem;
+      color: var(--gold);
+    }
+
+    .step-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step-card p {
+      font-size: 0.88rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* ===========================
+       ISCRIZIONI
+    =========================== */
+    #iscrizioni { background: linear-gradient(180deg, #0b1740 0%, #091530 100%); }
+
+    .reg-intro {
+      max-width: 860px;
+      margin: 0 auto 48px;
+      background: rgba(245,184,0,0.06);
+      border: 1px solid rgba(245,184,0,0.2);
+      border-radius: var(--radius);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .reg-intro i { font-size: 1.8rem; color: var(--gold); flex-shrink: 0; }
+
+    .reg-intro p { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; }
+
+    .reg-intro p strong { color: var(--white); }
+
+    .reg-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .reg-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.18);
+      border-radius: 18px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition);
+    }
+
+    .reg-card:hover { transform: translateY(-4px); }
+
+    .reg-card-top {
+      padding: 24px 24px 20px;
+      border-bottom: 1px solid rgba(245,184,0,0.1);
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .badge-silver { background: rgba(192,192,192,0.15); color: #c0c0c0; border: 1px solid rgba(192,192,192,0.3); }
+    .badge-gold   { background: rgba(245,184,0,0.15);   color: var(--gold); border: 1px solid rgba(245,184,0,0.4); }
+    .badge-mix    { background: rgba(100,180,255,0.12); color: #7ec8f5;    border: 1px solid rgba(100,180,255,0.35); }
+
+    .reg-card h3 { font-size: 1.25rem; font-weight: 900; margin-bottom: 6px; }
+
+    .reg-card .event-date-small {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reg-card .event-date-small i { color: var(--gold); }
+
+    .reg-card-body { padding: 20px 24px; flex: 1; }
+
+    .reg-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .reg-detail { display: flex; flex-direction: column; gap: 3px; }
+    .reg-detail .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-weight: 700; }
+    .reg-detail .val { font-size: 0.95rem; font-weight: 600; }
+    .reg-detail .val.gold { color: var(--gold); }
+
+    .reg-card-actions {
+      padding: 0 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-register {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 14px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 16px rgba(245,184,0,0.3);
+    }
+
+    .btn-register:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(245,184,0,0.45);
+    }
+
+    .btn-register.disabled {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .btn-register-outline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(245,184,0,0.35);
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      text-align: center;
+    }
+
+    .btn-register-outline:hover {
+      border-color: var(--gold);
+      background: rgba(245,184,0,0.08);
+    }
+
+    /* ===========================
+       REGOLAMENTO
+    =========================== */
+    #regolamento { background: linear-gradient(180deg, #091530 0%, #0b1740 100%); }
+
+    .accordion-list { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+
+    .accordion-item {
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.12);
+      border-radius: var(--radius);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      cursor: pointer;
+      text-align: left;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--white);
+      transition: color var(--transition);
+    }
+
+    .accordion-trigger:hover { color: var(--gold); }
+
+    .accordion-trigger i {
+      color: var(--gold);
+      font-size: 0.8rem;
+      transition: transform var(--transition);
+      flex-shrink: 0;
+    }
+
+    .accordion-item.open .accordion-trigger i { transform: rotate(180deg); }
+
+    .accordion-body {
+      display: none;
+      padding: 0 24px 20px;
+      color: var(--text-light);
+      font-size: 0.92rem;
+      line-height: 1.75;
+    }
+
+    .accordion-item.open .accordion-body { display: block; }
+
+    .accordion-body ul { padding-left: 20px; }
+    .accordion-body li { margin-bottom: 6px; }
+    .accordion-body strong { color: var(--white); }
+
+    /* ===========================
+       FAQ
+    =========================== */
+    #faq { background: linear-gradient(180deg, #0b1740 0%, #0d1f5e 100%); }
+
+    /* ===========================
+       CONTATTI
+    =========================== */
+    #contatti { background: linear-gradient(180deg, #0d1f5e 0%, #091530 100%); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto 48px;
+    }
+
+    .contact-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(245,184,0,0.12);
+      border-radius: var(--radius);
+      padding: 30px 24px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(245,184,0,0.4);
+    }
+
+    .contact-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(245,184,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+
+    .contact-card h4 {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .contact-card a, .contact-card p {
+      color: var(--white);
+      font-size: 0.97rem;
+      font-weight: 600;
+      transition: color var(--transition);
+    }
+
+    .contact-card a:hover { color: var(--gold); }
+
+    .social-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--text-light);
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+
+    .social-btn:hover {
+      background: var(--gold);
+      color: var(--navy);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      background: #060e25;
+      border-top: 1px solid rgba(245,184,0,0.1);
+      padding: 40px 5% 28px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .footer-logo img { height: 40px; filter: brightness(0.9); }
+
+    .footer-logo span {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    footer p {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--gold); }
+
+    /* ===========================
+       MODAL (Google Form)
+    =========================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 14, 37, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal-box {
+      background: var(--navy-mid);
+      border: 1px solid rgba(245,184,0,0.25);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 700px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(245,184,0,0.12);
+      flex-shrink: 0;
+    }
+
+    .modal-header h3 { font-size: 1.1rem; font-weight: 700; }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.07);
+      border: none;
+      cursor: pointer;
+      color: var(--white);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.15); }
+
+    .modal-body { flex: 1; overflow-y: auto; padding: 0; }
+
+    .modal-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    .modal-fallback {
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    .modal-fallback p {
+      color: var(--text-light);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    /* ===========================
+       ANIMATIONS
+    =========================== */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===========================
+       RESPONSIVE
+    =========================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      #hamburger { display: flex; }
+
+      .hero-logo { height: 90px; }
+      .event-header { padding: 20px; }
+      .tab-content { padding: 20px; }
+      .reg-intro { flex-direction: column; text-align: center; }
+      .tournament-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid::before { display: none; }
+
+      .section-pad { padding: 70px 5%; }
+    }
+
+    @media (max-width: 480px) {
+      .tab-btn { font-size: 0.75rem; padding: 14px 12px; }
+      .reg-detail-grid { grid-template-columns: 1fr 1fr; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
+    <span>SIMAX</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#tornei">Tornei</a></li>
+    <li><a href="#come-funziona">Come Funziona</a></li>
+    <li><a href="#iscrizioni">Iscrizioni</a></li>
+    <li><a href="#regolamento">Regolamento</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contatti">Contatti</a></li>
+    <li><a href="#iscrizioni" class="btn-nav"><i class="fas fa-volleyball-ball"></i> Iscriviti</a></li>
+  </ul>
+
+  <button id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav -->
+<nav id="mobile-nav">
+  <a href="#tornei" onclick="closeMobileNav()">Tornei</a>
+  <a href="#come-funziona" onclick="closeMobileNav()">Come Funziona</a>
+  <a href="#iscrizioni" onclick="closeMobileNav()">Iscrizioni</a>
+  <a href="#regolamento" onclick="closeMobileNav()">Regolamento</a>
+  <a href="#faq" onclick="closeMobileNav()">FAQ</a>
+  <a href="#contatti" onclick="closeMobileNav()">Contatti</a>
+  <a href="#iscrizioni" class="btn-mobile" onclick="closeMobileNav()">🏐 Iscriviti ora</a>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero">
+  <div class="hero-badge">
+    <i class="fas fa-trophy"></i>
+    Stagione Tornei 2026
+  </div>
+  <img class="hero-logo" src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
+  <h1>Unisciti al <span>Beach Volley</span><br>più bello in città</h1>
+  <p class="hero-sub">Tornei di beach volley per tutti i livelli. Categorie Silver e Gold, format 2×2 e 3×3. Sfida i migliori, goditi il sole, vinci con la tua squadra.</p>
+  <div class="hero-ctas">
+    <a href="#iscrizioni" class="btn-primary"><i class="fas fa-clipboard-list"></i> Iscriviti ora</a>
+    <a href="#tornei" class="btn-outline"><i class="fas fa-calendar-alt"></i> Vedi i tornei</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     COUNTDOWN
+============================================================ -->
+<div id="countdown-section">
+  <p class="countdown-label"><i class="fas fa-clock"></i> &nbsp;Prossimo torneo tra</p>
+  <div class="countdown-grid">
+    <div class="countdown-box"><span class="countdown-number" id="cd-giorni">--</span><span class="countdown-unit">Giorni</span></div>
+    <div class="countdown-box"><span class="countdown-number" id="cd-ore">--</span><span class="countdown-unit">Ore</span></div>
+    <div class="countdown-box"><span class="countdown-number" id="cd-min">--</span><span class="countdown-unit">Minuti</span></div>
+    <div class="countdown-box"><span class="countdown-number" id="cd-sec">--</span><span class="countdown-unit">Secondi</span></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TORNEI
+============================================================ -->
+<section id="tornei" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-calendar-days"></i> Calendario</div>
+    <h2 class="section-title">Prossimi <span>Tornei</span></h2>
+    <p class="section-desc">Ogni giornata ospita più tornei in contemporanea. Scegli il format e la categoria più adatta a te e al tuo team.</p>
+  </div>
+
+  <div class="events-list">
+
+    <!-- ── EVENTO 1: 20 Settembre 2026 ── -->
+    <div class="event-card reveal">
+      <div class="event-header">
+        <div class="event-date-badge">
+          <span class="day">20</span>
+          <span class="month">Set</span>
+        </div>
+        <div class="event-info">
+          <h3>Torneo di Apertura SIMAX</h3>
+          <div class="event-meta">
+            <span><i class="fas fa-map-marker-alt"></i> Campo da Beach Volley – [Inserisci Location]</span>
+            <span><i class="fas fa-sun"></i> Mattina & Pomeriggio</span>
+          </div>
+        </div>
+        <div class="event-status status-soon">Apertura presto</div>
+      </div>
+
+      <!-- Tabs: un tab per ogni torneo della giornata -->
+      <div class="tournament-tabs">
+        <button class="tab-btn active" onclick="switchTab(this, 'ev1-t1')">🏐 2×2 Mix</button>
+        <button class="tab-btn" onclick="switchTab(this, 'ev1-t2')">🏐 3×3 Mix</button>
+      </div>
+
+      <div id="ev1-t1" class="tab-content active">
+        <div class="tournament-grid">
+          <div class="info-cell"><span class="label">Orario</span><span class="value">09:00</span></div>
+          <div class="info-cell"><span class="label">Format</span><span class="value">2 vs 2</span></div>
+          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
+          <div class="info-cell"><span class="label">Quota a squadra</span><span class="value gold">€ -- / coppia</span></div>
+          <div class="info-cell"><span class="label">Max squadre</span><span class="value">-- coppie</span></div>
+          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
+        </div>
+        <div class="spots-bar-wrap">
+          <div class="spots-bar-label"><span>Posti disponibili</span><span>-- / --</span></div>
+          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
+        </div>
+        <div class="tab-actions">
+          <!-- Sostituisci FORM_URL_2X2_MIX con il link del tuo Google Modulo -->
+          <button class="btn-primary" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'FORM_URL_2X2_MIX')">
+            <i class="fas fa-pen-to-square"></i> Iscriviti
+          </button>
+          <a href="FORM_URL_2X2_MIX" target="_blank" rel="noopener" class="btn-outline">
+            <i class="fas fa-external-link-alt"></i> Apri form
+          </a>
+        </div>
+      </div>
+
+      <div id="ev1-t2" class="tab-content">
+        <div class="tournament-grid">
+          <div class="info-cell"><span class="label">Orario</span><span class="value">09:00</span></div>
+          <div class="info-cell"><span class="label">Format</span><span class="value">3 vs 3</span></div>
+          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
+          <div class="info-cell"><span class="label">Quota a squadra</span><span class="value gold">€ -- / trio</span></div>
+          <div class="info-cell"><span class="label">Max squadre</span><span class="value">-- squadre</span></div>
+          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
+        </div>
+        <div class="spots-bar-wrap">
+          <div class="spots-bar-label"><span>Posti disponibili</span><span>-- / --</span></div>
+          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
+        </div>
+        <div class="tab-actions">
+          <!-- Sostituisci FORM_URL_3X3_MIX con il link del tuo Google Modulo -->
+          <button class="btn-primary" onclick="openModal('Iscrizione 3×3 Mix – 20 Set', 'FORM_URL_3X3_MIX')">
+            <i class="fas fa-pen-to-square"></i> Iscriviti
+          </button>
+          <a href="FORM_URL_3X3_MIX" target="_blank" rel="noopener" class="btn-outline">
+            <i class="fas fa-external-link-alt"></i> Apri form
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Fine Evento 1 -->
+
+    <!-- ── EVENTO 2: Placeholder prossima data ── -->
+    <!--
+      Per aggiungere una nuova giornata, copia il blocco .event-card qui sopra,
+      cambia le date, gli ID dei tab (es. ev2-t1, ev2-t2) e i link ai moduli.
+    -->
+    <div class="event-card reveal" style="opacity:0.55; pointer-events:none;">
+      <div class="event-header">
+        <div class="event-date-badge" style="background:rgba(255,255,255,0.08); color:var(--text-muted);">
+          <span class="day">??</span>
+          <span class="month">TBA</span>
+        </div>
+        <div class="event-info">
+          <h3 style="color:var(--text-muted)">Prossima data – Coming Soon</h3>
+          <div class="event-meta">
+            <span><i class="fas fa-hourglass-half"></i> Data e dettagli in arrivo</span>
+          </div>
+        </div>
+        <div class="event-status status-soon">Coming soon</div>
+      </div>
+      <div style="padding:20px 32px; color:var(--text-muted); font-size:0.9rem; text-align:center;">
+        <i class="fas fa-bell" style="color:var(--gold); margin-right:8px;"></i>
+        Segui i nostri social o contattaci per essere il primo a sapere quando apriranno le iscrizioni.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     COME FUNZIONA
+============================================================ -->
+<section id="come-funziona" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-list-check"></i> Processo</div>
+    <h2 class="section-title">Come ci si <span>Iscrive</span></h2>
+    <p class="section-desc">Bastano pochi passaggi per assicurarti il tuo posto. Veloce, semplice, da qualsiasi dispositivo.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-number">1</div>
+      <div class="step-icon"><i class="fas fa-users"></i></div>
+      <h4>Forma la tua squadra</h4>
+      <p>Trova il tuo compagno/i di gioco e decidete insieme format (2×2 o 3×3) e categoria (Silver o Gold).</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">2</div>
+      <div class="step-icon"><i class="fas fa-clipboard-list"></i></div>
+      <h4>Compila il modulo</h4>
+      <p>Clicca "Iscriviti" sulla card del torneo che ti interessa e compila il modulo Google con i dati della squadra.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">3</div>
+      <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+      <h4>Effettua il pagamento</h4>
+      <p>Segui le istruzioni nel modulo per il pagamento della quota di iscrizione. Riceverai una conferma via email.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-number">4</div>
+      <div class="step-icon"><i class="fas fa-volleyball-ball"></i></div>
+      <h4>Gioca e vinci!</h4>
+      <p>Il giorno del torneo presentati al campo all'orario indicato. Porta entusiasmo, noi pensiamo al resto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ISCRIZIONI (Schede rapide)
+============================================================ -->
+<section id="iscrizioni" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-pen-to-square"></i> Iscrizioni</div>
+    <h2 class="section-title">Scegli il tuo <span>Torneo</span></h2>
+    <p class="section-desc">Seleziona il torneo, compila il modulo e sei dentro. Le iscrizioni chiudono al raggiungimento del numero massimo di squadre.</p>
+  </div>
+
+  <div class="reg-intro reveal">
+    <i class="fas fa-circle-info"></i>
+    <p>
+      <strong>Come funziona:</strong> cliccando su "Iscriviti" si apre direttamente il modulo Google qui nella pagina.
+      Se preferisci, usa il pulsante "Apri in nuova scheda" per completare l'iscrizione su Google Forms.
+      Per qualsiasi problema contattaci su <a href="https://wa.me/39XXXXXXXXXX" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a> o via email.
+    </p>
+  </div>
+
+  <div class="reg-cards">
+
+    <!-- Card 1: 2x2 Mix -->
+    <div class="reg-card reveal">
+      <div class="reg-card-top">
+        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
+        <h3>Beach Volley 2×2</h3>
+        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 09:00</p>
+      </div>
+      <div class="reg-card-body">
+        <div class="reg-detail-grid">
+          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">2 per squadra</span></div>
+          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">--</span></div>
+          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ --</span></div>
+        </div>
+      </div>
+      <div class="reg-card-actions">
+        <button class="btn-register" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'FORM_URL_2X2_MIX')">
+          <i class="fas fa-pen-to-square"></i> Iscriviti
+        </button>
+        <a href="FORM_URL_2X2_MIX" target="_blank" rel="noopener" class="btn-register-outline">
+          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: 3x3 Mix -->
+    <div class="reg-card reveal">
+      <div class="reg-card-top">
+        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
+        <h3>Beach Volley 3×3</h3>
+        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 09:00</p>
+      </div>
+      <div class="reg-card-body">
+        <div class="reg-detail-grid">
+          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">3 per squadra</span></div>
+          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">--</span></div>
+          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ --</span></div>
+        </div>
+      </div>
+      <div class="reg-card-actions">
+        <button class="btn-register" onclick="openModal('Iscrizione 3×3 Mix – 20 Set', 'FORM_URL_3X3_MIX')">
+          <i class="fas fa-pen-to-square"></i> Iscriviti
+        </button>
+        <a href="FORM_URL_3X3_MIX" target="_blank" rel="noopener" class="btn-register-outline">
+          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     REGOLAMENTO
+============================================================ -->
+<section id="regolamento" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-book-open"></i> Regolamento</div>
+    <h2 class="section-title">Regole del <span>Gioco</span></h2>
+    <p class="section-desc">Tutto quello che devi sapere prima di scendere in campo.</p>
+  </div>
+
+  <div class="accordion-list">
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-users" style="color:var(--gold);margin-right:10px"></i>Formazione squadre</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <ul>
+          <li>Ogni squadra deve registrare <strong>tutti i propri giocatori</strong> nel modulo di iscrizione.</li>
+          <li>Format <strong>2×2 Mix</strong>: 2 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
+          <li>Format <strong>3×3 Mix</strong>: 3 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
+          <li>È possibile iscrivere giocatori a più tornei nella stessa giornata, purché gli orari non si sovrappongano.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-sitemap" style="color:var(--gold);margin-right:10px"></i>Formula e gironi</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <ul>
+          <li>Fase a <strong>gironi</strong>: le squadre vengono divise in gironi da 3-4 squadre, si gioca tutti contro tutti.</li>
+          <li>Le prime classificate di ogni girone accedono alle <strong>fasi ad eliminazione diretta</strong>.</li>
+          <li>Il regolamento dettagliato dei set (es. 2 set vinti su 3, punti per set) sarà comunicato prima del torneo.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-shuffle" style="color:var(--gold);margin-right:10px"></i>Categoria Mix</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Mix:</strong> ogni squadra deve essere composta da giocatori di sesso diverso (uomini e donne insieme). La categoria è aperta a tutti i livelli.</p><br>
+        <p>Obiettivo: divertirsi, giocare insieme e condividere il beach volley indipendentemente dal livello tecnico.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-trophy" style="color:var(--gold);margin-right:10px"></i>Premi</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <ul>
+          <li>Ogni torneo ha una <strong>premiazione separata</strong> con trofei per i primi classificati.</li>
+          <li>Potrebbero essere previsti premi anche per il 2° e 3° posto.</li>
+          <li>I dettagli sui premi verranno comunicati prima dell'evento.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-ban" style="color:var(--gold);margin-right:10px"></i>Ritiro e rimborsi</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <ul>
+          <li>Il ritiro entro <strong>7 giorni prima</strong> del torneo dà diritto al rimborso completo della quota.</li>
+          <li>Ritiri successivi non danno diritto a rimborso, salvo casi di forza maggiore.</li>
+          <li>In caso di annullamento del torneo per cause organizzative, la quota verrà rimborsata integralmente.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span><i class="fas fa-cloud-sun-rain" style="color:var(--gold);margin-right:10px"></i>Maltempo</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>In caso di maltempo, la decisione di rinviare o annullare il torneo sarà comunicata via WhatsApp/social almeno <strong>2 ore prima</strong> dell'orario di inizio.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section id="faq" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-circle-question"></i> FAQ</div>
+    <h2 class="section-title">Domande <span>Frequenti</span></h2>
+  </div>
+
+  <div class="accordion-list">
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Devo essere già esperto per partecipare?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>No! La categoria <strong>Silver</strong> è aperta a tutti i livelli. L'importante è voglia di giocare e spirito di squadra. La Gold è più adatta a chi ha già esperienza competitiva.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Posso iscrivermi senza avere già la squadra completa?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>Ti consigliamo di avere già il gruppo completo prima di iscriverti. Tuttavia, se stai cercando compagni di gioco, scrivici: proveremo a metterti in contatto con altri giocatori nella stessa situazione.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Come viene confermata la mia iscrizione?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>Dopo la compilazione del modulo e il pagamento della quota, riceverai una <strong>email di conferma</strong>. Se non la ricevi entro 24 ore, contattaci su WhatsApp.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Posso iscrivermi a più tornei nella stessa giornata?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>Sì, a patto che gli orari dei tornei non si sovrappongano. Controlla gli orari nelle card dei singoli tornei prima di procedere.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Cosa succede se un torneo è al completo?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <p>Quando i posti sono esauriti, l'iscrizione viene chiusa. Ti consigliamo di non aspettare! Puoi contattarci per essere inserito in una <strong>lista d'attesa</strong>.</p>
+      </div>
+    </div>
+
+    <div class="accordion-item reveal">
+      <button class="accordion-trigger" onclick="toggleAccordion(this)">
+        <span>Cosa devo portare il giorno del torneo?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="accordion-body">
+        <ul>
+          <li>Abbigliamento da beach volley (consigliato)</li>
+          <li>Acqua e snack</li>
+          <li>Crema solare</li>
+          <li>Spirito di squadra 🏐</li>
+        </ul>
+        <p style="margin-top:10px">Il pallone sarà fornito dall'organizzazione.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTATTI
+============================================================ -->
+<section id="contatti" class="section-pad">
+  <div class="section-header reveal">
+    <div class="section-tag"><i class="fas fa-envelope"></i> Contatti</div>
+    <h2 class="section-title">Resta in <span>Contatto</span></h2>
+    <p class="section-desc">Hai dubbi, domande o vuoi sapere tutto sulle prossime date? Scrivici, ti rispondiamo velocemente.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card reveal">
+      <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+      <h4>WhatsApp</h4>
+      <!-- Sostituisci 39XXXXXXXXXX con il numero reale (senza + e spazi) -->
+      <a href="https://wa.me/39XXXXXXXXXX?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
+    </div>
+    <div class="contact-card reveal">
+      <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+      <h4>Email</h4>
+      <!-- Sostituisci con la tua email reale -->
+      <a href="mailto:info@simaxbeachvolley.it">info@simaxbeachvolley.it</a>
+    </div>
+    <div class="contact-card reveal">
+      <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <h4>Dove giochiamo</h4>
+      <!-- Sostituisci con indirizzo reale -->
+      <p>[Nome campo / indirizzo]</p>
+    </div>
+  </div>
+
+  <div class="social-row reveal">
+    <!-- Sostituisci i # con i link reali ai profili social -->
+    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-logo">
+    <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
+    <span>SIMAX Beach Volley</span>
+  </div>
+  <p>Tornei di beach volley &nbsp;·&nbsp; More than a team</p>
+  <br>
+  <p style="font-size:0.75rem; margin-top:8px;">
+    &copy; <span id="year"></span> SIMAX Beach Volley. Tutti i diritti riservati.
+    &nbsp;|&nbsp; Sito realizzato con ❤️ e sabbia tra i piedi.
+  </p>
+</footer>
+
+<!-- ============================================================
+     MODAL – Google Form embed
+============================================================ -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-title">Iscrizione</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- L'iframe o il fallback vengono inseriti via JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ---------- Navbar scroll ---------- */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+    highlightNav();
+  });
+
+  /* ---------- Active nav highlight ---------- */
+  function highlightNav() {
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-links a');
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  /* ---------- Mobile nav ---------- */
+  function toggleMobileNav() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobile-nav');
+    btn.classList.toggle('open');
+    nav.classList.toggle('open');
+  }
+
+  function closeMobileNav() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobile-nav').classList.remove('open');
+  }
+
+  /* ---------- Tab switcher ---------- */
+  function switchTab(btn, targetId) {
+    const card = btn.closest('.event-card');
+    card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(targetId).classList.add('active');
+  }
+
+  /* ---------- Accordion ---------- */
+  function toggleAccordion(btn) {
+    const item = btn.closest('.accordion-item');
+    const isOpen = item.classList.contains('open');
+    // Chiudi tutti
+    document.querySelectorAll('.accordion-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  /* ---------- Countdown timer ---------- */
+  /* ⚠️  Cambia questa data con quella del prossimo torneo */
+  const NEXT_EVENT = new Date('2026-09-20T09:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = NEXT_EVENT - now;
+    if (diff <= 0) {
+      document.getElementById('countdown-section').style.display = 'none';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-giorni').textContent = String(d).padStart(2, '0');
+    document.getElementById('cd-ore').textContent    = String(h).padStart(2, '0');
+    document.getElementById('cd-min').textContent    = String(m).padStart(2, '0');
+    document.getElementById('cd-sec').textContent    = String(s).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ---------- Modal (Google Form) ---------- */
+  function openModal(title, formUrl) {
+    document.getElementById('modal-title').textContent = title;
+
+    const body = document.getElementById('modal-body');
+    // Controlla se è un URL reale o un placeholder
+    const isRealUrl = formUrl.startsWith('http');
+
+    if (isRealUrl) {
+      // Trasforma il link Google Form in versione embedded
+      // Aggiunge ?embedded=true se non già presente
+      const embedUrl = formUrl.includes('?')
+        ? formUrl.replace('viewform', 'viewform').replace('?', '?embedded=true&')
+        : formUrl + '?embedded=true';
+
+      body.innerHTML = `<iframe class="modal-iframe" src="${embedUrl}" title="${title}">
+        Caricamento del modulo...
+      </iframe>`;
+    } else {
+      // Fallback: pulsante che apre Google Forms in nuova tab
+      body.innerHTML = `
+        <div class="modal-fallback">
+          <p>Il modulo di iscrizione per <strong>${title}</strong> aprirà su Google Forms.<br>
+          Clicca il pulsante qui sotto per procedere.</p>
+          <a href="${formUrl}" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex;gap:9px;">
+            <i class="fas fa-external-link-alt"></i> Apri modulo Google
+          </a>
+          <p style="margin-top:20px; font-size:0.82rem;">
+            ⚙️ L'organizzatore non ha ancora configurato il link. Contattaci se hai urgenza.
+          </p>
+        </div>`;
+    }
+
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.getElementById('modal-body').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* ---------- Scroll reveal ---------- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ---------- Footer year ---------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
