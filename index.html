@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIMAX Beach Volley – Tornei</title>
-  <meta name="description" content="Iscriviti ai tornei di beach volley SIMAX. Categorie Silver e Gold, format 2x2 e 3x3. Divertiti, vinci, fai squadra!" />
+  <meta name="description" content="Iscriviti ai tornei di beach volley SIMAX. Categorie Gold e Silver, format 3x3 e 2x2. Divertiti, vinci, fai squadra!" />
   <link rel="icon" href="Tornei/logo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1250,7 +1250,7 @@
   </div>
   <img class="hero-logo" src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
   <h1>Unisciti al <span>Beach Volley</span><br>più bello in città</h1>
-  <p class="hero-sub">Tornei di beach volley per tutti i livelli. Categorie Silver e Gold, format 2×2 e 3×3. Sfida i migliori, goditi il sole, vinci con la tua squadra.</p>
+  <p class="hero-sub">Tornei di beach volley per tutti i livelli. Categorie Gold e Silver, format 3×3 e 2×2. Sfida i migliori, goditi il sole, vinci con la tua squadra.</p>
   <div class="hero-ctas">
     <a href="#iscrizioni" class="btn-primary"><i class="fas fa-clipboard-list"></i> Iscriviti ora</a>
     <a href="#tornei" class="btn-outline"><i class="fas fa-calendar-alt"></i> Vedi i tornei</a>
@@ -1296,50 +1296,26 @@
             <span><i class="fas fa-sun"></i> Mattina & Pomeriggio</span>
           </div>
         </div>
-        <div class="event-status status-soon">Apertura presto</div>
+        <div class="event-status status-soon">Iscrizioni aperte</div>
       </div>
 
       <!-- Tabs: un tab per ogni torneo della giornata -->
       <div class="tournament-tabs">
-        <button class="tab-btn active" onclick="switchTab(this, 'ev1-t1')">🏐 2×2 Mix</button>
-        <button class="tab-btn" onclick="switchTab(this, 'ev1-t2')">🏐 3×3 Mix</button>
+        <button class="tab-btn active" onclick="switchTab(this, 'ev1-t2')">🏐 3×3 Mix</button>
+        <button class="tab-btn" onclick="switchTab(this, 'ev1-t1')">🏐 2×2 Mix</button>
       </div>
 
-      <div id="ev1-t1" class="tab-content active">
+      <div id="ev1-t2" class="tab-content active">
         <div class="tournament-grid">
-          <div class="info-cell"><span class="label">Orario</span><span class="value">09:00</span></div>
-          <div class="info-cell"><span class="label">Format</span><span class="value">2 vs 2</span></div>
-          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
-          <div class="info-cell"><span class="label">Quota a squadra</span><span class="value gold">€ -- / coppia</span></div>
-          <div class="info-cell"><span class="label">Max squadre</span><span class="value">-- coppie</span></div>
-          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
-        </div>
-        <div class="spots-bar-wrap">
-          <div class="spots-bar-label"><span>Posti disponibili</span><span>-- / --</span></div>
-          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
-        </div>
-        <div class="tab-actions">
-          <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header con il link del tuo Google Modulo -->
-          <button class="btn-primary" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
-            <i class="fas fa-pen-to-square"></i> Iscriviti
-          </button>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline">
-            <i class="fas fa-external-link-alt"></i> Apri form
-          </a>
-        </div>
-      </div>
-
-      <div id="ev1-t2" class="tab-content">
-        <div class="tournament-grid">
-          <div class="info-cell"><span class="label">Orario</span><span class="value">09:00</span></div>
+          <div class="info-cell"><span class="label">Orario</span><span class="value">10:00 - 13:30</span></div>
           <div class="info-cell"><span class="label">Format</span><span class="value">3 vs 3</span></div>
           <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
-          <div class="info-cell"><span class="label">Quota a squadra</span><span class="value gold">€ -- / trio</span></div>
-          <div class="info-cell"><span class="label">Max squadre</span><span class="value">-- squadre</span></div>
+          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">€ 20</span></div>
+          <div class="info-cell"><span class="label">Max squadre</span><span class="value">12 squadre</span></div>
           <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
         </div>
         <div class="spots-bar-wrap">
-          <div class="spots-bar-label"><span>Posti disponibili</span><span>-- / --</span></div>
+          <div class="spots-bar-label"><span>Posti disponibili</span></div>
           <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
@@ -1348,6 +1324,30 @@
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline">
+            <i class="fas fa-external-link-alt"></i> Apri form
+          </a>
+        </div>
+      </div>
+
+      <div id="ev1-t1" class="tab-content">
+        <div class="tournament-grid">
+          <div class="info-cell"><span class="label">Orario</span><span class="value">13:30 - 17:00</span></div>
+          <div class="info-cell"><span class="label">Format</span><span class="value">2 vs 2</span></div>
+          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
+          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">€ 20</span></div>
+          <div class="info-cell"><span class="label">Max squadre</span><span class="value">12 coppie</span></div>
+          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
+        </div>
+        <div class="spots-bar-wrap">
+          <div class="spots-bar-label"><span>Posti disponibili</span></div>
+          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
+        </div>
+        <div class="tab-actions">
+          <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header con il link del tuo Google Modulo -->
+          <button class="btn-primary" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
+            <i class="fas fa-pen-to-square"></i> Iscriviti
+          </button>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline">
             <i class="fas fa-external-link-alt"></i> Apri form
           </a>
         </div>
@@ -1398,7 +1398,7 @@
       <div class="step-number">1</div>
       <div class="step-icon"><i class="fas fa-users"></i></div>
       <h4>Forma la tua squadra</h4>
-      <p>Trova il tuo compagno/i di gioco e decidete insieme format (2×2 o 3×3) e categoria (Silver o Gold).</p>
+      <p>Trova il tuo compagno/i di gioco e decidete insieme format (3×3 o 2×2).</p>
     </div>
     <div class="step-card reveal">
       <div class="step-number">2</div>
@@ -1408,12 +1408,6 @@
     </div>
     <div class="step-card reveal">
       <div class="step-number">3</div>
-      <div class="step-icon"><i class="fas fa-credit-card"></i></div>
-      <h4>Effettua il pagamento</h4>
-      <p>Segui le istruzioni nel modulo per il pagamento della quota di iscrizione. Riceverai una conferma via email.</p>
-    </div>
-    <div class="step-card reveal">
-      <div class="step-number">4</div>
       <div class="step-icon"><i class="fas fa-volleyball-ball"></i></div>
       <h4>Gioca e vinci!</h4>
       <p>Il giorno del torneo presentati al campo all'orario indicato. Porta entusiasmo, noi pensiamo al resto.</p>
@@ -1436,50 +1430,25 @@
     <p>
       <strong>Come funziona:</strong> cliccando su "Iscriviti" si apre direttamente il modulo Google qui nella pagina.
       Se preferisci, usa il pulsante "Apri in nuova scheda" per completare l'iscrizione su Google Forms.
-      Per qualsiasi problema contattaci su <a href="https://wa.me/39XXXXXXXXXX" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a> o via email.
+      Per qualsiasi problema contattaci su <a href="https://wa.me/393273521791" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a> o via email.
     </p>
   </div>
 
   <div class="reg-cards">
 
-    <!-- Card 1: 2x2 Mix -->
-    <div class="reg-card reveal">
-      <div class="reg-card-top">
-        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
-        <h3>Beach Volley 2×2</h3>
-        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 09:00</p>
-      </div>
-      <div class="reg-card-body">
-        <div class="reg-detail-grid">
-          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">2 per squadra</span></div>
-          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">--</span></div>
-          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ --</span></div>
-        </div>
-      </div>
-      <div class="reg-card-actions">
-        <button class="btn-register" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
-          <i class="fas fa-pen-to-square"></i> Iscriviti
-        </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline">
-          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
-        </a>
-      </div>
-    </div>
-
-    <!-- Card 2: 3x3 Mix -->
+    <!-- Card 1: 3x3 Mix -->
     <div class="reg-card reveal">
       <div class="reg-card-top">
         <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
         <h3>Beach Volley 3×3</h3>
-        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 09:00</p>
+        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 10:00 - 13:30</p>
       </div>
       <div class="reg-card-body">
         <div class="reg-detail-grid">
-          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">3 per squadra</span></div>
+          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">Min. 3 per squadra</span></div>
           <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">--</span></div>
-          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ --</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">12</span></div>
+          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
         </div>
       </div>
       <div class="reg-card-actions">
@@ -1487,6 +1456,31 @@
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline">
+          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2: 2x2 Mix -->
+    <div class="reg-card reveal">
+      <div class="reg-card-top">
+        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
+        <h3>Beach Volley 2×2</h3>
+        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 13:30 - 17:00</p>
+      </div>
+      <div class="reg-card-body">
+        <div class="reg-detail-grid">
+          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">2 per squadra</span></div>
+          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">12</span></div>
+          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
+        </div>
+      </div>
+      <div class="reg-card-actions">
+        <button class="btn-register" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
+          <i class="fas fa-pen-to-square"></i> Iscriviti
+        </button>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline">
           <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
         </a>
       </div>
@@ -1515,8 +1509,8 @@
       <div class="accordion-body">
         <ul>
           <li>Ogni squadra deve registrare <strong>tutti i propri giocatori</strong> nel modulo di iscrizione.</li>
-          <li>Format <strong>2×2 Mix</strong>: 2 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
           <li>Format <strong>3×3 Mix</strong>: 3 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
+          <li>Format <strong>2×2 Mix</strong>: 2 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
           <li>È possibile iscrivere giocatori a più tornei nella stessa giornata, purché gli orari non si sovrappongano.</li>
         </ul>
       </div>
@@ -1683,28 +1677,26 @@
       <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
       <h4>WhatsApp</h4>
       <!-- Sostituisci 39XXXXXXXXXX con il numero reale (senza + e spazi) -->
-      <a href="https://wa.me/39XXXXXXXXXX?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
+      <a href="https://wa.me/393273521791?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
     </div>
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fas fa-envelope"></i></div>
       <h4>Email</h4>
       <!-- Sostituisci con la tua email reale -->
-      <a href="mailto:info@simaxbeachvolley.it">info@simaxbeachvolley.it</a>
+      <a href="mailto:rossellimassimo@outlook.it">rossellimassimo@outlook.it</a>
     </div>
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
       <h4>Dove giochiamo</h4>
-      <!-- Sostituisci con indirizzo reale -->
-      <p>[Nome campo / indirizzo]</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=PalaUno%20-%20Largo%20Antonio%20Balestra%205%2C%20Milano" target="_blank" rel="noopener">PalaUno - Largo Antonio Balestra 5, Milano</a>
     </div>
   </div>
 
   <div class="social-row reveal">
     <!-- Sostituisci i # con i link reali ai profili social -->
-    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://www.instagram.com/simax_beachvolley_tournament/" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61592584564135" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://wa.me/393273521791" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
   </div>
 </section>
 
@@ -1714,9 +1706,9 @@
 <footer>
   <div class="footer-logo">
     <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
-    <span>SIMAX Beach Volley</span>
+    <span>SIMAX Beach Volley Tournament</span>
   </div>
-  <p>Tornei di beach volley &nbsp;·&nbsp; More than a team</p>
+  <p>Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
   <br>
   <p style="font-size:0.75rem; margin-top:8px;">
     &copy; <span id="year"></span> SIMAX Beach Volley. Tutti i diritti riservati.
