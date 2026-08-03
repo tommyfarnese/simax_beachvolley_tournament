@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SIMAX Beach Volley – Tornei</title>
-  <meta name="description" content="Iscriviti ai tornei di beach volley SIMAX. Categorie Gold e Silver, format 3x3 e 2x2. Divertiti, vinci, fai squadra!" />
+  <title>SIMAX Beach Volley Tournament</title>
+  <meta name="description" content="Iscriviti ai tornei di beach volley SiMax. Categorie Gold e Silver, format 3x3 e 2x2. Divertiti, vinci, fai squadra!" />
   <link rel="icon" href="Tornei/logo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -94,7 +94,11 @@
       filter: drop-shadow(0 0 6px rgba(245,184,0,0.4));
     }
 
-    .nav-logo span { color: var(--gold); }
+    .nav-logo span {
+      color: var(--gold);
+      display: inline-block;
+      line-height: 1.15;
+    }
 
     .nav-links {
       display: flex;
@@ -546,6 +550,8 @@
     .status-open::before { content: ''; display: block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 8px #4ade80; animation: pulse-green 1.5s infinite; }
     .status-soon { color: var(--gold); }
     .status-soon::before { content: ''; display: block; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; }
+    .status-blink { color: #4ade80; }
+    .status-blink::before { background: #4ade80; box-shadow: 0 0 6px #4ade80; animation: pulse-green 1.1s infinite; }
     .status-full { color: #f87171; }
     .status-full::before { content: ''; display: block; width: 8px; height: 8px; background: #f87171; border-radius: 50%; }
 
@@ -1211,7 +1217,7 @@
 <nav id="navbar">
   <a href="#hero" class="nav-logo">
     <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
-    <span>SIMAX</span>
+    <span id="nav-title">SiMax Beach Volley Tournament</span>
   </a>
 
   <ul class="nav-links">
@@ -1290,13 +1296,13 @@
           <span class="month">Set</span>
         </div>
         <div class="event-info">
-          <h3>Torneo di Apertura SIMAX</h3>
+          <h3>Torneo di Apertura SiMax</h3>
           <div class="event-meta">
-            <span><i class="fas fa-map-marker-alt"></i> Campo da Beach Volley – [Inserisci Location]</span>
+            <span><i class="fas fa-map-marker-alt"></i> PalaUno - Largo Antonio Balestra 5, Milano</span>
             <span><i class="fas fa-sun"></i> Mattina & Pomeriggio</span>
           </div>
         </div>
-        <div class="event-status status-soon">Iscrizioni aperte</div>
+        <div class="event-status status-soon status-blink">Iscrizioni aperte</div>
       </div>
 
       <!-- Tabs: un tab per ogni torneo della giornata -->
@@ -1509,9 +1515,9 @@
       <div class="accordion-body">
         <ul>
           <li>Ogni squadra deve registrare <strong>tutti i propri giocatori</strong> nel modulo di iscrizione.</li>
-          <li>Format <strong>3×3 Mix</strong>: 3 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
-          <li>Format <strong>2×2 Mix</strong>: 2 giocatori titolari (almeno 1 di sesso diverso), 1 riserva facoltativa.</li>
-          <li>È possibile iscrivere giocatori a più tornei nella stessa giornata, purché gli orari non si sovrappongano.</li>
+          <li>Format <strong>3×3 Mix</strong>: 3 giocatori titolari (almeno 1 donna), 2 riserve facoltative.</li>
+          <li>Format <strong>2×2 Mix</strong>: 2 giocatori titolari.</li>
+          <li>È possibile iscrivere giocatori a più tornei nella stessa giornata.</li>
         </ul>
       </div>
     </div>
@@ -1523,9 +1529,10 @@
       </button>
       <div class="accordion-body">
         <ul>
-          <li>Fase a <strong>gironi</strong>: le squadre vengono divise in gironi da 3-4 squadre, si gioca tutti contro tutti.</li>
-          <li>Le prime classificate di ogni girone accedono alle <strong>fasi ad eliminazione diretta</strong>.</li>
-          <li>Il regolamento dettagliato dei set (es. 2 set vinti su 3, punti per set) sarà comunicato prima del torneo.</li>
+          <li>Fase a <strong>gironi</strong>: le squadre vengono divise in 3 gironi da 4 squadre, si gioca tutti contro tutti.</li>
+          <li>Le prime, le secondo e le 2 migliori terze classificate accedono alle <strong>fasi ad eliminazione diretta del torneo GOLD</strong>.</li>
+          <li>Le ultime classificate e la peggiore terza accedono alle <strong>fasi ad eliminazione diretta del torneo SILVER</strong>.</li>
+          <li>Il regolamento dettagliato sarà comunicato prima del torneo.</li>
         </ul>
       </div>
     </div>
@@ -1548,23 +1555,9 @@
       </button>
       <div class="accordion-body">
         <ul>
-          <li>Ogni torneo ha una <strong>premiazione separata</strong> con trofei per i primi classificati.</li>
-          <li>Potrebbero essere previsti premi anche per il 2° e 3° posto.</li>
+          <li>Per ciascun torneo è previsto un trofeo per i primi e secondi classificati della categoria GOLD e SILVER.</li>
+          <li>Durante i tornei sono messi in palio diversi gadget sulla base di giochi e challenge.</li>
           <li>I dettagli sui premi verranno comunicati prima dell'evento.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="accordion-item reveal">
-      <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-ban" style="color:var(--gold);margin-right:10px"></i>Ritiro e rimborsi</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="accordion-body">
-        <ul>
-          <li>Il ritiro entro <strong>7 giorni prima</strong> del torneo dà diritto al rimborso completo della quota.</li>
-          <li>Ritiri successivi non danno diritto a rimborso, salvo casi di forza maggiore.</li>
-          <li>In caso di annullamento del torneo per cause organizzative, la quota verrà rimborsata integralmente.</li>
         </ul>
       </div>
     </div>
@@ -1599,7 +1592,7 @@
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="accordion-body">
-        <p>No! La categoria <strong>Silver</strong> è aperta a tutti i livelli. L'importante è voglia di giocare e spirito di squadra. La Gold è più adatta a chi ha già esperienza competitiva.</p>
+        <p>No! Il torneo è aperto a chiunque abbia voglia di giocare e spirito di squadra.</p>
       </div>
     </div>
 
@@ -1619,7 +1612,7 @@
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="accordion-body">
-        <p>Dopo la compilazione del modulo e il pagamento della quota, riceverai una <strong>email di conferma</strong>. Se non la ricevi entro 24 ore, contattaci su WhatsApp.</p>
+        <p>Dopo la compilazione del modulo, riceverai una <strong>email di conferma</strong>. Se non la ricevi entro 24 ore, contattaci sui canali social o su WhatsApp.</p>
       </div>
     </div>
 
@@ -1629,7 +1622,7 @@
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="accordion-body">
-        <p>Sì, a patto che gli orari dei tornei non si sovrappongano. Controlla gli orari nelle card dei singoli tornei prima di procedere.</p>
+        <p>Sì. Controlla gli orari nelle card dei singoli tornei prima di procedere.</p>
       </div>
     </div>
 
@@ -1639,7 +1632,7 @@
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="accordion-body">
-        <p>Quando i posti sono esauriti, l'iscrizione viene chiusa. Ti consigliamo di non aspettare! Puoi contattarci per essere inserito in una <strong>lista d'attesa</strong>.</p>
+        <p>Quando i posti sono esauriti, l'iscrizione viene chiusa. Ti consigliamo di non aspettare! Puoi contattarci per essere inserito in una <strong>lista d'attesa</strong> poichè magari il numero di squadre potrebbe essere allargato in caso di molte squadre.</p>
       </div>
     </div>
 
@@ -1654,8 +1647,9 @@
           <li>Acqua e snack</li>
           <li>Crema solare</li>
           <li>Spirito di squadra 🏐</li>
+          <li>Tanta voglia di divertirsi</li>
         </ul>
-        <p style="margin-top:10px">Il pallone sarà fornito dall'organizzazione.</p>
+        <p style="margin-top:10px">I palloni saranno forniti dall'organizzazione ma si raccomanda di portarne uno personale per riscaldarsi durante le attese.</p>
       </div>
     </div>
 
@@ -1676,7 +1670,6 @@
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
       <h4>WhatsApp</h4>
-      <!-- Sostituisci 39XXXXXXXXXX con il numero reale (senza + e spazi) -->
       <a href="https://wa.me/393273521791?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
     </div>
     <div class="contact-card reveal">
@@ -1706,12 +1699,12 @@
 <footer>
   <div class="footer-logo">
     <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
-    <span>SIMAX Beach Volley Tournament</span>
+    <span>SiMax Beach Volley Tournament</span>
   </div>
   <p>Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
   <br>
   <p style="font-size:0.75rem; margin-top:8px;">
-    &copy; <span id="year"></span> SIMAX Beach Volley. Tutti i diritti riservati.
+    &copy; <span id="year"></span> SiMax Beach Volley Tournament. Tutti i diritti riservati.
     &nbsp;|&nbsp; Sito realizzato con ❤️ e sabbia tra i piedi.
   </p>
 </footer>
@@ -1872,6 +1865,32 @@
 
   /* ---------- Footer year ---------- */
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---------- Dynamic nav title ---------- */
+  const NAV_TITLE_FULL = 'SiMax Beach Volley Tournament';
+  const NAV_TITLE_SHORT = 'SiMax BVT';
+
+  function updateNavTitle() {
+    const navTitle = document.getElementById('nav-title');
+    if (!navTitle) return;
+
+    navTitle.textContent = NAV_TITLE_FULL;
+    const titleStyle = window.getComputedStyle(navTitle);
+    const fontSize = parseFloat(titleStyle.fontSize) || 16;
+    const lineHeight = parseFloat(titleStyle.lineHeight) || (fontSize * 1.15);
+    const titleHeight = navTitle.getBoundingClientRect().height;
+    const lines = Math.round(titleHeight / lineHeight);
+
+    if (lines >= 3) {
+      navTitle.textContent = NAV_TITLE_SHORT;
+    }
+  }
+
+  updateNavTitle();
+  window.addEventListener('resize', updateNavTitle);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(updateNavTitle);
+  }
 </script>
 
 </body>
