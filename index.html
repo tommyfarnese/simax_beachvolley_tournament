@@ -330,6 +330,14 @@
       box-shadow: 0 8px 32px rgba(245,184,0,0.5);
     }
 
+    .btn-primary.disabled {
+      background: rgba(255,255,255,0.12);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
     .btn-outline {
       display: inline-flex;
       align-items: center;
@@ -554,6 +562,52 @@
     .status-blink::before { background: #4ade80; box-shadow: 0 0 6px #4ade80; animation: pulse-green 1.1s infinite; }
     .status-full { color: #f87171; }
     .status-full::before { content: ''; display: block; width: 8px; height: 8px; background: #f87171; border-radius: 50%; }
+
+    .tournament-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      width: fit-content;
+      white-space: nowrap;
+    }
+
+    .tournament-status-pill::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .tournament-status-pill.open {
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.12);
+      border-color: rgba(74, 222, 128, 0.35);
+    }
+
+    .tournament-status-pill.open::before {
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+    }
+
+    .tournament-status-pill.sold-out {
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.12);
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .tournament-status-pill.sold-out::before {
+      background: #f87171;
+      box-shadow: 0 0 8px #f87171;
+    }
 
     @keyframes pulse-green {
       0%, 100% { box-shadow: 0 0 6px #4ade80; }
@@ -891,6 +945,15 @@
     .btn-register-outline:hover {
       border-color: var(--gold);
       background: rgba(245,184,0,0.08);
+    }
+
+    .btn-outline.disabled,
+    .btn-register-outline.disabled {
+      border-color: rgba(255,255,255,0.18);
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.05);
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     /* ===========================
@@ -1302,7 +1365,7 @@
             <span><i class="fas fa-sun"></i> Mattina & Pomeriggio</span>
           </div>
         </div>
-        <div class="event-status status-soon status-blink">Iscrizioni aperte</div>
+        <div class="event-status status-soon status-blink" id="status-global-ev1">Iscrizioni aperte</div>
       </div>
 
       <!-- Tabs: un tab per ogni torneo della giornata -->
@@ -1321,15 +1384,18 @@
           <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
         </div>
         <div class="spots-bar-wrap">
-          <div class="spots-bar-label"><span>Posti disponibili</span></div>
+          <div class="spots-bar-label">
+            <span>Posti disponibili</span>
+            <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t2">Iscrizioni aperte</span>
+          </div>
           <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header con il link del tuo Google Modulo -->
-          <button class="btn-primary" onclick="openModal('Iscrizione 3×3 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header')">
+          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" onclick="handleRegisterClick(this)">
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline js-register-link" data-tournament-id="ev1-t2">
             <i class="fas fa-external-link-alt"></i> Apri form
           </a>
         </div>
@@ -1345,15 +1411,18 @@
           <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
         </div>
         <div class="spots-bar-wrap">
-          <div class="spots-bar-label"><span>Posti disponibili</span></div>
+          <div class="spots-bar-label">
+            <span>Posti disponibili</span>
+            <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t1">Iscrizioni aperte</span>
+          </div>
           <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header con il link del tuo Google Modulo -->
-          <button class="btn-primary" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
+          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" onclick="handleRegisterClick(this)">
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline js-register-link" data-tournament-id="ev1-t1">
             <i class="fas fa-external-link-alt"></i> Apri form
           </a>
         </div>
@@ -1448,6 +1517,7 @@
         <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
         <h3>Beach Volley 3×3</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 10:00 - 13:30</p>
+        <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t2" style="margin-top:10px;">Iscrizioni aperte</span>
       </div>
       <div class="reg-card-body">
         <div class="reg-detail-grid">
@@ -1458,10 +1528,10 @@
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register" onclick="openModal('Iscrizione 3×3 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header')">
+        <button class="btn-register js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" onclick="handleRegisterClick(this)">
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline js-register-link" data-tournament-id="ev1-t2">
           <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
         </a>
       </div>
@@ -1473,6 +1543,7 @@
         <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
         <h3>Beach Volley 2×2</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 13:30 - 17:00</p>
+        <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t1" style="margin-top:10px;">Iscrizioni aperte</span>
       </div>
       <div class="reg-card-body">
         <div class="reg-detail-grid">
@@ -1483,10 +1554,10 @@
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register" onclick="openModal('Iscrizione 2×2 Mix – 20 Set', 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header')">
+        <button class="btn-register js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" onclick="handleRegisterClick(this)">
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline js-register-link" data-tournament-id="ev1-t1">
           <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
         </a>
       </div>
@@ -1530,7 +1601,7 @@
       <div class="accordion-body">
         <ul>
           <li>Fase a <strong>gironi</strong>: le squadre vengono divise in 3 gironi da 4 squadre, si gioca tutti contro tutti.</li>
-          <li>Le prime, le secondo e le 2 migliori terze classificate accedono alle <strong>fasi ad eliminazione diretta del torneo GOLD</strong>.</li>
+          <li>Le prime, le seconde e le 2 migliori terze classificate accedono alle <strong>fasi ad eliminazione diretta del torneo GOLD</strong>.</li>
           <li>Le ultime classificate e la peggiore terza accedono alle <strong>fasi ad eliminazione diretta del torneo SILVER</strong>.</li>
           <li>Il regolamento dettagliato sarà comunicato prima del torneo.</li>
         </ul>
@@ -1802,6 +1873,182 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+  /* ---------- Stato iscrizioni da Google Apps Script ---------- */
+  // Inserisci qui gli URL delle Web App pubblicate da Apps Script (uno per torneo).
+  const TOURNAMENT_STATUS_ENDPOINTS = {
+    'ev1-t2': 'https://script.google.com/macros/s/AKfycbwC3ZiA_dairTaaCRZ3YLcRhwRhwo1XeX0b6bks-MXEKAGBfRr85Dyh9uJGSnBfkq53/exec', // 3x3
+    'ev1-t1': 'https://script.google.com/macros/s/AKfycbzBRaCHzxC_4RUzERtD_tLqxW_x-ffIXv4wnEAGeqWxeUgRjSifBUbe679-a1P7Xju0/exec'  // 2x2
+  };
+
+  // Fallback locale: usato solo se endpoint non configurato o non raggiungibile.
+  const TOURNAMENT_STATUS_FALLBACK = {
+    'ev1-t2': 'OPEN',
+    'ev1-t1': 'OPEN'
+  };
+
+  let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
+
+  function normalizeStatus(status) {
+    return String(status || '').trim().toUpperCase();
+  }
+
+  function parseEndpointStatus(payload, tournamentId) {
+    const raw = payload || {};
+
+    if (typeof raw === 'string') {
+      return normalizeStatus(raw);
+    }
+
+    if (typeof raw.status === 'string') {
+      return normalizeStatus(raw.status);
+    }
+
+    if (typeof raw[tournamentId] === 'string') {
+      return normalizeStatus(raw[tournamentId]);
+    }
+
+    if (typeof raw.soldOut === 'boolean') {
+      return raw.soldOut ? 'SOLD_OUT' : 'OPEN';
+    }
+
+    return normalizeStatus(tournamentStatusMap[tournamentId]);
+  }
+
+  function isTournamentSoldOut(tournamentId) {
+    return normalizeStatus(tournamentStatusMap[tournamentId]) === 'SOLD_OUT';
+  }
+
+  function setButtonSoldOut(button) {
+    button.disabled = true;
+    button.classList.add('disabled');
+    button.setAttribute('aria-disabled', 'true');
+    button.innerHTML = '<i class="fas fa-ban"></i> Sold Out';
+  }
+
+  function setButtonOpen(button) {
+    const title = button.dataset.title || 'Iscrizione torneo';
+    button.disabled = false;
+    button.classList.remove('disabled');
+    button.setAttribute('aria-disabled', 'false');
+    button.innerHTML = '<i class="fas fa-pen-to-square"></i> Iscriviti';
+    button.setAttribute('aria-label', title);
+  }
+
+  function setLinkSoldOut(link) {
+    link.classList.add('disabled');
+    link.setAttribute('aria-disabled', 'true');
+    link.setAttribute('tabindex', '-1');
+    link.innerHTML = '<i class="fas fa-ban"></i> Sold Out';
+  }
+
+  function setLinkOpen(link) {
+    const isInline = link.classList.contains('btn-outline');
+    link.classList.remove('disabled');
+    link.setAttribute('aria-disabled', 'false');
+    link.removeAttribute('tabindex');
+    link.innerHTML = isInline
+      ? '<i class="fas fa-external-link-alt"></i> Apri form'
+      : '<i class="fas fa-external-link-alt"></i> Apri in nuova scheda';
+  }
+
+  function updateGlobalEventBadge() {
+    const badge = document.getElementById('status-global-ev1');
+    if (!badge) return;
+
+    const ids = Array.from(document.querySelectorAll('.js-register-btn[data-tournament-id]'))
+      .map(btn => btn.dataset.tournamentId)
+      .filter((value, index, self) => value && self.indexOf(value) === index);
+
+    if (ids.length === 0) return;
+
+    const allSoldOut = ids.every(id => isTournamentSoldOut(id));
+
+    if (allSoldOut) {
+      badge.textContent = 'Sold Out';
+      badge.classList.remove('status-soon', 'status-blink', 'status-open');
+      badge.classList.add('status-full');
+      return;
+    }
+
+    badge.textContent = 'Iscrizioni aperte';
+    badge.classList.remove('status-full', 'status-soon');
+    badge.classList.add('status-open', 'status-blink');
+  }
+
+  function applyTournamentStatuses() {
+    document.querySelectorAll('.js-register-btn[data-tournament-id]').forEach(button => {
+      const tournamentId = button.dataset.tournamentId;
+      if (isTournamentSoldOut(tournamentId)) {
+        setButtonSoldOut(button);
+      } else {
+        setButtonOpen(button);
+      }
+    });
+
+    document.querySelectorAll('.js-register-link[data-tournament-id]').forEach(link => {
+      const tournamentId = link.dataset.tournamentId;
+      if (isTournamentSoldOut(tournamentId)) {
+        setLinkSoldOut(link);
+      } else {
+        setLinkOpen(link);
+      }
+    });
+
+    document.querySelectorAll('.js-tournament-status[data-tournament-id]').forEach(statusTag => {
+      const tournamentId = statusTag.dataset.tournamentId;
+      if (isTournamentSoldOut(tournamentId)) {
+        statusTag.textContent = 'Sold Out';
+        statusTag.classList.remove('open');
+        statusTag.classList.add('sold-out');
+      } else {
+        statusTag.textContent = 'Iscrizioni aperte';
+        statusTag.classList.remove('sold-out');
+        statusTag.classList.add('open');
+      }
+    });
+
+    updateGlobalEventBadge();
+  }
+
+  async function loadTournamentStatuses() {
+    const configuredEndpoints = Object.entries(TOURNAMENT_STATUS_ENDPOINTS)
+      .filter(([, url]) => Boolean(String(url || '').trim()));
+
+    if (configuredEndpoints.length === 0) {
+      applyTournamentStatuses();
+      return;
+    }
+
+    const requests = configuredEndpoints.map(async ([tournamentId, endpointUrl]) => {
+      try {
+        const response = await fetch(endpointUrl, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+
+        const data = await response.json();
+        tournamentStatusMap[tournamentId] = parseEndpointStatus(data, tournamentId);
+      } catch (error) {
+        console.error('Errore endpoint stato torneo ' + tournamentId + ':', error);
+      }
+    });
+
+    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...tournamentStatusMap };
+    await Promise.all(requests);
+    applyTournamentStatuses();
+  }
+
+  function handleRegisterClick(button) {
+    const tournamentId = button?.dataset?.tournamentId;
+    if (!tournamentId) return;
+    if (isTournamentSoldOut(tournamentId)) return;
+
+    const title = button.dataset.title;
+    const formUrl = button.dataset.formUrl;
+    if (!title || !formUrl) return;
+    openModal(title, formUrl);
+  }
+
   /* ---------- Modal (Google Form) ---------- */
   function openModal(title, formUrl) {
     document.getElementById('modal-title').textContent = title;
@@ -1891,6 +2138,8 @@
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(updateNavTitle);
   }
+
+  loadTournamentStatuses();
 </script>
 
 </body>
