@@ -1550,10 +1550,10 @@
         </div>
         <div class="spots-bar-wrap">
           <div class="spots-bar-label">
-            <span>Posti disponibili</span>
+            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: n/d</span>
             <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t2">Iscrizioni aperte</span>
           </div>
-          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
+          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header con il link del tuo Google Modulo -->
@@ -1577,10 +1577,10 @@
         </div>
         <div class="spots-bar-wrap">
           <div class="spots-bar-label">
-            <span>Posti disponibili</span>
+            <span class="js-spots-available" data-tournament-id="ev1-t1">Posti disponibili: n/d</span>
             <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t1">Iscrizioni aperte</span>
           </div>
-          <div class="spots-bar"><div class="spots-bar-fill" style="width: 0%"></div></div>
+          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t1" data-default-max-spots="12" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header con il link del tuo Google Modulo -->
@@ -2270,8 +2270,8 @@
 
   // Fallback locale: usato solo se endpoint non configurato o non raggiungibile.
   const TOURNAMENT_STATUS_FALLBACK = {
-    'ev1-t2': 'OPEN',
-    'ev1-t1': 'OPEN'
+    'ev1-t2': { status: 'OPEN', availableSpots: null, maxSpots: 12 },
+    'ev1-t1': { status: 'OPEN', availableSpots: null, maxSpots: 12 }
   };
 
   let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
@@ -2280,30 +2280,97 @@
     return String(status || '').trim().toUpperCase();
   }
 
+  function pickNumericValue(obj, keys) {
+    for (const key of keys) {
+      const value = obj && obj[key];
+      if (Number.isFinite(value)) return value;
+      if (typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))) {
+        return Number(value);
+      }
+    }
+    return null;
+  }
+
   function parseEndpointStatus(payload, tournamentId) {
+    const fallback = TOURNAMENT_STATUS_FALLBACK[tournamentId] || { status: 'OPEN', availableSpots: null, maxSpots: null };
     const raw = payload || {};
+    const result = {
+      status: normalizeStatus(fallback.status),
+      availableSpots: Number.isFinite(fallback.availableSpots) ? fallback.availableSpots : null,
+      maxSpots: Number.isFinite(fallback.maxSpots) ? fallback.maxSpots : null
+    };
 
     if (typeof raw === 'string') {
-      return normalizeStatus(raw);
+      result.status = normalizeStatus(raw);
+      return result;
     }
 
     if (typeof raw.status === 'string') {
-      return normalizeStatus(raw.status);
+      result.status = normalizeStatus(raw.status);
     }
 
     if (typeof raw[tournamentId] === 'string') {
-      return normalizeStatus(raw[tournamentId]);
+      result.status = normalizeStatus(raw[tournamentId]);
     }
 
     if (typeof raw.soldOut === 'boolean') {
-      return raw.soldOut ? 'SOLD_OUT' : 'OPEN';
+      result.status = raw.soldOut ? 'SOLD_OUT' : 'OPEN';
     }
 
-    return normalizeStatus(tournamentStatusMap[tournamentId]);
+    const rawMaxSpots = pickNumericValue(raw, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']);
+    const rawRegistered = pickNumericValue(raw, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
+    const rawAvailable = pickNumericValue(raw, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']);
+
+    if (Number.isFinite(rawMaxSpots) && rawMaxSpots >= 0) {
+      result.maxSpots = rawMaxSpots;
+    }
+
+    if (Number.isFinite(rawAvailable) && rawAvailable >= 0) {
+      result.availableSpots = rawAvailable;
+    } else if (Number.isFinite(rawRegistered) && Number.isFinite(result.maxSpots)) {
+      result.availableSpots = Math.max(0, result.maxSpots - rawRegistered);
+    }
+
+    return result;
   }
 
   function isTournamentSoldOut(tournamentId) {
-    return normalizeStatus(tournamentStatusMap[tournamentId]) === 'SOLD_OUT';
+    const tournamentData = tournamentStatusMap[tournamentId] || {};
+    return normalizeStatus(tournamentData.status) === 'SOLD_OUT';
+  }
+
+  function updateSpotsAvailabilityUI() {
+    document.querySelectorAll('.js-spots-available[data-tournament-id]').forEach((label) => {
+      const tournamentId = label.dataset.tournamentId;
+      const tournamentData = tournamentStatusMap[tournamentId] || {};
+      const availableSpots = Number.isFinite(tournamentData.availableSpots) ? tournamentData.availableSpots : null;
+      const maxSpots = Number.isFinite(tournamentData.maxSpots) ? tournamentData.maxSpots : null;
+
+      if (Number.isFinite(availableSpots) && Number.isFinite(maxSpots)) {
+        label.textContent = 'Posti disponibili: ' + availableSpots + ' / ' + maxSpots;
+      } else {
+        label.textContent = 'Posti disponibili: n/d';
+      }
+    });
+
+    document.querySelectorAll('.js-spots-bar-fill[data-tournament-id]').forEach((barFill) => {
+      const tournamentId = barFill.dataset.tournamentId;
+      const tournamentData = tournamentStatusMap[tournamentId] || {};
+      const defaultMax = Number(barFill.dataset.defaultMaxSpots || 0);
+      const maxSpots = Number.isFinite(tournamentData.maxSpots) && tournamentData.maxSpots > 0
+        ? tournamentData.maxSpots
+        : (defaultMax > 0 ? defaultMax : null);
+      const availableSpots = Number.isFinite(tournamentData.availableSpots) ? tournamentData.availableSpots : null;
+
+      if (!Number.isFinite(maxSpots) || !Number.isFinite(availableSpots)) {
+        barFill.style.width = '0%';
+        return;
+      }
+
+      const occupiedSpots = Math.max(0, maxSpots - availableSpots);
+      const occupiedRatio = Math.min(1, occupiedSpots / maxSpots);
+      barFill.style.width = String(Math.round(occupiedRatio * 100)) + '%';
+    });
   }
 
   function setButtonSoldOut(button) {
@@ -2395,6 +2462,7 @@
       }
     });
 
+    updateSpotsAvailabilityUI();
     updateGlobalEventBadge();
   }
 
