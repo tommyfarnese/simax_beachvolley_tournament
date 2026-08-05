@@ -1225,6 +1225,154 @@
     }
 
     /* ===========================
+       COOKIE BANNER
+    =========================== */
+    .cookie-banner {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 2500;
+      background: rgba(11, 23, 64, 0.98);
+      border: 1px solid rgba(245,184,0,0.35);
+      border-radius: 14px;
+      box-shadow: 0 20px 48px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      padding: 18px;
+      display: none;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .cookie-banner.open {
+      display: block;
+      animation: fadeInUp 0.25s ease both;
+    }
+
+    .cookie-banner h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: var(--gold);
+      letter-spacing: 0.6px;
+    }
+
+    .cookie-banner p {
+      color: var(--text-light);
+      line-height: 1.6;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+    }
+
+    .cookie-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-cookie {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      transition: transform var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+    }
+
+    .btn-cookie:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-cookie.accept {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-cookie.reject {
+      background: rgba(255,255,255,0.09);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .btn-cookie.manage {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(245,184,0,0.4);
+    }
+
+    .cookie-links {
+      margin-left: auto;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cookie-links a {
+      color: var(--gold);
+      font-size: 0.8rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .cookie-customize {
+      margin-top: 14px;
+      padding: 14px;
+      border: 1px solid rgba(245,184,0,0.22);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      display: none;
+    }
+
+    .cookie-customize.open {
+      display: block;
+    }
+
+    .cookie-pref-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .cookie-pref-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .cookie-pref-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.83rem;
+      margin-bottom: 3px;
+      color: var(--white);
+    }
+
+    .cookie-pref-help {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      max-width: 660px;
+      line-height: 1.5;
+    }
+
+    .cookie-switch {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--gold);
+      margin-top: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .cookie-switch[disabled] {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    /* ===========================
        ANIMATIONS
     =========================== */
     @keyframes fadeInDown {
@@ -1269,6 +1417,23 @@
       .tab-btn { font-size: 0.75rem; padding: 14px 12px; }
       .reg-detail-grid { grid-template-columns: 1fr 1fr; }
       .hero-ctas { flex-direction: column; align-items: center; }
+
+      .cookie-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cookie-links {
+        margin-left: 0;
+      }
+
+      .btn-cookie {
+        width: 100%;
+      }
+
+      .cookie-pref-row {
+        flex-direction: row;
+      }
     }
   </style>
 </head>
@@ -1773,12 +1938,54 @@
     <span>SiMax Beach Volley Tournament</span>
   </div>
   <p>Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
+  <p style="margin-top:12px; font-size:0.8rem; display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="cookie.html">Cookie Policy</a>
+    <a href="#" id="manage-cookies-link">Gestisci cookie</a>
+  </p>
   <br>
   <p style="font-size:0.75rem; margin-top:8px;">
     &copy; <span id="year"></span> SiMax Beach Volley Tournament. Tutti i diritti riservati.
     &nbsp;|&nbsp; Sito realizzato con ❤️ e sabbia tra i piedi.
   </p>
 </footer>
+
+<!-- ============================================================
+     COOKIE BANNER
+============================================================ -->
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Preferenze cookie">
+  <h4>Cookie e statistiche</h4>
+  <p>
+    Usiamo cookie tecnici necessari e, solo con il tuo consenso, Google Analytics per statistiche su visite e click ai pulsanti.
+    Puoi accettare o rifiutare in qualunque momento.
+  </p>
+  <div class="cookie-actions">
+    <button class="btn-cookie accept" type="button" id="cookie-accept">Accetta</button>
+    <button class="btn-cookie reject" type="button" id="cookie-reject">Rifiuta</button>
+    <button class="btn-cookie manage" type="button" id="cookie-manage">Personalizza</button>
+    <div class="cookie-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="cookie.html">Cookie</a>
+    </div>
+  </div>
+  <div class="cookie-customize" id="cookie-customize">
+    <div class="cookie-pref-row">
+      <div>
+        <div class="cookie-pref-title">Cookie tecnici necessari</div>
+        <div class="cookie-pref-help">Sempre attivi: servono al funzionamento essenziale del sito.</div>
+      </div>
+      <input class="cookie-switch" type="checkbox" checked disabled aria-label="Cookie tecnici necessari" />
+    </div>
+    <div class="cookie-pref-row">
+      <div>
+        <div class="cookie-pref-title">Cookie statistici (Google Analytics)</div>
+        <div class="cookie-pref-help">Se attivi, raccogliamo dati aggregati su visite e click ai pulsanti principali.</div>
+      </div>
+      <input class="cookie-switch" type="checkbox" id="cookie-analytics-toggle" aria-label="Cookie statistici" />
+    </div>
+    <button class="btn-cookie accept" type="button" id="cookie-save-preferences">Salva preferenze</button>
+  </div>
+</div>
 
 <!-- ============================================================
      MODAL – Google Form embed
@@ -1799,6 +2006,187 @@
      JAVASCRIPT
 ============================================================ -->
 <script>
+  /* ---------- Cookie + Analytics ---------- */
+  const GA_MEASUREMENT_ID = 'G-0E0QKFFMEB';
+  const CONSENT_STORAGE_KEY = 'simax_analytics_consent';
+  let analyticsLoaded = false;
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+
+  function getConsentState() {
+    return localStorage.getItem(CONSENT_STORAGE_KEY);
+  }
+
+  function setConsentState(state) {
+    localStorage.setItem(CONSENT_STORAGE_KEY, state);
+  }
+
+  function openCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    if (banner) banner.classList.add('open');
+  }
+
+  function closeCookieBanner() {
+    const banner = document.getElementById('cookie-banner');
+    if (banner) banner.classList.remove('open');
+  }
+
+  function setCustomizationOpen(isOpen) {
+    const box = document.getElementById('cookie-customize');
+    if (!box) return;
+    box.classList.toggle('open', Boolean(isOpen));
+  }
+
+  function syncCustomizationWithConsent() {
+    const toggle = document.getElementById('cookie-analytics-toggle');
+    if (!toggle) return;
+    toggle.checked = getConsentState() === 'granted';
+  }
+
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+
+    const existing = document.querySelector('script[data-ga-loader="true"]');
+    if (existing) {
+      analyticsLoaded = true;
+      return;
+    }
+
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_MEASUREMENT_ID);
+    gaScript.setAttribute('data-ga-loader', 'true');
+    document.head.appendChild(gaScript);
+
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID);
+
+    analyticsLoaded = true;
+  }
+
+  function updateAnalyticsByConsent() {
+    if (getConsentState() === 'granted') {
+      loadAnalytics();
+    }
+  }
+
+  function setCookieConsent(state) {
+    setConsentState(state);
+    syncCustomizationWithConsent();
+    setCustomizationOpen(false);
+    closeCookieBanner();
+    updateAnalyticsByConsent();
+  }
+
+  function trackEvent(eventName, params) {
+    if (!analyticsLoaded || typeof window.gtag !== 'function') return;
+    gtag('event', eventName, params || {});
+  }
+
+  function setupCookieControls() {
+    const acceptBtn = document.getElementById('cookie-accept');
+    const rejectBtn = document.getElementById('cookie-reject');
+    const manageBtn = document.getElementById('cookie-manage');
+    const manageFooterLink = document.getElementById('manage-cookies-link');
+    const savePreferencesBtn = document.getElementById('cookie-save-preferences');
+    const analyticsToggle = document.getElementById('cookie-analytics-toggle');
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', () => setCookieConsent('granted'));
+    }
+
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', () => setCookieConsent('denied'));
+    }
+
+    if (manageBtn) {
+      manageBtn.addEventListener('click', () => {
+        syncCustomizationWithConsent();
+        setCustomizationOpen(true);
+        openCookieBanner();
+      });
+    }
+
+    if (savePreferencesBtn && analyticsToggle) {
+      savePreferencesBtn.addEventListener('click', () => {
+        setCookieConsent(analyticsToggle.checked ? 'granted' : 'denied');
+      });
+    }
+
+    if (manageFooterLink) {
+      manageFooterLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        syncCustomizationWithConsent();
+        setCustomizationOpen(true);
+        openCookieBanner();
+      });
+    }
+
+    const current = getConsentState();
+    if (!current) {
+      setCustomizationOpen(false);
+      openCookieBanner();
+    } else {
+      syncCustomizationWithConsent();
+      setCustomizationOpen(false);
+      updateAnalyticsByConsent();
+    }
+  }
+
+  function setupClickTracking() {
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('button, a');
+      if (!target) return;
+
+      const buttonText = (target.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 120);
+      const href = target.getAttribute('href') || '';
+      const section = target.closest('section, nav, footer, .modal-box');
+      const sectionId = section && section.id ? section.id : 'global';
+      const commonParams = {
+        button_text: buttonText,
+        cta_location: sectionId,
+        destination_url: href || undefined
+      };
+
+      if (target.classList.contains('js-register-btn')) {
+        trackEvent('click_register_button', {
+          ...commonParams,
+          tournament_id: target.dataset.tournamentId || 'unknown',
+          register_title: target.dataset.title || 'iscrizione'
+        });
+        return;
+      }
+
+      if (target.classList.contains('js-register-link')) {
+        trackEvent('click_register_form_link', {
+          ...commonParams,
+          tournament_id: target.dataset.tournamentId || 'unknown'
+        });
+        return;
+      }
+
+      if (target.classList.contains('social-btn')) {
+        trackEvent('click_social_link', {
+          ...commonParams,
+          social_network: target.getAttribute('aria-label') || 'social'
+        });
+        return;
+      }
+
+      if (
+        target.classList.contains('btn-primary') ||
+        target.classList.contains('btn-outline') ||
+        target.classList.contains('btn-register') ||
+        target.classList.contains('btn-register-outline') ||
+        target.classList.contains('btn-nav') ||
+        target.classList.contains('btn-mobile')
+      ) {
+        trackEvent('click_cta', commonParams);
+      }
+    });
+  }
+
   /* ---------- Navbar scroll ---------- */
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
@@ -2139,6 +2527,8 @@
     document.fonts.ready.then(updateNavTitle);
   }
 
+  setupCookieControls();
+  setupClickTracking();
   loadTournamentStatuses();
 </script>
 
