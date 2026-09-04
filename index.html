@@ -577,6 +577,7 @@
       border: 1px solid transparent;
       width: fit-content;
       white-space: nowrap;
+      vertical-align: middle;
     }
 
     .tournament-status-pill::before {
@@ -602,11 +603,63 @@
       color: #f87171;
       background: rgba(248, 113, 113, 0.12);
       border-color: rgba(248, 113, 113, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
     }
 
     .tournament-status-pill.sold-out::before {
       background: #f87171;
-      box-shadow: 0 0 8px #f87171;
+      box-shadow: 0 0 8px rgba(248, 113, 113, 0.65);
+    }
+
+    .waitlist-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 7px 10px;
+      color: var(--white);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(245,184,0,0.2);
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .waitlist-count::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(245, 184, 0, 0.65);
+    }
+
+    .waitlist-count.hidden {
+      display: none;
+    }
+
+    .waitlist-note {
+      display: block;
+      max-width: 560px;
+      margin-top: 8px;
+      padding: 10px 12px;
+      color: var(--text-light);
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid var(--gold);
+      border-radius: 8px;
+      font-size: 0.84rem;
+      line-height: 1.55;
+    }
+
+    .waitlist-note.hidden {
+      display: none;
+    }
+
+    .reg-card-top .waitlist-count:not(.hidden) {
+      display: flex;
+      width: fit-content;
     }
 
     @keyframes pulse-green {
@@ -685,6 +738,7 @@
 
     .spots-bar-label {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
       font-size: 0.82rem;
@@ -703,6 +757,21 @@
       border-radius: 4px;
       background: linear-gradient(90deg, var(--gold-dark), var(--gold));
       transition: width 1s ease;
+    }
+
+    .spots-bar-wrap.sold-out .js-spots-available,
+    .spots-bar-wrap.sold-out .spots-bar {
+      display: none;
+    }
+
+    .spots-bar-wrap.sold-out .spots-bar-label {
+      justify-content: flex-start;
+      margin-bottom: 0;
+    }
+
+    .spots-bar-wrap.sold-out .waitlist-count:not(.hidden) {
+      display: flex;
+      width: fit-content;
     }
 
     .tab-actions {
@@ -924,31 +993,7 @@
       box-shadow: none;
     }
 
-    .btn-register-outline {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      background: transparent;
-      color: var(--gold);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 10px 20px;
-      border-radius: 10px;
-      border: 1.5px solid rgba(245,184,0,0.35);
-      cursor: pointer;
-      transition: border-color var(--transition), background var(--transition);
-      text-align: center;
-    }
-
-    .btn-register-outline:hover {
-      border-color: var(--gold);
-      background: rgba(245,184,0,0.08);
-    }
-
-    .btn-outline.disabled,
-    .btn-register-outline.disabled {
+    .btn-outline.disabled {
       border-color: rgba(255,255,255,0.18);
       color: var(--text-muted);
       background: rgba(255,255,255,0.05);
@@ -1553,16 +1598,15 @@
             <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: n/d</span>
             <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t2">Iscrizioni aperte</span>
           </div>
+          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
+          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
           <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
-          <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header con il link del tuo Google Modulo -->
-          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" onclick="handleRegisterClick(this)">
+          <!-- Sostituisci i link con i tuoi Google Form -->
+          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)">
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline js-register-link" data-tournament-id="ev1-t2">
-            <i class="fas fa-external-link-alt"></i> Apri form
-          </a>
         </div>
       </div>
 
@@ -1580,16 +1624,15 @@
             <span class="js-spots-available" data-tournament-id="ev1-t1">Posti disponibili: n/d</span>
             <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t1">Iscrizioni aperte</span>
           </div>
+          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t1">Lista d'Attesa: non attiva</span>
+          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t1">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
           <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t1" data-default-max-spots="12" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
-          <!-- Sostituisci https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header con il link del tuo Google Modulo -->
-          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" onclick="handleRegisterClick(this)">
+          <!-- Sostituisci i link con i tuoi Google Form -->
+          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" data-waitlist-title="Lista d'Attesa 2×2 Mix – 20 Set" data-waitlist-form-url="https://docs.google.com/forms/d/e/1FAIpQLSf_erZ_ljK_NahjKxMDEtUNplFLUT0AL15bPHvLink2PryXzQ/viewform?usp=header" onclick="handleRegisterClick(this)">
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-outline js-register-link" data-tournament-id="ev1-t1">
-            <i class="fas fa-external-link-alt"></i> Apri form
-          </a>
         </div>
       </div>
     </div>
@@ -1669,7 +1712,7 @@
     <i class="fas fa-circle-info"></i>
     <p>
       <strong>Come funziona:</strong> cliccando su "Iscriviti" si apre direttamente il modulo Google qui nella pagina.
-      Se preferisci, usa il pulsante "Apri in nuova scheda" per completare l'iscrizione su Google Forms.
+      Quando un torneo è pieno, lo stesso pulsante apre la Lista d'Attesa, se disponibile.
       Per qualsiasi problema contattaci su <a href="https://wa.me/393273521791" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a> o via email.
     </p>
   </div>
@@ -1683,6 +1726,8 @@
         <h3>Beach Volley 3×3</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 10:00 - 13:30</p>
         <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t2" style="margin-top:10px;">Iscrizioni aperte</span>
+        <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
+        <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
       </div>
       <div class="reg-card-body">
         <div class="reg-detail-grid">
@@ -1693,12 +1738,9 @@
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" onclick="handleRegisterClick(this)">
+        <button class="btn-register js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)">
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline js-register-link" data-tournament-id="ev1-t2">
-          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
-        </a>
       </div>
     </div>
 
@@ -1709,6 +1751,8 @@
         <h3>Beach Volley 2×2</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 13:30 - 17:00</p>
         <span class="tournament-status-pill js-tournament-status" data-tournament-id="ev1-t1" style="margin-top:10px;">Iscrizioni aperte</span>
+        <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t1">Lista d'Attesa: non attiva</span>
+        <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t1">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
       </div>
       <div class="reg-card-body">
         <div class="reg-detail-grid">
@@ -1719,12 +1763,9 @@
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" onclick="handleRegisterClick(this)">
+        <button class="btn-register js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" data-waitlist-title="Lista d'Attesa 2×2 Mix – 20 Set" data-waitlist-form-url="https://docs.google.com/forms/d/e/1FAIpQLSf_erZ_ljK_NahjKxMDEtUNplFLUT0AL15bPHvLink2PryXzQ/viewform?usp=header" onclick="handleRegisterClick(this)">
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" target="_blank" rel="noopener" class="btn-register-outline js-register-link" data-tournament-id="ev1-t1">
-          <i class="fas fa-external-link-alt"></i> Apri in nuova scheda
-        </a>
       </div>
     </div>
 
@@ -2149,23 +2190,6 @@
         destination_url: href || undefined
       };
 
-      if (target.classList.contains('js-register-btn')) {
-        trackEvent('click_register_button', {
-          ...commonParams,
-          tournament_id: target.dataset.tournamentId || 'unknown',
-          register_title: target.dataset.title || 'iscrizione'
-        });
-        return;
-      }
-
-      if (target.classList.contains('js-register-link')) {
-        trackEvent('click_register_form_link', {
-          ...commonParams,
-          tournament_id: target.dataset.tournamentId || 'unknown'
-        });
-        return;
-      }
-
       if (target.classList.contains('social-btn')) {
         trackEvent('click_social_link', {
           ...commonParams,
@@ -2178,7 +2202,6 @@
         target.classList.contains('btn-primary') ||
         target.classList.contains('btn-outline') ||
         target.classList.contains('btn-register') ||
-        target.classList.contains('btn-register-outline') ||
         target.classList.contains('btn-nav') ||
         target.classList.contains('btn-mobile')
       ) {
@@ -2265,13 +2288,13 @@
   // Inserisci qui gli URL delle Web App pubblicate da Apps Script (uno per torneo).
   const TOURNAMENT_STATUS_ENDPOINTS = {
     'ev1-t2': 'https://script.google.com/macros/s/AKfycbwC3ZiA_dairTaaCRZ3YLcRhwRhwo1XeX0b6bks-MXEKAGBfRr85Dyh9uJGSnBfkq53/exec', // 3x3
-    'ev1-t1': 'https://script.google.com/macros/s/AKfycbzBRaCHzxC_4RUzERtD_tLqxW_x-ffIXv4wnEAGeqWxeUgRjSifBUbe679-a1P7Xju0/exec'  // 2x2
+    'ev1-t1': 'https://script.google.com/macros/s/AKfycbyoaoxuviTt3Odt-zwl1x8g5fzxVDyb0rF8ueo4OjD4CcNE8WtryEs25jIPZwHBFei6/exec'  // 2x2
   };
 
   // Fallback locale: usato solo se endpoint non configurato o non raggiungibile.
   const TOURNAMENT_STATUS_FALLBACK = {
-    'ev1-t2': { status: 'OPEN', availableSpots: null, maxSpots: 12 },
-    'ev1-t1': { status: 'OPEN', availableSpots: null, maxSpots: 12 }
+    'ev1-t2': { status: 'OPEN', availableSpots: null, maxSpots: 12, waitlistCount: 0 },
+    'ev1-t1': { status: 'OPEN', availableSpots: null, maxSpots: 12, waitlistCount: 0 }
   };
 
   let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
@@ -2291,13 +2314,23 @@
     return null;
   }
 
+  function getWaitlistCount(tournamentId) {
+    const tournamentData = tournamentStatusMap[tournamentId] || {};
+    const value = pickNumericValue(tournamentData, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
+    if (Number.isFinite(value)) return Math.max(0, value);
+    return 0;
+  }
+
   function parseEndpointStatus(payload, tournamentId) {
-    const fallback = TOURNAMENT_STATUS_FALLBACK[tournamentId] || { status: 'OPEN', availableSpots: null, maxSpots: null };
+    const fallback = TOURNAMENT_STATUS_FALLBACK[tournamentId] || { status: 'OPEN', availableSpots: null, maxSpots: null, waitlistCount: 0 };
     const raw = payload || {};
+    const nested = raw && typeof raw === 'object' && raw[tournamentId] && typeof raw[tournamentId] === 'object' ? raw[tournamentId] : {};
+    const source = Object.keys(nested).length > 0 ? nested : raw;
     const result = {
       status: normalizeStatus(fallback.status),
       availableSpots: Number.isFinite(fallback.availableSpots) ? fallback.availableSpots : null,
-      maxSpots: Number.isFinite(fallback.maxSpots) ? fallback.maxSpots : null
+      maxSpots: Number.isFinite(fallback.maxSpots) ? fallback.maxSpots : null,
+      waitlistCount: Number.isFinite(fallback.waitlistCount) ? fallback.waitlistCount : 0
     };
 
     if (typeof raw === 'string') {
@@ -2305,21 +2338,24 @@
       return result;
     }
 
-    if (typeof raw.status === 'string') {
-      result.status = normalizeStatus(raw.status);
+    if (typeof source.status === 'string') {
+      result.status = normalizeStatus(source.status);
     }
 
     if (typeof raw[tournamentId] === 'string') {
       result.status = normalizeStatus(raw[tournamentId]);
     }
 
-    if (typeof raw.soldOut === 'boolean') {
+    if (typeof source.soldOut === 'boolean') {
+      result.status = source.soldOut ? 'SOLD_OUT' : 'OPEN';
+    } else if (typeof raw.soldOut === 'boolean') {
       result.status = raw.soldOut ? 'SOLD_OUT' : 'OPEN';
     }
 
-    const rawMaxSpots = pickNumericValue(raw, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']);
-    const rawRegistered = pickNumericValue(raw, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
-    const rawAvailable = pickNumericValue(raw, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']);
+    const rawMaxSpots = pickNumericValue(source, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']) ?? pickNumericValue(raw, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']);
+    const rawRegistered = pickNumericValue(source, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']) ?? pickNumericValue(raw, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
+    const rawAvailable = pickNumericValue(source, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']) ?? pickNumericValue(raw, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']);
+    const rawWaitlistCount = pickNumericValue(source, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']) ?? pickNumericValue(raw, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
 
     if (Number.isFinite(rawMaxSpots) && rawMaxSpots >= 0) {
       result.maxSpots = rawMaxSpots;
@@ -2331,6 +2367,10 @@
       result.availableSpots = Math.max(0, result.maxSpots - rawRegistered);
     }
 
+    if (Number.isFinite(rawWaitlistCount) && rawWaitlistCount >= 0) {
+      result.waitlistCount = rawWaitlistCount;
+    }
+
     return result;
   }
 
@@ -2339,7 +2379,47 @@
     return normalizeStatus(tournamentData.status) === 'SOLD_OUT';
   }
 
+  function hasWaitlistForm(tournamentId) {
+    return Array.from(document.querySelectorAll('.js-register-btn[data-tournament-id="' + tournamentId + '"]'))
+      .some((button) => String(button.dataset.waitlistFormUrl || '').trim());
+  }
+
+  function updateWaitlistCountUI() {
+    document.querySelectorAll('.js-waitlist-count[data-tournament-id]').forEach((label) => {
+      const tournamentId = label.dataset.tournamentId;
+      const tournamentData = tournamentStatusMap[tournamentId] || {};
+      const waitlistCount = Number.isFinite(tournamentData.waitlistCount) ? Math.max(0, tournamentData.waitlistCount) : 0;
+      const isSoldOut = isTournamentSoldOut(tournamentId);
+
+      if (!isSoldOut) {
+        label.textContent = 'Lista d\'Attesa: non attiva';
+        label.classList.add('hidden');
+        return;
+      }
+
+      if (waitlistCount > 0) {
+        const suffix = waitlistCount === 1 ? 'squadra' : 'squadre';
+        label.textContent = waitlistCount + ' ' + suffix + ' in Lista d\'Attesa';
+      } else {
+        label.textContent = 'Lista d\'Attesa attiva';
+      }
+
+      label.classList.remove('hidden');
+    });
+
+    document.querySelectorAll('.js-waitlist-note[data-tournament-id]').forEach((note) => {
+      const tournamentId = note.dataset.tournamentId;
+      const shouldShow = isTournamentSoldOut(tournamentId) && hasWaitlistForm(tournamentId);
+      note.classList.toggle('hidden', !shouldShow);
+    });
+  }
+
   function updateSpotsAvailabilityUI() {
+    document.querySelectorAll('.spots-bar-wrap').forEach((wrap) => {
+      const tournamentId = wrap.querySelector('[data-tournament-id]')?.dataset?.tournamentId;
+      wrap.classList.toggle('sold-out', Boolean(tournamentId && isTournamentSoldOut(tournamentId)));
+    });
+
     document.querySelectorAll('.js-spots-available[data-tournament-id]').forEach((label) => {
       const tournamentId = label.dataset.tournamentId;
       const tournamentData = tournamentStatusMap[tournamentId] || {};
@@ -2374,6 +2454,17 @@
   }
 
   function setButtonSoldOut(button) {
+    const waitlistUrl = String(button.dataset.waitlistFormUrl || '').trim();
+    const waitlistLabel = button.dataset.waitlistTitle || 'Lista d\'Attesa';
+
+    if (waitlistUrl) {
+      button.disabled = false;
+      button.classList.remove('disabled');
+      button.setAttribute('aria-disabled', 'false');
+      button.innerHTML = '<i class="fas fa-user-clock"></i> Iscriviti in Lista d\'Attesa';
+      return;
+    }
+
     button.disabled = true;
     button.classList.add('disabled');
     button.setAttribute('aria-disabled', 'true');
@@ -2387,23 +2478,6 @@
     button.setAttribute('aria-disabled', 'false');
     button.innerHTML = '<i class="fas fa-pen-to-square"></i> Iscriviti';
     button.setAttribute('aria-label', title);
-  }
-
-  function setLinkSoldOut(link) {
-    link.classList.add('disabled');
-    link.setAttribute('aria-disabled', 'true');
-    link.setAttribute('tabindex', '-1');
-    link.innerHTML = '<i class="fas fa-ban"></i> Sold Out';
-  }
-
-  function setLinkOpen(link) {
-    const isInline = link.classList.contains('btn-outline');
-    link.classList.remove('disabled');
-    link.setAttribute('aria-disabled', 'false');
-    link.removeAttribute('tabindex');
-    link.innerHTML = isInline
-      ? '<i class="fas fa-external-link-alt"></i> Apri form'
-      : '<i class="fas fa-external-link-alt"></i> Apri in nuova scheda';
   }
 
   function updateGlobalEventBadge() {
@@ -2440,15 +2514,6 @@
       }
     });
 
-    document.querySelectorAll('.js-register-link[data-tournament-id]').forEach(link => {
-      const tournamentId = link.dataset.tournamentId;
-      if (isTournamentSoldOut(tournamentId)) {
-        setLinkSoldOut(link);
-      } else {
-        setLinkOpen(link);
-      }
-    });
-
     document.querySelectorAll('.js-tournament-status[data-tournament-id]').forEach(statusTag => {
       const tournamentId = statusTag.dataset.tournamentId;
       if (isTournamentSoldOut(tournamentId)) {
@@ -2463,6 +2528,7 @@
     });
 
     updateSpotsAvailabilityUI();
+    updateWaitlistCountUI();
     updateGlobalEventBadge();
   }
 
@@ -2497,10 +2563,19 @@
   function handleRegisterClick(button) {
     const tournamentId = button?.dataset?.tournamentId;
     if (!tournamentId) return;
-    if (isTournamentSoldOut(tournamentId)) return;
+
+    const waitlistUrl = String(button.dataset.waitlistFormUrl || '').trim();
+    const formUrl = button.dataset.formUrl;
+
+    if (isTournamentSoldOut(tournamentId)) {
+      if (waitlistUrl) {
+        const title = button.dataset.waitlistTitle || (button.dataset.title ? 'Lista d\'Attesa – ' + button.dataset.title : 'Lista d\'Attesa');
+        openModal(title, waitlistUrl);
+      }
+      return;
+    }
 
     const title = button.dataset.title;
-    const formUrl = button.dataset.formUrl;
     if (!title || !formUrl) return;
     openModal(title, formUrl);
   }
@@ -2510,8 +2585,7 @@
     document.getElementById('modal-title').textContent = title;
 
     const body = document.getElementById('modal-body');
-    // Controlla se è un URL reale o un placeholder
-    const isRealUrl = formUrl.startsWith('http');
+    const isRealUrl = typeof formUrl === 'string' && formUrl.trim().startsWith('http');
 
     if (isRealUrl) {
       // Trasforma il link Google Form in versione embedded
