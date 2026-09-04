@@ -2245,10 +2245,16 @@
   /* ---------- Tab switcher ---------- */
   function switchTab(btn, targetId) {
     const card = btn.closest('.event-card');
+    if (!card) return;
+
+    const targetPanel = Array.from(card.querySelectorAll('.tab-content'))
+      .find(panel => panel.id === targetId);
+    if (!targetPanel) return;
+
     card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById(targetId).classList.add('active');
+    targetPanel.classList.add('active');
   }
 
   /* ---------- Accordion ---------- */
@@ -2284,6 +2290,10 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+  /* ---------- Configurazione tornei da Google Sheet ---------- */
+  const TOURNAMENT_CONFIG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx5-NQoPoy_sNcz-VpsEDAHtqwpx2XdGvngVRHEddnhW7_x0slSks-9z8Uh3ZFhLeTu/exec';
+  const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
+
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
   // Inserisci qui gli URL delle Web App pubblicate da Apps Script (uno per torneo).
   const TOURNAMENT_STATUS_ENDPOINTS = {
@@ -2298,6 +2308,204 @@
   };
 
   let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getCategoryBadgeClass(category) {
+    const normalized = String(category || '').trim().toLowerCase();
+    if (normalized === 'gold') return 'badge-gold';
+    if (normalized === 'silver') return 'badge-silver';
+    return 'badge-mix';
+  }
+
+  function normalizeTournamentConfig(events) {
+    if (!Array.isArray(events)) return [];
+
+    return events
+      .map((event) => ({
+        id: String(event.id || '').trim(),
+        title: String(event.title || '').trim(),
+        day: String(event.day || '').trim(),
+        month: String(event.month || '').trim(),
+        dateLabel: String(event.dateLabel || '').trim(),
+        location: String(event.location || '').trim(),
+        periodLabel: String(event.periodLabel || '').trim(),
+        tournaments: Array.isArray(event.tournaments) ? event.tournaments : []
+      }))
+      .filter((event) => event.id && event.tournaments.length > 0)
+      .map((event) => ({
+        ...event,
+        tournaments: event.tournaments
+          .map((tournament) => ({
+            id: String(tournament.id || '').trim(),
+            sortOrder: Number.isFinite(Number(tournament.sortOrder)) ? Number(tournament.sortOrder) : 999,
+            tabLabel: String(tournament.tabLabel || tournament.title || '').trim(),
+            title: String(tournament.title || '').trim(),
+            format: String(tournament.format || '').trim(),
+            category: String(tournament.category || '').trim(),
+            time: String(tournament.time || '').trim(),
+            price: String(tournament.price || '').trim(),
+            maxTeams: Number.isFinite(Number(tournament.maxTeams)) ? Number(tournament.maxTeams) : null,
+            maxTeamsLabel: String(tournament.maxTeamsLabel || '').trim(),
+            level: String(tournament.level || '').trim(),
+            playersLabel: String(tournament.playersLabel || '').trim(),
+            formUrl: String(tournament.formUrl || '').trim(),
+            waitlistFormUrl: String(tournament.waitlistFormUrl || '').trim(),
+            statusEndpoint: String(tournament.statusEndpoint || '').trim()
+          }))
+          .filter((tournament) => tournament.id && tournament.title)
+          .sort((first, second) => first.sortOrder - second.sortOrder)
+      }))
+      .filter((event) => event.tournaments.length > 0);
+  }
+
+  function syncTournamentStatusConfig(events) {
+    Object.keys(TOURNAMENT_STATUS_ENDPOINTS).forEach((key) => delete TOURNAMENT_STATUS_ENDPOINTS[key]);
+    Object.keys(TOURNAMENT_STATUS_FALLBACK).forEach((key) => delete TOURNAMENT_STATUS_FALLBACK[key]);
+
+    events.forEach((event) => {
+      event.tournaments.forEach((tournament) => {
+        TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = tournament.statusEndpoint;
+        TOURNAMENT_STATUS_FALLBACK[tournament.id] = {
+          status: 'OPEN',
+          availableSpots: null,
+          maxSpots: tournament.maxTeams,
+          waitlistCount: 0
+        };
+      });
+    });
+
+    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
+  }
+
+  function renderTournamentInfoGrid(tournament) {
+    return `
+        <div class="tournament-grid">
+          <div class="info-cell"><span class="label">Orario</span><span class="value">${escapeHtml(tournament.time || 'n/d')}</span></div>
+          <div class="info-cell"><span class="label">Format</span><span class="value">${escapeHtml(tournament.format || 'n/d')}</span></div>
+          <div class="info-cell"><span class="label">Categoria</span><span class="value">${escapeHtml(tournament.category || 'Open')}</span></div>
+          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">${escapeHtml(tournament.price || 'n/d')}</span></div>
+          <div class="info-cell"><span class="label">Max squadre</span><span class="value">${escapeHtml(tournament.maxTeamsLabel || tournament.maxTeams || 'n/d')}</span></div>
+          <div class="info-cell"><span class="label">Livello</span><span class="value">${escapeHtml(tournament.level || 'Open')}</span></div>
+        </div>`;
+  }
+
+  function renderTournamentTabContent(tournament, isActive) {
+    return `
+      <div id="${escapeHtml(tournament.id)}" class="tab-content${isActive ? ' active' : ''}">
+${renderTournamentInfoGrid(tournament)}
+        <div class="spots-bar-wrap">
+          <div class="spots-bar-label">
+            <span class="js-spots-available" data-tournament-id="${escapeHtml(tournament.id)}">Posti disponibili: n/d</span>
+            <span class="tournament-status-pill js-tournament-status" data-tournament-id="${escapeHtml(tournament.id)}">Iscrizioni aperte</span>
+          </div>
+          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="${escapeHtml(tournament.id)}">Lista d'Attesa: non attiva</span>
+          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="${escapeHtml(tournament.id)}">${escapeHtml(WAITLIST_NOTE_TEXT)}</span>
+          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="${escapeHtml(tournament.id)}" data-default-max-spots="${escapeHtml(tournament.maxTeams || '')}" style="width: 0%"></div></div>
+        </div>
+        <div class="tab-actions">
+          <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
+            <i class="fas fa-pen-to-square"></i> Iscriviti
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function renderEventCard(event) {
+    const tabs = event.tournaments.map((tournament, index) => `
+        <button class="tab-btn${index === 0 ? ' active' : ''}" onclick="switchTab(this, '${escapeHtml(tournament.id)}')">🏐 ${escapeHtml(tournament.tabLabel || tournament.title)}</button>`).join('');
+    const tabContents = event.tournaments.map((tournament, index) => renderTournamentTabContent(tournament, index === 0)).join('');
+
+    return `
+    <div class="event-card">
+      <div class="event-header">
+        <div class="event-date-badge">
+          <span class="day">${escapeHtml(event.day || '??')}</span>
+          <span class="month">${escapeHtml(event.month || 'TBA')}</span>
+        </div>
+        <div class="event-info">
+          <h3>${escapeHtml(event.title)}</h3>
+          <div class="event-meta">
+            <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</span>
+            <span><i class="fas fa-sun"></i> ${escapeHtml(event.periodLabel || event.dateLabel)}</span>
+          </div>
+        </div>
+        <div class="event-status status-soon status-blink js-event-status" data-event-id="${escapeHtml(event.id)}">Iscrizioni aperte</div>
+      </div>
+      <div class="tournament-tabs">${tabs}
+      </div>${tabContents}
+    </div>`;
+  }
+
+  function renderRegistrationCard(event, tournament) {
+    return `
+    <div class="reg-card">
+      <div class="reg-card-top">
+        <div class="category-badge ${escapeHtml(getCategoryBadgeClass(tournament.category))}"><i class="fas fa-shuffle"></i> ${escapeHtml(tournament.category || 'Open')}</div>
+        <h3>${escapeHtml(tournament.title)}</h3>
+        <p class="event-date-small"><i class="fas fa-calendar"></i> ${escapeHtml(event.dateLabel)} · ore ${escapeHtml(tournament.time || 'n/d')}</p>
+        <span class="tournament-status-pill js-tournament-status" data-tournament-id="${escapeHtml(tournament.id)}" style="margin-top:10px;">Iscrizioni aperte</span>
+        <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="${escapeHtml(tournament.id)}">Lista d'Attesa: non attiva</span>
+        <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="${escapeHtml(tournament.id)}">${escapeHtml(WAITLIST_NOTE_TEXT)}</span>
+      </div>
+      <div class="reg-card-body">
+        <div class="reg-detail-grid">
+          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">${escapeHtml(tournament.playersLabel || 'n/d')}</span></div>
+          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">${escapeHtml(tournament.category || 'Open')}</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">${escapeHtml(tournament.maxTeams || 'n/d')}</span></div>
+          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">${escapeHtml(tournament.price || 'n/d')}</span></div>
+        </div>
+      </div>
+      <div class="reg-card-actions">
+        <button class="btn-register js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
+          <i class="fas fa-pen-to-square"></i> Iscriviti
+        </button>
+      </div>
+    </div>`;
+  }
+
+  function renderTournamentConfig(events) {
+    const eventsList = document.querySelector('.events-list');
+    const registrationCards = document.querySelector('.reg-cards');
+    if (!eventsList || !registrationCards || events.length === 0) return;
+
+    eventsList.innerHTML = events.map(renderEventCard).join('');
+    registrationCards.innerHTML = events
+      .flatMap((event) => event.tournaments.map((tournament) => renderRegistrationCard(event, tournament)))
+      .join('');
+  }
+
+  async function loadTournamentConfig() {
+    if (!TOURNAMENT_CONFIG_ENDPOINT) return false;
+
+    try {
+      const response = await fetch(TOURNAMENT_CONFIG_ENDPOINT, { cache: 'no-store' });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+
+      const data = await response.json();
+      const events = normalizeTournamentConfig(data && data.events);
+      if (!data.ok || events.length === 0) throw new Error('Configurazione tornei non valida');
+
+      syncTournamentStatusConfig(events);
+      renderTournamentConfig(events);
+      return true;
+    } catch (error) {
+      console.error('Errore configurazione tornei:', error);
+      return false;
+    }
+  }
+
+  async function initializeTournamentData() {
+    await loadTournamentConfig();
+    await loadTournamentStatuses();
+  }
 
   function normalizeStatus(status) {
     return String(status || '').trim().toUpperCase();
@@ -2391,7 +2599,7 @@
       const waitlistCount = Number.isFinite(tournamentData.waitlistCount) ? Math.max(0, tournamentData.waitlistCount) : 0;
       const isSoldOut = isTournamentSoldOut(tournamentId);
 
-      if (!isSoldOut) {
+      if (!isSoldOut || !hasWaitlistForm(tournamentId)) {
         label.textContent = 'Lista d\'Attesa: non attiva';
         label.classList.add('hidden');
         return;
@@ -2481,27 +2689,30 @@
   }
 
   function updateGlobalEventBadge() {
-    const badge = document.getElementById('status-global-ev1');
-    if (!badge) return;
+    const dynamicBadges = document.querySelectorAll('.js-event-status[data-event-id]');
+    const badges = dynamicBadges.length > 0 ? dynamicBadges : [document.getElementById('status-global-ev1')].filter(Boolean);
 
-    const ids = Array.from(document.querySelectorAll('.js-register-btn[data-tournament-id]'))
-      .map(btn => btn.dataset.tournamentId)
-      .filter((value, index, self) => value && self.indexOf(value) === index);
+    badges.forEach((badge) => {
+      const eventCard = badge.closest('.event-card');
+      const ids = Array.from(eventCard ? eventCard.querySelectorAll('.js-register-btn[data-tournament-id]') : document.querySelectorAll('.js-register-btn[data-tournament-id]'))
+        .map(btn => btn.dataset.tournamentId)
+        .filter((value, index, self) => value && self.indexOf(value) === index);
 
-    if (ids.length === 0) return;
+      if (ids.length === 0) return;
 
-    const allSoldOut = ids.every(id => isTournamentSoldOut(id));
+      const allSoldOut = ids.every(id => isTournamentSoldOut(id));
 
-    if (allSoldOut) {
-      badge.textContent = 'Sold Out';
-      badge.classList.remove('status-soon', 'status-blink', 'status-open');
-      badge.classList.add('status-full');
-      return;
-    }
+      if (allSoldOut) {
+        badge.textContent = 'Sold Out';
+        badge.classList.remove('status-soon', 'status-blink', 'status-open');
+        badge.classList.add('status-full');
+        return;
+      }
 
-    badge.textContent = 'Iscrizioni aperte';
-    badge.classList.remove('status-full', 'status-soon');
-    badge.classList.add('status-open', 'status-blink');
+      badge.textContent = 'Iscrizioni aperte';
+      badge.classList.remove('status-full', 'status-soon');
+      badge.classList.add('status-open', 'status-blink');
+    });
   }
 
   function applyTournamentStatuses() {
@@ -2620,6 +2831,7 @@
     document.getElementById('modal').classList.remove('open');
     document.getElementById('modal-body').innerHTML = '';
     document.body.style.overflow = '';
+    loadTournamentStatuses();
   }
 
   function closeModalOutside(e) {
@@ -2671,7 +2883,7 @@
 
   setupCookieControls();
   setupClickTracking();
-  loadTournamentStatuses();
+  initializeTournamentData();
 </script>
 
 </body>
