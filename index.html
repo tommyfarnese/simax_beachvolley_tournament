@@ -2626,37 +2626,52 @@ ${renderTournamentInfoGrid(tournament)}
       setTournamentLoadingState(false);
     }
 
-    try {
-      const responses = await Promise.all(configuredEndpoints.map(fetchTournamentConfig));
+    let firstEvents = [];
+    let futureEvents = [];
+    let successfulRequests = 0;
 
-      if (responses.some((data) => !data || !data.ok)) {
-        throw new Error('Configurazione tornei non valida');
-      }
-
-      const firstEvents = normalizeTournamentConfig(responses[0].events)
-        .filter((event) => getEventDate(event)?.toDateString() === FIRST_TOURNAMENT_DATE.toDateString());
-      const futureEvents = normalizeTournamentConfig(responses[1].events)
-        .filter((event) => {
-          const eventDate = getEventDate(event);
-          return eventDate && eventDate > FIRST_TOURNAMENT_DATE;
-        });
+    const renderAvailableEvents = () => {
       const events = [...firstEvents, ...futureEvents];
-      if (events.length === 0) throw new Error('Nessun torneo compatibile con gli Admin configurati');
-
+      if (events.length === 0) return;
       writeTournamentConfigCache(events);
       applyTournamentEvents(events);
-      return true;
-    } catch (error) {
-      console.error('Errore configurazione tornei:', error);
-      return cachedEvents.length > 0;
-    }
+    };
+
+    const requests = configuredEndpoints.map((endpoint, index) => fetchTournamentConfig(endpoint)
+      .then((data) => {
+        if (!data || !data.ok) throw new Error('Risposta non valida');
+
+        if (index === 0) {
+          firstEvents = normalizeTournamentConfig(data.events)
+            .filter((event) => {
+              const eventDate = getEventDate(event);
+              return event.id === 'ev1' || eventDate?.toDateString() === FIRST_TOURNAMENT_DATE.toDateString();
+            });
+        } else {
+          futureEvents = normalizeTournamentConfig(data.events)
+            .filter((event) => {
+              const eventDate = getEventDate(event);
+              return !eventDate || eventDate > FIRST_TOURNAMENT_DATE;
+            });
+        }
+
+        successfulRequests += 1;
+        renderAvailableEvents();
+      })
+      .catch((error) => {
+        console.warn('Admin tornei non disponibile [' + index + ']:', error.message || error);
+      }));
+
+    await Promise.all(requests);
+    return successfulRequests > 0 || cachedEvents.length > 0;
   }
 
   async function initializeTournamentData() {
-    setTournamentLoadingState(true);
     const configLoaded = await loadTournamentConfig();
     await loadTournamentStatuses();
-    setTournamentLoadingState(false, configLoaded ? '' : 'Impossibile caricare i tornei. Riprova più tardi.');
+    if (!configLoaded) {
+      console.warn('Configurazione tornei non aggiornata: mantengo i dati già visibili.');
+    }
   }
 
   function normalizeStatus(status) {
