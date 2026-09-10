@@ -467,6 +467,30 @@
 
     .events-list { display: flex; flex-direction: column; gap: 40px; max-width: 960px; margin: 0 auto; }
 
+    .tournament-loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      min-height: 180px;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    .tournament-loader-spinner {
+      width: 42px;
+      height: 42px;
+      border: 4px solid rgba(245,184,0,0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: tournament-spin 0.8s linear infinite;
+    }
+
+    @keyframes tournament-spin {
+      to { transform: rotate(360deg); }
+    }
+
     .event-card {
       background: var(--card-bg);
       border: 1px solid rgba(245,184,0,0.18);
@@ -890,6 +914,11 @@
       gap: 24px;
       max-width: 960px;
       margin: 0 auto;
+    }
+
+    .reg-cards .tournament-loader {
+      grid-column: 1 / -1;
+      width: 100%;
     }
 
     .reg-card {
@@ -1953,7 +1982,7 @@
       <div class="contact-icon"><i class="fas fa-envelope"></i></div>
       <h4>Email</h4>
       <!-- Sostituisci con la tua email reale -->
-      <a href="mailto:rossellimassimo@outlook.it">rossellimassimo@outlook.it</a>
+      <a href="mailto:simaxbvt@gmail.com">simaxbvt@gmail.com</a>
     </div>
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -2267,12 +2296,47 @@
   }
 
   /* ---------- Countdown timer ---------- */
-  /* ⚠️  Cambia questa data con quella del prossimo torneo */
-  const NEXT_EVENT = new Date('2026-09-20T09:00:00');
+  const ITALIAN_MONTHS = {
+    gennaio: 0, febbraio: 1, marzo: 2, aprile: 3, maggio: 4, giugno: 5,
+    luglio: 6, agosto: 7, settembre: 8, ottobre: 9, novembre: 10, dicembre: 11
+  };
+  let nextEventDate = null;
+
+  function getEventDate(event) {
+    const dateLabel = String(event.dateLabel || '').trim();
+    const match = dateLabel.match(/^(\d{1,2})\s+([a-zA-Z]+)\s+(\d{4})$/);
+    let eventDate;
+
+    if (match) {
+      const month = ITALIAN_MONTHS[match[2].toLowerCase()];
+      if (month === undefined) return null;
+      eventDate = new Date(Number(match[3]), month, Number(match[1]));
+    } else {
+      eventDate = new Date(dateLabel);
+      if (Number.isNaN(eventDate.getTime())) return null;
+    }
+
+    const firstTournament = event.tournaments[0];
+    const timeMatch = String(firstTournament && firstTournament.time || '').match(/(\d{1,2}):(\d{2})/);
+    const hours = timeMatch ? Number(timeMatch[1]) : 0;
+    const minutes = timeMatch ? Number(timeMatch[2]) : 0;
+    eventDate.setHours(hours, minutes, 0, 0);
+    return eventDate;
+  }
+
+  function setNextEvent(events) {
+    const now = new Date();
+    nextEventDate = events
+      .map(getEventDate)
+      .filter((date) => date && date > now)
+      .sort((first, second) => first - second)[0] || null;
+
+    document.getElementById('countdown-section').style.display = nextEventDate ? '' : 'none';
+  }
 
   function updateCountdown() {
     const now = new Date();
-    const diff = NEXT_EVENT - now;
+    const diff = nextEventDate - now;
     if (diff <= 0) {
       document.getElementById('countdown-section').style.display = 'none';
       return;
@@ -2287,11 +2351,14 @@
     document.getElementById('cd-sec').textContent    = String(s).padStart(2, '0');
   }
 
-  updateCountdown();
   setInterval(updateCountdown, 1000);
 
   /* ---------- Configurazione tornei da Google Sheet ---------- */
-  const TOURNAMENT_CONFIG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbx5-NQoPoy_sNcz-VpsEDAHtqwpx2XdGvngVRHEddnhW7_x0slSks-9z8Uh3ZFhLeTu/exec';
+  const FIRST_TOURNAMENT_DATE = new Date(2026, 8, 20);
+  const TOURNAMENT_CONFIG_ENDPOINTS = {
+    firstTournament: 'https://script.google.com/macros/s/AKfycbx5-NQoPoy_sNcz-VpsEDAHtqwpx2XdGvngVRHEddnhW7_x0slSks-9z8Uh3ZFhLeTu/exec',
+    futureTournaments: 'https://script.google.com/macros/s/AKfycbxMiumaPx3JI25L1sMWCdupGEptbYWPHJ_0_MK1clt2MXWogWqWfOXrPm2ksOBeiq4FKg/exec'
+  };
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
@@ -2482,19 +2549,58 @@ ${renderTournamentInfoGrid(tournament)}
       .join('');
   }
 
+  function setTournamentLoadingState(isLoading, message) {
+    const eventsList = document.querySelector('.events-list');
+    const registrationCards = document.querySelector('.reg-cards');
+    if (!eventsList || !registrationCards) return;
+
+    if (isLoading) {
+      const loader = `
+        <div class="tournament-loader" role="status" aria-live="polite">
+          <span class="tournament-loader-spinner" aria-hidden="true"></span>
+          <span>Caricamento tornei...</span>
+        </div>`;
+      eventsList.innerHTML = loader;
+      registrationCards.innerHTML = loader;
+      return;
+    }
+
+    if (message) {
+      const errorMessage = `<div class="tournament-loader" role="alert"><span>${escapeHtml(message)}</span></div>`;
+      eventsList.innerHTML = errorMessage;
+      registrationCards.innerHTML = errorMessage;
+    }
+  }
+
   async function loadTournamentConfig() {
-    if (!TOURNAMENT_CONFIG_ENDPOINT) return false;
+    const configuredEndpoints = Object.values(TOURNAMENT_CONFIG_ENDPOINTS).filter(Boolean);
+    if (configuredEndpoints.length === 0) return false;
 
     try {
-      const response = await fetch(TOURNAMENT_CONFIG_ENDPOINT, { cache: 'no-store' });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const responses = await Promise.all(configuredEndpoints.map(async (endpoint) => {
+        const response = await fetch(endpoint, { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      }));
 
-      const data = await response.json();
-      const events = normalizeTournamentConfig(data && data.events);
-      if (!data.ok || events.length === 0) throw new Error('Configurazione tornei non valida');
+      if (responses.some((data) => !data || !data.ok)) {
+        throw new Error('Configurazione tornei non valida');
+      }
+
+      const firstEvents = normalizeTournamentConfig(responses[0].events)
+        .filter((event) => getEventDate(event)?.toDateString() === FIRST_TOURNAMENT_DATE.toDateString());
+      const futureEvents = normalizeTournamentConfig(responses[1].events)
+        .filter((event) => {
+          const eventDate = getEventDate(event);
+          return eventDate && eventDate > FIRST_TOURNAMENT_DATE;
+        });
+      const events = [...firstEvents, ...futureEvents];
+      if (events.length === 0) throw new Error('Nessun torneo compatibile con gli Admin configurati');
 
       syncTournamentStatusConfig(events);
       renderTournamentConfig(events);
+      setNextEvent(events);
+      updateCountdown();
       return true;
     } catch (error) {
       console.error('Errore configurazione tornei:', error);
@@ -2503,8 +2609,10 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   async function initializeTournamentData() {
-    await loadTournamentConfig();
+    setTournamentLoadingState(true);
+    const configLoaded = await loadTournamentConfig();
     await loadTournamentStatuses();
+    setTournamentLoadingState(false, configLoaded ? '' : 'Impossibile caricare i tornei. Riprova più tardi.');
   }
 
   function normalizeStatus(status) {
