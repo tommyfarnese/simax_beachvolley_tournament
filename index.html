@@ -2359,6 +2359,9 @@
     firstTournament: 'https://script.google.com/macros/s/AKfycbx5-NQoPoy_sNcz-VpsEDAHtqwpx2XdGvngVRHEddnhW7_x0slSks-9z8Uh3ZFhLeTu/exec',
     futureTournaments: 'https://script.google.com/macros/s/AKfycbxMiumaPx3JI25L1sMWCdupGEptbYWPHJ_0_MK1clt2MXWogWqWfOXrPm2ksOBeiq4FKg/exec'
   };
+  const TOURNAMENT_CONFIG_CACHE_KEY = 'simax_tournament_config_cache';
+  const TOURNAMENT_CONFIG_CACHE_TTL = 5 * 60 * 1000;
+  const TOURNAMENT_REQUEST_TIMEOUT = 10000;
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
@@ -2549,6 +2552,47 @@ ${renderTournamentInfoGrid(tournament)}
       .join('');
   }
 
+  function applyTournamentEvents(events) {
+    syncTournamentStatusConfig(events);
+    renderTournamentConfig(events);
+    setNextEvent(events);
+    updateCountdown();
+  }
+
+  function readTournamentConfigCache() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(TOURNAMENT_CONFIG_CACHE_KEY) || 'null');
+      if (!cached || !Array.isArray(cached.events) || Date.now() - Number(cached.savedAt) > TOURNAMENT_CONFIG_CACHE_TTL) {
+        return [];
+      }
+      return normalizeTournamentConfig(cached.events);
+    } catch (error) {
+      localStorage.removeItem(TOURNAMENT_CONFIG_CACHE_KEY);
+      return [];
+    }
+  }
+
+  function writeTournamentConfigCache(events) {
+    try {
+      localStorage.setItem(TOURNAMENT_CONFIG_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), events }));
+    } catch (error) {
+      console.warn('Cache configurazione tornei non disponibile:', error);
+    }
+  }
+
+  async function fetchTournamentConfig(endpoint) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
+
+    try {
+      const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal });
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
   function setTournamentLoadingState(isLoading, message) {
     const eventsList = document.querySelector('.events-list');
     const registrationCards = document.querySelector('.reg-cards');
@@ -2576,12 +2620,14 @@ ${renderTournamentInfoGrid(tournament)}
     const configuredEndpoints = Object.values(TOURNAMENT_CONFIG_ENDPOINTS).filter(Boolean);
     if (configuredEndpoints.length === 0) return false;
 
+    const cachedEvents = readTournamentConfigCache();
+    if (cachedEvents.length > 0) {
+      applyTournamentEvents(cachedEvents);
+      setTournamentLoadingState(false);
+    }
+
     try {
-      const responses = await Promise.all(configuredEndpoints.map(async (endpoint) => {
-        const response = await fetch(endpoint, { cache: 'no-store' });
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.json();
-      }));
+      const responses = await Promise.all(configuredEndpoints.map(fetchTournamentConfig));
 
       if (responses.some((data) => !data || !data.ok)) {
         throw new Error('Configurazione tornei non valida');
@@ -2597,14 +2643,12 @@ ${renderTournamentInfoGrid(tournament)}
       const events = [...firstEvents, ...futureEvents];
       if (events.length === 0) throw new Error('Nessun torneo compatibile con gli Admin configurati');
 
-      syncTournamentStatusConfig(events);
-      renderTournamentConfig(events);
-      setNextEvent(events);
-      updateCountdown();
+      writeTournamentConfigCache(events);
+      applyTournamentEvents(events);
       return true;
     } catch (error) {
       console.error('Errore configurazione tornei:', error);
-      return false;
+      return cachedEvents.length > 0;
     }
   }
 
