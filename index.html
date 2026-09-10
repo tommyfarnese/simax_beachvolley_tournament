@@ -2361,7 +2361,9 @@
   };
   const TOURNAMENT_CONFIG_CACHE_KEY = 'simax_tournament_config_cache';
   const TOURNAMENT_CONFIG_CACHE_TTL = 5 * 60 * 1000;
-  const TOURNAMENT_REQUEST_TIMEOUT = 10000;
+  const TOURNAMENT_REQUEST_TIMEOUT = 30000;
+  const TOURNAMENT_REQUEST_RETRIES = 3;
+  const TOURNAMENT_RETRY_DELAY = 1500;
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
@@ -2580,17 +2582,37 @@ ${renderTournamentInfoGrid(tournament)}
     }
   }
 
-  async function fetchTournamentConfig(endpoint) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
+  function waitBeforeRetry(attempt) {
+    return new Promise((resolve) => setTimeout(resolve, TOURNAMENT_RETRY_DELAY * attempt));
+  }
 
-    try {
-      const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      return response.json();
-    } finally {
-      clearTimeout(timeoutId);
+  async function fetchTournamentConfig(endpoint) {
+    let lastError;
+
+    for (let attempt = 1; attempt <= TOURNAMENT_REQUEST_RETRIES; attempt += 1) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+      } catch (error) {
+        lastError = error;
+        if (attempt < TOURNAMENT_REQUEST_RETRIES) {
+          await waitBeforeRetry(attempt);
+        }
+      } finally {
+        clearTimeout(timeoutId);
+      }
     }
+
+    throw lastError || new Error('Richiesta Admin fallita');
+  }
+
+  function getTournamentAdminEntries() {
+    return Object.entries(TOURNAMENT_CONFIG_ENDPOINTS)
+      .filter(([, endpoint]) => Boolean(endpoint));
   }
 
   function setTournamentLoadingState(isLoading, message) {
@@ -2617,8 +2639,8 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   async function loadTournamentConfig() {
-    const configuredEndpoints = Object.values(TOURNAMENT_CONFIG_ENDPOINTS).filter(Boolean);
-    if (configuredEndpoints.length === 0) return false;
+    const configuredAdmins = getTournamentAdminEntries();
+    if (configuredAdmins.length === 0) return false;
 
     const cachedEvents = readTournamentConfigCache();
     if (cachedEvents.length > 0) {
@@ -2637,11 +2659,13 @@ ${renderTournamentInfoGrid(tournament)}
       applyTournamentEvents(events);
     };
 
-    const requests = configuredEndpoints.map((endpoint, index) => fetchTournamentConfig(endpoint)
+    const requests = configuredAdmins.map(([adminName, endpoint]) => fetchTournamentConfig(endpoint)
       .then((data) => {
         if (!data || !data.ok) throw new Error('Risposta non valida');
 
-        if (index === 0) {
+        console.info('Admin tornei caricato:', adminName);
+
+        if (adminName === 'firstTournament') {
           firstEvents = normalizeTournamentConfig(data.events)
             .filter((event) => {
               const eventDate = getEventDate(event);
@@ -2659,7 +2683,7 @@ ${renderTournamentInfoGrid(tournament)}
         renderAvailableEvents();
       })
       .catch((error) => {
-        console.warn('Admin tornei non disponibile [' + index + ']:', error.message || error);
+        console.warn('Admin tornei non disponibile [' + adminName + ']:', error.message || error);
       }));
 
     await Promise.all(requests);
