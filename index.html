@@ -2421,6 +2421,8 @@
   };
   const TOURNAMENT_CONFIG_CACHE_KEY = 'simax_tournament_config_cache';
   const TOURNAMENT_CONFIG_CACHE_TTL = 5 * 60 * 1000;
+  const TOURNAMENT_STATUS_CACHE_KEY = 'simax_tournament_status_cache';
+  const TOURNAMENT_STATUS_CACHE_TTL = 3 * 60 * 1000;
   const TOURNAMENT_REQUEST_TIMEOUT = 30000;
   const TOURNAMENT_REQUEST_RETRIES = 3;
   const TOURNAMENT_RETRY_DELAY = 1500;
@@ -2437,7 +2439,28 @@
     'ev1-t1': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 }
   };
 
-  let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
+  function readTournamentStatusCache() {
+    try {
+      const cached = JSON.parse(localStorage.getItem(TOURNAMENT_STATUS_CACHE_KEY) || 'null');
+      if (!cached || !cached.statusMap || Date.now() - Number(cached.savedAt) > TOURNAMENT_STATUS_CACHE_TTL) {
+        return null;
+      }
+      return cached.statusMap;
+    } catch (error) {
+      localStorage.removeItem(TOURNAMENT_STATUS_CACHE_KEY);
+      return null;
+    }
+  }
+
+  function writeTournamentStatusCache(statusMap) {
+    try {
+      localStorage.setItem(TOURNAMENT_STATUS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), statusMap }));
+    } catch (error) {
+      console.warn('Cache stato tornei non disponibile:', error);
+    }
+  }
+
+  let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...(readTournamentStatusCache() || {}) };
 
   function escapeHtml(value) {
     return String(value || '')
@@ -2517,7 +2540,8 @@
       });
     });
 
-    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...tournamentStatusMap };
+    const cachedStatuses = readTournamentStatusCache() || {};
+    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...cachedStatuses, ...tournamentStatusMap };
   }
 
   function renderTournamentInfoGrid(tournament) {
@@ -3007,8 +3031,10 @@ ${renderTournamentInfoGrid(tournament)}
     }
 
     const requests = configuredEndpoints.map(async ([tournamentId, endpointUrl]) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
       try {
-        const response = await fetch(endpointUrl, { cache: 'no-store' });
+        const response = await fetch(endpointUrl, { cache: 'no-store', signal: controller.signal });
         if (!response.ok) {
           throw new Error('HTTP ' + response.status);
         }
@@ -3016,12 +3042,14 @@ ${renderTournamentInfoGrid(tournament)}
         const data = await response.json();
         tournamentStatusMap[tournamentId] = parseEndpointStatus(data, tournamentId);
       } catch (error) {
-        console.error('Errore endpoint stato torneo ' + tournamentId + ':', error);
+        console.warn('Errore endpoint stato torneo ' + tournamentId + ':', error.message || error);
+      } finally {
+        clearTimeout(timeoutId);
       }
     });
 
-    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...tournamentStatusMap };
     await Promise.all(requests);
+    writeTournamentStatusCache(tournamentStatusMap);
     applyTournamentStatuses();
   }
 
