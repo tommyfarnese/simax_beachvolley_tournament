@@ -1625,12 +1625,12 @@
         </div>
         <div class="spots-bar-wrap">
           <div class="spots-bar-label">
-            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: 2 / 12</span>
+            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: 1 / 12</span>
             <span class="tournament-status-pill open js-tournament-status" data-tournament-id="ev1-t2">Iscrizioni aperte</span>
           </div>
           <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
           <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 83%"></div></div>
+          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 92%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci i link con i tuoi Google Form -->
@@ -1765,7 +1765,7 @@
         <div class="reg-detail-grid">
           <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">Min. 3 per squadra</span></div>
           <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Posti liberi</span><span class="val gold">2 / 12</span></div>
+          <div class="reg-detail"><span class="lbl">Posti liberi</span><span class="val gold">1 / 12</span></div>
           <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
         </div>
       </div>
@@ -2361,7 +2361,7 @@
   const FIRST_TOURNAMENT_DATE = new Date(2026, 8, 20);
 
   // TODO: REMOVE_AFTER_2026_09_20 - Inizio configurazione statica Torneo 20 Settembre 2026
-  // Dati fissati a codice per velocizzare il caricamento (3x3 con 2 posti liberi, 2x2 in lista d'attesa).
+  // Dati fissati a codice per velocizzare il caricamento (3x3 con 1 posto libero, 2x2 in lista d'attesa).
   const STATIC_FIRST_EVENT = {
     id: 'ev1',
     title: 'Torneo di Apertura SiMax',
@@ -2388,7 +2388,7 @@
         waitlistFormUrl: '',
         statusEndpoint: '',
         defaultStatus: 'OPEN',
-        availableSpots: 2,
+        availableSpots: 1,
         waitlistCount: 0
       },
       {
@@ -2435,7 +2435,7 @@
   // Fallback / stato iniziale locale per i tornei
   const TOURNAMENT_STATUS_FALLBACK = {
     // TODO: REMOVE_AFTER_2026_09_20
-    'ev1-t2': { status: 'OPEN', availableSpots: 2, maxSpots: 12, waitlistCount: 0 },
+    'ev1-t2': { status: 'OPEN', availableSpots: 1, maxSpots: 12, waitlistCount: 0 },
     'ev1-t1': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 }
   };
 
