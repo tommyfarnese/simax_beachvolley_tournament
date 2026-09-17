@@ -1625,17 +1625,17 @@
         </div>
         <div class="spots-bar-wrap">
           <div class="spots-bar-label">
-            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: 1 / 12</span>
-            <span class="tournament-status-pill open js-tournament-status" data-tournament-id="ev1-t2">Iscrizioni aperte</span>
+            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: 0 / 12</span>
+            <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t2">Sold Out</span>
           </div>
           <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
           <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 92%"></div></div>
+          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 100%"></div></div>
         </div>
         <div class="tab-actions">
           <!-- Sostituisci i link con i tuoi Google Form -->
-          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)">
-            <i class="fas fa-pen-to-square"></i> Iscriviti
+          <button class="btn-primary js-register-btn disabled" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)" disabled aria-disabled="true">
+            <i class="fas fa-ban"></i> Sold Out
           </button>
         </div>
       </div>
@@ -1757,7 +1757,7 @@
         <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
         <h3>Beach Volley 3×3</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 10:00 - 13:30</p>
-        <span class="tournament-status-pill open js-tournament-status" data-tournament-id="ev1-t2" style="margin-top:10px;">Iscrizioni aperte</span>
+        <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t2" style="margin-top:10px;">Sold Out</span>
         <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
         <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
       </div>
@@ -1765,13 +1765,13 @@
         <div class="reg-detail-grid">
           <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">Min. 3 per squadra</span></div>
           <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Posti liberi</span><span class="val gold">1 / 12</span></div>
+          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">12 (Sold Out)</span></div>
           <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)">
-          <i class="fas fa-pen-to-square"></i> Iscriviti
+        <button class="btn-register js-register-btn disabled" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)" disabled aria-disabled="true">
+          <i class="fas fa-ban"></i> Sold Out
         </button>
       </div>
     </div>
@@ -2361,7 +2361,7 @@
   const FIRST_TOURNAMENT_DATE = new Date(2026, 8, 20);
 
   // TODO: REMOVE_AFTER_2026_09_20 - Inizio configurazione statica Torneo 20 Settembre 2026
-  // Dati fissati a codice per velocizzare il caricamento (3x3 con 1 posto libero, 2x2 in lista d'attesa).
+  // Dati fissati a codice per velocizzare il caricamento (3x3 e 2x2 sold out).
   const STATIC_FIRST_EVENT = {
     id: 'ev1',
     title: 'Torneo di Apertura SiMax',
@@ -2387,8 +2387,8 @@
         formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header',
         waitlistFormUrl: '',
         statusEndpoint: '',
-        defaultStatus: 'OPEN',
-        availableSpots: 1,
+        defaultStatus: 'SOLD_OUT',
+        availableSpots: 0,
         waitlistCount: 0
       },
       {
@@ -2435,7 +2435,7 @@
   // Fallback / stato iniziale locale per i tornei
   const TOURNAMENT_STATUS_FALLBACK = {
     // TODO: REMOVE_AFTER_2026_09_20
-    'ev1-t2': { status: 'OPEN', availableSpots: 1, maxSpots: 12, waitlistCount: 0 },
+    'ev1-t2': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 },
     'ev1-t1': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 }
   };
 
@@ -2542,6 +2542,14 @@
 
     const cachedStatuses = readTournamentStatusCache() || {};
     tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...cachedStatuses, ...tournamentStatusMap };
+    Object.entries(TOURNAMENT_STATUS_FALLBACK).forEach(([tournamentId, fallback]) => {
+      if (normalizeStatus(fallback.status) !== 'SOLD_OUT') return;
+      tournamentStatusMap[tournamentId] = {
+        ...tournamentStatusMap[tournamentId],
+        status: 'SOLD_OUT',
+        availableSpots: 0
+      };
+    });
   }
 
   function renderTournamentInfoGrid(tournament) {
