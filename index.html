@@ -506,6 +506,119 @@
       box-shadow: 0 16px 48px rgba(0,0,0,0.45);
     }
 
+    .event-card.halloween-event,
+    .reg-card.halloween-event {
+      position: relative;
+      border-color: rgba(255,112,24,0.7);
+      background: linear-gradient(135deg, rgba(53,22,71,0.94), rgba(21,32,96,0.88));
+      box-shadow: 0 8px 32px rgba(255,91,0,0.2), 0 0 0 1px rgba(255,112,24,0.12);
+    }
+
+    .event-card.halloween-event::before,
+    .event-card.halloween-event::after,
+    .reg-card.halloween-event::before,
+    .reg-card.halloween-event::after {
+      position: absolute;
+      z-index: 2;
+      color: rgba(238,220,255,0.72);
+      font-family: 'Font Awesome 6 Free';
+      font-size: 4.8rem;
+      font-weight: 900;
+      line-height: 1;
+      pointer-events: none;
+      text-shadow: 0 0 12px rgba(183,127,255,0.35);
+    }
+
+    .event-card.halloween-event::before,
+    .reg-card.halloween-event::before {
+      content: '\f717';
+      top: 8px;
+      right: 12px;
+      transform: rotate(-8deg);
+      opacity: 0.22;
+    }
+
+    .event-card.halloween-event::after,
+    .reg-card.halloween-event::after {
+      content: '\f707';
+      bottom: 8px;
+      left: 14px;
+      transform: rotate(25deg);
+      font-size: 1.4rem;
+      color: rgba(255,154,74,0.55);
+    }
+
+    .halloween-web {
+      position: absolute;
+      z-index: 3;
+      width: 92px;
+      height: 92px;
+      pointer-events: none;
+      opacity: 0.52;
+    }
+
+    .halloween-web::before,
+    .halloween-web::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-radial-gradient(circle at 100% 0, transparent 0 11px, rgba(238,220,255,0.7) 12px 13px, transparent 14px 22px);
+    }
+
+    .halloween-web::after {
+      background: linear-gradient(45deg, transparent 48%, rgba(238,220,255,0.72) 49% 51%, transparent 52%), linear-gradient(90deg, transparent 48%, rgba(238,220,255,0.72) 49% 51%, transparent 52%);
+    }
+
+    .halloween-web.top-right { top: 0; right: 0; }
+    .halloween-web.bottom-left { bottom: 0; left: 0; transform: rotate(180deg); }
+
+    .event-card.halloween-event:hover,
+    .reg-card.halloween-event:hover {
+      box-shadow: 0 16px 48px rgba(255,91,0,0.3), 0 0 0 1px rgba(255,112,24,0.22);
+    }
+
+    .halloween-ribbon {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      width: fit-content;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,112,24,0.55);
+      border-radius: 6px;
+      color: #ff9a4a;
+      background: rgba(255,112,24,0.12);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      animation: halloween-flicker 3s ease-in-out infinite;
+    }
+
+    .halloween-event .event-date-badge {
+      background: #ff7018;
+      color: #24102e;
+      box-shadow: 0 0 18px rgba(255,112,24,0.35);
+    }
+
+    .halloween-event .event-header,
+    .halloween-event .reg-card-top {
+      border-color: rgba(255,112,24,0.24);
+    }
+
+    .halloween-event .event-meta span i,
+    .halloween-event .event-date-small i {
+      color: #ff9a4a;
+    }
+
+    @keyframes halloween-flicker {
+      0%, 100% { opacity: 1; }
+      48% { opacity: 1; }
+      50% { opacity: 0.72; }
+      52% { opacity: 1; }
+    }
+
     .event-header {
       display: flex;
       align-items: center;
@@ -2338,6 +2451,11 @@
     document.getElementById('countdown-section').style.display = nextEventDate ? '' : 'none';
   }
 
+  function isHalloweenEvent(event) {
+    const eventDate = getEventDate(event);
+    return Boolean(eventDate && eventDate.getMonth() === 9 && eventDate.getDate() === 31);
+  }
+
   function updateCountdown() {
     const now = new Date();
     const diff = nextEventDate - now;
@@ -2586,18 +2704,23 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   function renderEventCard(event) {
+    const halloweenClass = isHalloweenEvent(event) ? ' halloween-event' : '';
+    const halloweenRibbon = isHalloweenEvent(event)
+      ? '<span class="halloween-ribbon"><i class="fas fa-ghost"></i> Halloween Edition</span><span class="halloween-web top-right" aria-hidden="true"></span><span class="halloween-web bottom-left" aria-hidden="true"></span>'
+      : '';
     const tabs = event.tournaments.map((tournament, index) => `
         <button class="tab-btn${index === 0 ? ' active' : ''}" onclick="switchTab(this, '${escapeHtml(tournament.id)}')">🏐 ${escapeHtml(tournament.tabLabel || tournament.title)}</button>`).join('');
     const tabContents = event.tournaments.map((tournament, index) => renderTournamentTabContent(tournament, index === 0)).join('');
 
     return `
-    <div class="event-card">
+    <div class="event-card${halloweenClass}">
       <div class="event-header">
         <div class="event-date-badge">
           <span class="day">${escapeHtml(event.day || '??')}</span>
           <span class="month">${escapeHtml(event.month || 'TBA')}</span>
         </div>
         <div class="event-info">
+          ${halloweenRibbon}
           <h3>${escapeHtml(event.title)}</h3>
           <div class="event-meta">
             <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</span>
@@ -2612,9 +2735,14 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   function renderRegistrationCard(event, tournament) {
+    const halloweenClass = isHalloweenEvent(event) ? ' halloween-event' : '';
+    const halloweenRibbon = isHalloweenEvent(event)
+      ? '<span class="halloween-ribbon"><i class="fas fa-ghost"></i> Halloween Edition</span><span class="halloween-web top-right" aria-hidden="true"></span><span class="halloween-web bottom-left" aria-hidden="true"></span>'
+      : '';
     return `
-    <div class="reg-card">
+    <div class="reg-card${halloweenClass}">
       <div class="reg-card-top">
+        ${halloweenRibbon}
         <div class="category-badge ${escapeHtml(getCategoryBadgeClass(tournament.category))}"><i class="fas fa-shuffle"></i> ${escapeHtml(tournament.category || 'Open')}</div>
         <h3>${escapeHtml(tournament.title)}</h3>
         <p class="event-date-small"><i class="fas fa-calendar"></i> ${escapeHtml(event.dateLabel)} · ore ${escapeHtml(tournament.time || 'n/d')}</p>
