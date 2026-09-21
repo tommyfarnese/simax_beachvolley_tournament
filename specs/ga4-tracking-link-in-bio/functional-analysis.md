@@ -51,9 +51,7 @@ FR-005 - Nuovi vs ritornanti:
 Il sistema deve consentire il confronto tra nuovi utenti e utenti di ritorno nei report standard GA4.
 
 FR-006 - Tracking click pulsanti iscrizione:
-Il sistema deve inviare un evento dedicato quando l utente clicca su:
-- Iscriviti 3x3 (data-tournament-id=ev1-t2)
-- Iscriviti 2x2 (data-tournament-id=ev1-t1)
+Il sistema deve inviare un evento dedicato quando l utente clicca sui pulsanti di iscrizione dei tornei disponibili.
 
 FR-007 - Tracking click su altri CTA principali:
 Il sistema deve inviare eventi click per CTA hero/navbar e link di contatto principali (WhatsApp, Instagram, Facebook, Email, Mappa).
@@ -110,10 +108,10 @@ CA-005:
 Dato traffico misto nuovi/ritorno, quando si apre report audience, allora e disponibile il confronto nuovi vs ritornanti.
 
 CA-006:
-Dato click su bottone Iscriviti 3x3, quando l utente clicca, allora viene inviato evento con tournament_id=ev1-t2.
+Dato click su un pulsante Iscriviti, quando l utente clicca, allora viene inviato evento con il relativo tournament_id.
 
 CA-007:
-Dato click su bottone Iscriviti 2x2, quando l utente clicca, allora viene inviato evento con tournament_id=ev1-t1.
+Dato click su un secondo pulsante Iscriviti, quando l utente clicca, allora viene inviato evento con il relativo tournament_id.
 
 CA-008:
 Dato click su CTA contatto/social, quando l utente clicca, allora evento include cta_location e destination_url.

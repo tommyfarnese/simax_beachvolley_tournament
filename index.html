@@ -1703,85 +1703,6 @@
 
   <div class="events-list">
 
-    <!-- ── EVENTO 1: 20 Settembre 2026 ── -->
-    <!-- TODO: REMOVE_AFTER_2026_09_20 - Inizio blocco Torneo 20 Settembre 2026 -->
-    <div class="event-card reveal">
-      <div class="event-header">
-        <div class="event-date-badge">
-          <span class="day">20</span>
-          <span class="month">Set</span>
-        </div>
-        <div class="event-info">
-          <h3>Torneo di Apertura SiMax</h3>
-          <div class="event-meta">
-            <span><i class="fas fa-map-marker-alt"></i> PalaUno - Largo Antonio Balestra 5, Milano</span>
-            <span><i class="fas fa-sun"></i> Mattina & Pomeriggio</span>
-          </div>
-        </div>
-        <div class="event-status status-open status-blink" id="status-global-ev1">Iscrizioni aperte</div>
-      </div>
-
-      <!-- Tabs: un tab per ogni torneo della giornata -->
-      <div class="tournament-tabs">
-        <button class="tab-btn active" onclick="switchTab(this, 'ev1-t2')">🏐 3×3 Mix</button>
-        <button class="tab-btn" onclick="switchTab(this, 'ev1-t1')">🏐 2×2 Mix</button>
-      </div>
-
-      <div id="ev1-t2" class="tab-content active">
-        <div class="tournament-grid">
-          <div class="info-cell"><span class="label">Orario</span><span class="value">10:00 - 13:30</span></div>
-          <div class="info-cell"><span class="label">Format</span><span class="value">3 vs 3</span></div>
-          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
-          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">€ 20</span></div>
-          <div class="info-cell"><span class="label">Max squadre</span><span class="value">12 squadre</span></div>
-          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
-        </div>
-        <div class="spots-bar-wrap">
-          <div class="spots-bar-label">
-            <span class="js-spots-available" data-tournament-id="ev1-t2">Posti disponibili: 0 / 12</span>
-            <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t2">Sold Out</span>
-          </div>
-          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
-          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-          <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t2" data-default-max-spots="12" style="width: 100%"></div></div>
-        </div>
-        <div class="tab-actions">
-          <!-- Sostituisci i link con i tuoi Google Form -->
-          <button class="btn-primary js-register-btn disabled" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)" disabled aria-disabled="true">
-            <i class="fas fa-ban"></i> Sold Out
-          </button>
-        </div>
-      </div>
-
-      <div id="ev1-t1" class="tab-content">
-        <div class="tournament-grid">
-          <div class="info-cell"><span class="label">Orario</span><span class="value">13:30 - 17:00</span></div>
-          <div class="info-cell"><span class="label">Format</span><span class="value">2 vs 2</span></div>
-          <div class="info-cell"><span class="label">Categoria</span><span class="value">Mix</span></div>
-          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">€ 20</span></div>
-          <div class="info-cell"><span class="label">Max squadre</span><span class="value">12 coppie</span></div>
-          <div class="info-cell"><span class="label">Livello</span><span class="value">Open</span></div>
-        </div>
-        <div class="spots-bar-wrap sold-out">
-          <div class="spots-bar-label">
-            <span class="js-spots-available" data-tournament-id="ev1-t1" style="display:none;">Posti disponibili: 0 / 12</span>
-            <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t1">Sold Out</span>
-          </div>
-          <span class="waitlist-count js-waitlist-count" data-tournament-id="ev1-t1">Lista d'Attesa attiva</span>
-          <span class="waitlist-note js-waitlist-note" data-tournament-id="ev1-t1">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-          <div class="spots-bar" style="display:none;"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="ev1-t1" data-default-max-spots="12" style="width: 100%"></div></div>
-        </div>
-        <div class="tab-actions">
-          <!-- Sostituisci i link con i tuoi Google Form -->
-          <button class="btn-primary js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" data-waitlist-title="Lista d'Attesa 2×2 Mix – 20 Set" data-waitlist-form-url="https://docs.google.com/forms/d/e/1FAIpQLSf_erZ_ljK_NahjKxMDEtUNplFLUT0AL15bPHvLink2PryXzQ/viewform?usp=header" onclick="handleRegisterClick(this)">
-            <i class="fas fa-user-clock"></i> Iscriviti in Lista d'Attesa
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- TODO: REMOVE_AFTER_2026_09_20 - Fine blocco Torneo 20 Settembre 2026 -->
-    <!-- Fine Evento 1 -->
-
     <!-- ── EVENTO 2: Placeholder prossima data ── -->
     <!--
       Per aggiungere una nuova giornata, copia il blocco .event-card qui sopra,
@@ -1862,58 +1783,6 @@
   </div>
 
   <div class="reg-cards">
-
-    <!-- TODO: REMOVE_AFTER_2026_09_20 - Inizio schede rapide 20 Settembre 2026 -->
-    <!-- Card 1: 3x3 Mix -->
-    <div class="reg-card reveal">
-      <div class="reg-card-top">
-        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
-        <h3>Beach Volley 3×3</h3>
-        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 10:00 - 13:30</p>
-        <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t2" style="margin-top:10px;">Sold Out</span>
-        <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="ev1-t2">Lista d'Attesa: non attiva</span>
-        <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="ev1-t2">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-      </div>
-      <div class="reg-card-body">
-        <div class="reg-detail-grid">
-          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">Min. 3 per squadra</span></div>
-          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">12 (Sold Out)</span></div>
-          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
-        </div>
-      </div>
-      <div class="reg-card-actions">
-        <button class="btn-register js-register-btn disabled" data-tournament-id="ev1-t2" data-title="Iscrizione 3×3 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header" data-waitlist-title="Lista d'Attesa 3×3 Mix – 20 Set" data-waitlist-form-url="" onclick="handleRegisterClick(this)" disabled aria-disabled="true">
-          <i class="fas fa-ban"></i> Sold Out
-        </button>
-      </div>
-    </div>
-
-    <!-- Card 2: 2x2 Mix -->
-    <div class="reg-card reveal">
-      <div class="reg-card-top">
-        <div class="category-badge badge-mix"><i class="fas fa-shuffle"></i> Mix</div>
-        <h3>Beach Volley 2×2</h3>
-        <p class="event-date-small"><i class="fas fa-calendar"></i> 20 Settembre 2026 · ore 13:30 - 17:00</p>
-        <span class="tournament-status-pill sold-out js-tournament-status" data-tournament-id="ev1-t1" style="margin-top:10px;">Sold Out</span>
-        <span class="waitlist-count js-waitlist-count" data-tournament-id="ev1-t1">Lista d'Attesa attiva</span>
-        <span class="waitlist-note js-waitlist-note" data-tournament-id="ev1-t1">Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d'Attesa.</span>
-      </div>
-      <div class="reg-card-body">
-        <div class="reg-detail-grid">
-          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">2 per squadra</span></div>
-          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">Mix</span></div>
-          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">12 (Sold Out)</span></div>
-          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">€ 20</span></div>
-        </div>
-      </div>
-      <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="ev1-t1" data-title="Iscrizione 2×2 Mix – 20 Set" data-form-url="https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header" data-waitlist-title="Lista d'Attesa 2×2 Mix – 20 Set" data-waitlist-form-url="https://docs.google.com/forms/d/e/1FAIpQLSf_erZ_ljK_NahjKxMDEtUNplFLUT0AL15bPHvLink2PryXzQ/viewform?usp=header" onclick="handleRegisterClick(this)">
-          <i class="fas fa-user-clock"></i> Iscriviti in Lista d'Attesa
-        </button>
-      </div>
-    </div>
-    <!-- TODO: REMOVE_AFTER_2026_09_20 - Fine schede rapide 20 Settembre 2026 -->
 
   </div>
 </section>
@@ -2476,65 +2345,7 @@
   setInterval(updateCountdown, 1000);
 
   /* ---------- Configurazione tornei da Google Sheet ---------- */
-  const FIRST_TOURNAMENT_DATE = new Date(2026, 8, 20);
-
-  // TODO: REMOVE_AFTER_2026_09_20 - Inizio configurazione statica Torneo 20 Settembre 2026
-  // Dati fissati a codice per velocizzare il caricamento (3x3 e 2x2 sold out).
-  const STATIC_FIRST_EVENT = {
-    id: 'ev1',
-    title: 'Torneo di Apertura SiMax',
-    day: '20',
-    month: 'Set',
-    dateLabel: '20 Settembre 2026',
-    location: 'PalaUno - Largo Antonio Balestra 5, Milano',
-    periodLabel: 'Mattina & Pomeriggio',
-    tournaments: [
-      {
-        id: 'ev1-t2',
-        sortOrder: 1,
-        tabLabel: '3×3 Mix',
-        title: 'Beach Volley 3×3',
-        format: '3 vs 3',
-        category: 'Mix',
-        time: '10:00 - 13:30',
-        price: '€ 20',
-        maxTeams: 12,
-        maxTeamsLabel: '12 squadre',
-        level: 'Open',
-        playersLabel: 'Min. 3 per squadra',
-        formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe8TEmqibcYB8UwqhdXKehl5wE4ARXDfB5HUL5YTczCG3jH3A/viewform?usp=header',
-        waitlistFormUrl: '',
-        statusEndpoint: '',
-        defaultStatus: 'SOLD_OUT',
-        availableSpots: 0,
-        waitlistCount: 0
-      },
-      {
-        id: 'ev1-t1',
-        sortOrder: 2,
-        tabLabel: '2×2 Mix',
-        title: 'Beach Volley 2×2',
-        format: '2 vs 2',
-        category: 'Mix',
-        time: '13:30 - 17:00',
-        price: '€ 20',
-        maxTeams: 12,
-        maxTeamsLabel: '12 coppie',
-        level: 'Open',
-        playersLabel: '2 per squadra',
-        formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfAV-prMrDbeMkQd50hoDiJQ8vBC83xhD5SWvmhV8IXg-CrVA/viewform?usp=header',
-        waitlistFormUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSf_erZ_ljK_NahjKxMDEtUNplFLUT0AL15bPHvLink2PryXzQ/viewform?usp=header',
-        statusEndpoint: '',
-        defaultStatus: 'SOLD_OUT',
-        availableSpots: 0,
-        waitlistCount: 0
-      }
-    ]
-  };
-  // TODO: REMOVE_AFTER_2026_09_20 - Fine configurazione statica Torneo 20 Settembre 2026
-
   const TOURNAMENT_CONFIG_ENDPOINTS = {
-    // firstTournament rimosso per evitare chiamate lente al Google Sheet
     futureTournaments: 'https://script.google.com/macros/s/AKfycbxMiumaPx3JI25L1sMWCdupGEptbYWPHJ_0_MK1clt2MXWogWqWfOXrPm2ksOBeiq4FKg/exec'
   };
   const TOURNAMENT_CONFIG_CACHE_KEY = 'simax_tournament_config_cache';
@@ -2547,15 +2358,10 @@
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
-  // Endpoints dinamici per tornei futuri (vuoto per il 20 settembre)
   const TOURNAMENT_STATUS_ENDPOINTS = {};
 
   // Fallback / stato iniziale locale per i tornei
-  const TOURNAMENT_STATUS_FALLBACK = {
-    // TODO: REMOVE_AFTER_2026_09_20
-    'ev1-t2': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 },
-    'ev1-t1': { status: 'SOLD_OUT', availableSpots: 0, maxSpots: 12, waitlistCount: 0 }
-  };
+  const TOURNAMENT_STATUS_FALLBACK = {};
 
   function readTournamentStatusCache() {
     try {
@@ -2862,13 +2668,11 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   async function loadTournamentConfig() {
-    // Inizializza con l'evento statico del 20 Settembre
-    // TODO: REMOVE_AFTER_2026_09_20 (dopo il 20 set sostituire con const firstEvents = [])
-    const firstEvents = typeof STATIC_FIRST_EVENT !== 'undefined' && STATIC_FIRST_EVENT ? [STATIC_FIRST_EVENT] : [];
+    const firstEvents = [];
 
     const configuredAdmins = getTournamentAdminEntries();
     const cachedEvents = readTournamentConfigCache();
-    const cachedFutures = cachedEvents.filter((ev) => ev.id !== 'ev1');
+    const cachedFutures = cachedEvents;
 
     // Applica subito l'evento statico (e le future date in cache se presenti) senza attendere la rete
     applyTournamentEvents([...firstEvents, ...cachedFutures]);
@@ -2896,11 +2700,7 @@ ${renderTournamentInfoGrid(tournament)}
         console.info('Admin tornei caricato:', adminName);
 
         if (adminName === 'futureTournaments') {
-          futureEvents = normalizeTournamentConfig(data.events)
-            .filter((event) => {
-              const eventDate = getEventDate(event);
-              return (!eventDate || eventDate > FIRST_TOURNAMENT_DATE) && event.id !== 'ev1';
-            });
+          futureEvents = normalizeTournamentConfig(data.events);
         }
 
         successfulRequests += 1;
