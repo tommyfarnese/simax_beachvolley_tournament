@@ -2453,7 +2453,16 @@
     events.forEach((event) => {
       event.tournaments.forEach((tournament) => {
         if (tournament.statusEndpoint) {
-          TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = tournament.statusEndpoint;
+          const waitlistFormUrl = String(tournament.waitlistFormUrl || '').trim();
+          const statusEndpoint = new URL(tournament.statusEndpoint);
+
+          if (waitlistFormUrl) {
+            statusEndpoint.searchParams.set('waitlist', 'true');
+          } else {
+            statusEndpoint.searchParams.delete('waitlist');
+          }
+
+          TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = statusEndpoint.toString();
         }
         TOURNAMENT_STATUS_FALLBACK[tournament.id] = {
           status: tournament.defaultStatus || 'OPEN',
