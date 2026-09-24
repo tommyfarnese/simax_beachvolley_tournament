@@ -2360,22 +2360,86 @@
 
   setInterval(updateCountdown, 1000);
 
-  /* ---------- Configurazione tornei da Google Sheet ---------- */
-  const TOURNAMENT_CONFIG_ENDPOINTS = {
-    futureTournaments: 'https://script.google.com/macros/s/AKfycbxMiumaPx3JI25L1sMWCdupGEptbYWPHJ_0_MK1clt2MXWogWqWfOXrPm2ksOBeiq4FKg/exec'
-  };
-  const TOURNAMENT_CONFIG_CACHE_KEY = 'simax_tournament_config_cache';
-  const TOURNAMENT_CONFIG_CACHE_TTL = 5 * 60 * 1000;
+  /* ---------- Configurazione tornei locale ---------- */
+  const LOCAL_TOURNAMENT_EVENTS = [
+    {
+      id: 'ev2',
+      title: 'Torneo di Fine Estate',
+      day: '10',
+      month: 'Ott',
+      dateLabel: '10 Ottobre 2026',
+      location: 'PalaUno - Largo Antonio Balestra 5, Milano',
+      periodLabel: 'Mattina & Pomeriggio',
+      tournaments: [
+        {
+          id: 'ev2-t1', sortOrder: 1, tabLabel: '2×2 MM', title: 'Torneo di Fine Estate MM',
+          format: '2 vs 2', category: 'Maschile', time: '09:30 - 14:00', price: '€ 25',
+          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSceRph3nNrHEA_c-SrICg_OuU23-RkOtSAd2ft9s7TXhpOqkQ/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbwb7cxurhxIxf8p7gNsDWT6tQ9o8jTn2Giq7_IZFeMYntEQoJdyj5S2tGTIpuQT9FW9lA/exec'
+        },
+        {
+          id: 'ev2-t2', sortOrder: 2, tabLabel: '2×2 FF', title: 'Torneo di Fine Estate FF',
+          format: '2 vs 2', category: 'Femminile', time: '09:30 - 14:00', price: '€ 25',
+          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdQvcEcQxF_3ouLmuEWYggWa9Otg2L8MD92jHy7DwKaU1clcA/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbxna8Yqa0QeaRsc7O3f8XkQL7qj8ZAPwnStH8iMHcbjofWN1tTPAhd3q54gXouTZZzjbg/exec'
+        },
+        {
+          id: 'ev2-t3', sortOrder: 3, tabLabel: '2×2 MIX', title: 'Torneo di Fine Estate MIX',
+          format: '2 vs 2', category: 'MIX', time: '14:00 - 18:30', price: '€ 25',
+          maxTeams: 16, maxTeamsLabel: '16 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScNsRCRIIgpqGM1kE3xl3ZjnHVu6-BF0fViXYKSO8scBSaGcQ/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbzUT9Suew-fI_Go1vu2I3Gu4K6SiFX-1PhVqQqDEkrqa1_xJKylDO4ochKrr2DbpqVH/exec'
+        }
+      ]
+    },
+    {
+      id: 'ev3',
+      title: 'Torneo di Halloween',
+      day: '31',
+      month: 'Ott',
+      dateLabel: '31 Ottobre 2026',
+      location: 'PalaUno - Largo Antonio Balestra 5, Milano',
+      periodLabel: 'Mattina & Pomeriggio',
+      tournaments: [
+        {
+          id: 'ev3-t2', sortOrder: 1, tabLabel: '2×2 MM', title: 'Torneo Halloween 2×2 MM',
+          format: '2 vs 2', category: 'Maschile', time: '09:30 - 14:00', price: '€ 25',
+          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdnoa9NxOXwZfIBExOurkJDKJRCb1RR-TbHqXQLp1nOD3HrgQ/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbyN63e7kD2HvNnhvIS_oskifXetvrNu12koF_-SUZbZyFGHKN450YSxGfRQVHX7Loxd/exec'
+        },
+        {
+          id: 'ev3-t1', sortOrder: 2, tabLabel: '2×2 FF', title: 'Torneo Halloween 2×2 FF',
+          format: '2 vs 2', category: 'Femminile', time: '09:30 - 14:00', price: '€ 25',
+          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSekqVgsbdJRr_5XPTpuXcRDUbl7BA6zP_1DpgJzeXYLnmSdQw/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbx7g2d7_4d1oDzsSh0CbFKfJaOQJ9r8P2KxD35N4mVQ5WenadLXFZ-L_rQjX8yDhqG-4w/exec'
+        },
+        {
+          id: 'ev3-t3', sortOrder: 3, tabLabel: '2×2 MIX', title: 'Torneo Halloween 2×2 MIX',
+          format: '2 vs 2', category: 'MIX', time: '14:00 - 18:30', price: '€ 25',
+          maxTeams: 16, maxTeamsLabel: '16 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
+          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScy1iT7f-YBl3Gex97UBcsZEJDWr_IzLQv9aNUOw6yMGNkTRQ/viewform?usp=header',
+          waitlistFormUrl: '',
+          statusEndpoint: 'https://script.google.com/macros/s/AKfycbwrPT2MTmqrOvCGutdbGdqxZYCytvRIPoSwLpzx5YzARibsxnBhr5BhOLjcKfxheR8u/exec'
+        }
+      ]
+    }
+  ];
   const TOURNAMENT_STATUS_CACHE_KEY = 'simax_tournament_status_cache';
   const TOURNAMENT_STATUS_CACHE_TTL = 3 * 60 * 1000;
   const TOURNAMENT_REQUEST_TIMEOUT = 30000;
-  const TOURNAMENT_REQUEST_RETRIES = 3;
-  const TOURNAMENT_RETRY_DELAY = 1500;
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
   /* ---------- Stato iscrizioni da Google Apps Script ---------- */
   const TOURNAMENT_STATUS_ENDPOINTS = {};
-
   // Fallback / stato iniziale locale per i tornei
   const TOURNAMENT_STATUS_FALLBACK = {};
 
@@ -2615,60 +2679,6 @@ ${renderTournamentInfoGrid(tournament)}
     updateCountdown();
   }
 
-  function readTournamentConfigCache() {
-    try {
-      const cached = JSON.parse(localStorage.getItem(TOURNAMENT_CONFIG_CACHE_KEY) || 'null');
-      if (!cached || !Array.isArray(cached.events) || Date.now() - Number(cached.savedAt) > TOURNAMENT_CONFIG_CACHE_TTL) {
-        return [];
-      }
-      return normalizeTournamentConfig(cached.events);
-    } catch (error) {
-      localStorage.removeItem(TOURNAMENT_CONFIG_CACHE_KEY);
-      return [];
-    }
-  }
-
-  function writeTournamentConfigCache(events) {
-    try {
-      localStorage.setItem(TOURNAMENT_CONFIG_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), events }));
-    } catch (error) {
-      console.warn('Cache configurazione tornei non disponibile:', error);
-    }
-  }
-
-  function waitBeforeRetry(attempt) {
-    return new Promise((resolve) => setTimeout(resolve, TOURNAMENT_RETRY_DELAY * attempt));
-  }
-
-  async function fetchTournamentConfig(endpoint) {
-    let lastError;
-
-    for (let attempt = 1; attempt <= TOURNAMENT_REQUEST_RETRIES; attempt += 1) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
-
-      try {
-        const response = await fetch(endpoint, { cache: 'no-store', signal: controller.signal });
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        return response.json();
-      } catch (error) {
-        lastError = error;
-        if (attempt < TOURNAMENT_REQUEST_RETRIES) {
-          await waitBeforeRetry(attempt);
-        }
-      } finally {
-        clearTimeout(timeoutId);
-      }
-    }
-
-    throw lastError || new Error('Richiesta Admin fallita');
-  }
-
-  function getTournamentAdminEntries() {
-    return Object.entries(TOURNAMENT_CONFIG_ENDPOINTS)
-      .filter(([, endpoint]) => Boolean(endpoint));
-  }
-
   function setTournamentLoadingState(isLoading, message) {
     const eventsList = document.querySelector('.events-list');
     const registrationCards = document.querySelector('.reg-cards');
@@ -2693,49 +2703,9 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   async function loadTournamentConfig() {
-    const firstEvents = [];
-
-    const configuredAdmins = getTournamentAdminEntries();
-    const cachedEvents = readTournamentConfigCache();
-    const cachedFutures = cachedEvents;
-
-    // Applica subito l'evento statico (e le future date in cache se presenti) senza attendere la rete
-    applyTournamentEvents([...firstEvents, ...cachedFutures]);
+    const events = normalizeTournamentConfig(LOCAL_TOURNAMENT_EVENTS);
+    applyTournamentEvents(events);
     applyTournamentStatuses();
-
-    if (configuredAdmins.length === 0) {
-      return true;
-    }
-
-    let futureEvents = cachedFutures;
-    let successfulRequests = 0;
-
-    const renderAvailableEvents = () => {
-      const events = [...firstEvents, ...futureEvents];
-      if (events.length === 0) return;
-      writeTournamentConfigCache(events);
-      applyTournamentEvents(events);
-      applyTournamentStatuses();
-    };
-
-    const requests = configuredAdmins.map(([adminName, endpoint]) => fetchTournamentConfig(endpoint)
-      .then((data) => {
-        if (!data || !data.ok) throw new Error('Risposta non valida');
-
-        console.info('Admin tornei caricato:', adminName);
-
-        if (adminName === 'futureTournaments') {
-          futureEvents = normalizeTournamentConfig(data.events);
-        }
-
-        successfulRequests += 1;
-        renderAvailableEvents();
-      })
-      .catch((error) => {
-        console.warn('Admin tornei non disponibile [' + adminName + ']:', error.message || error);
-      }));
-
-    await Promise.all(requests);
     return true;
   }
 
