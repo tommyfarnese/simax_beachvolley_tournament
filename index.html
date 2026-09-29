@@ -2360,79 +2360,11 @@
 
   setInterval(updateCountdown, 1000);
 
-  /* ---------- Configurazione tornei locale ---------- */
-  const LOCAL_TOURNAMENT_EVENTS = [
-    {
-      id: 'ev2',
-      title: 'Torneo di Fine Estate',
-      day: '10',
-      month: 'Ott',
-      dateLabel: '10 Ottobre 2026',
-      location: 'PalaUno - Largo Antonio Balestra 5, Milano',
-      periodLabel: 'Mattina & Pomeriggio',
-      tournaments: [
-        {
-          id: 'ev2-t1', sortOrder: 1, tabLabel: '2×2 MM', title: 'Torneo di Fine Estate MM',
-          format: '2 vs 2', category: 'Maschile', time: '09:30 - 14:00', price: '€ 25',
-          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSceRph3nNrHEA_c-SrICg_OuU23-RkOtSAd2ft9s7TXhpOqkQ/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbwb7cxurhxIxf8p7gNsDWT6tQ9o8jTn2Giq7_IZFeMYntEQoJdyj5S2tGTIpuQT9FW9lA/exec'
-        },
-        {
-          id: 'ev2-t2', sortOrder: 2, tabLabel: '2×2 FF', title: 'Torneo di Fine Estate FF',
-          format: '2 vs 2', category: 'Femminile', time: '09:30 - 14:00', price: '€ 25',
-          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdQvcEcQxF_3ouLmuEWYggWa9Otg2L8MD92jHy7DwKaU1clcA/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbxna8Yqa0QeaRsc7O3f8XkQL7qj8ZAPwnStH8iMHcbjofWN1tTPAhd3q54gXouTZZzjbg/exec'
-        },
-        {
-          id: 'ev2-t3', sortOrder: 3, tabLabel: '2×2 MIX', title: 'Torneo di Fine Estate MIX',
-          format: '2 vs 2', category: 'MIX', time: '14:00 - 18:30', price: '€ 25',
-          maxTeams: 16, maxTeamsLabel: '16 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScNsRCRIIgpqGM1kE3xl3ZjnHVu6-BF0fViXYKSO8scBSaGcQ/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbzUT9Suew-fI_Go1vu2I3Gu4K6SiFX-1PhVqQqDEkrqa1_xJKylDO4ochKrr2DbpqVH/exec'
-        }
-      ]
-    },
-    {
-      id: 'ev3',
-      title: 'Torneo di Halloween',
-      day: '31',
-      month: 'Ott',
-      dateLabel: '31 Ottobre 2026',
-      location: 'PalaUno - Largo Antonio Balestra 5, Milano',
-      periodLabel: 'Mattina & Pomeriggio',
-      tournaments: [
-        {
-          id: 'ev3-t2', sortOrder: 1, tabLabel: '2×2 MM', title: 'Torneo Halloween 2×2 MM',
-          format: '2 vs 2', category: 'Maschile', time: '09:30 - 14:00', price: '€ 25',
-          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdnoa9NxOXwZfIBExOurkJDKJRCb1RR-TbHqXQLp1nOD3HrgQ/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbyN63e7kD2HvNnhvIS_oskifXetvrNu12koF_-SUZbZyFGHKN450YSxGfRQVHX7Loxd/exec'
-        },
-        {
-          id: 'ev3-t1', sortOrder: 2, tabLabel: '2×2 FF', title: 'Torneo Halloween 2×2 FF',
-          format: '2 vs 2', category: 'Femminile', time: '09:30 - 14:00', price: '€ 25',
-          maxTeams: 10, maxTeamsLabel: '10 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSekqVgsbdJRr_5XPTpuXcRDUbl7BA6zP_1DpgJzeXYLnmSdQw/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbx7g2d7_4d1oDzsSh0CbFKfJaOQJ9r8P2KxD35N4mVQ5WenadLXFZ-L_rQjX8yDhqG-4w/exec'
-        },
-        {
-          id: 'ev3-t3', sortOrder: 3, tabLabel: '2×2 MIX', title: 'Torneo Halloween 2×2 MIX',
-          format: '2 vs 2', category: 'MIX', time: '14:00 - 18:30', price: '€ 25',
-          maxTeams: 16, maxTeamsLabel: '16 coppie', level: 'Open', playersLabel: 'Min. 2 per squadra',
-          formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLScy1iT7f-YBl3Gex97UBcsZEJDWr_IzLQv9aNUOw6yMGNkTRQ/viewform?usp=header',
-          waitlistFormUrl: '',
-          statusEndpoint: 'https://script.google.com/macros/s/AKfycbwrPT2MTmqrOvCGutdbGdqxZYCytvRIPoSwLpzx5YzARibsxnBhr5BhOLjcKfxheR8u/exec'
-        }
-      ]
-    }
-  ];
+  /* ---------- Configurazione API ---------- */
+  const API_BASE_URL = 'https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/api';
+  const EVENTS_API_URL = API_BASE_URL + '/events';
+  const REGISTRATIONS_API_URL = API_BASE_URL + '/registrations';
+  const EVENTS_REQUEST_TIMEOUT = 10000;
   const TOURNAMENT_STATUS_CACHE_KEY = 'simax_tournament_status_cache';
   const TOURNAMENT_STATUS_CACHE_TTL = 3 * 60 * 1000;
   const TOURNAMENT_REQUEST_TIMEOUT = 30000;
@@ -2482,20 +2414,67 @@
     return 'badge-mix';
   }
 
+  function normalizeEventDate(event) {
+    const rawDate = String(event.date || '').trim();
+    const dateMatch = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!dateMatch) {
+      return {
+        day: String(event.day || '').trim(),
+        month: String(event.month || '').trim(),
+        dateLabel: String(event.dateLabel || '').trim()
+      };
+    }
+
+    const eventDate = new Date(Number(dateMatch[1]), Number(dateMatch[2]) - 1, Number(dateMatch[3]));
+    const month = new Intl.DateTimeFormat('it-IT', { month: 'short' })
+      .format(eventDate)
+      .replace('.', '');
+    const dateLabel = new Intl.DateTimeFormat('it-IT', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(eventDate);
+
+    return {
+      day: String(eventDate.getDate()).padStart(2, '0'),
+      month: month.charAt(0).toUpperCase() + month.slice(1),
+      dateLabel: dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)
+    };
+  }
+
+  function formatTournamentTime(startTime, endTime, fallback) {
+    const getHoursAndMinutes = (value) => {
+      const match = String(value || '').match(/(\d{1,2}):(\d{2})/);
+      return match ? match[1].padStart(2, '0') + ':' + match[2] : '';
+    };
+    const start = getHoursAndMinutes(startTime);
+    const end = getHoursAndMinutes(endTime);
+    return start && end ? start + ' - ' + end : String(fallback || '').trim();
+  }
+
+  function formatTournamentPrice(price) {
+    const value = String(price ?? '').trim();
+    if (!value || value.startsWith('€')) return value;
+    return '€ ' + value;
+  }
+
   function normalizeTournamentConfig(events) {
     if (!Array.isArray(events)) return [];
 
     return events
-      .map((event) => ({
-        id: String(event.id || '').trim(),
-        title: String(event.title || '').trim(),
-        day: String(event.day || '').trim(),
-        month: String(event.month || '').trim(),
-        dateLabel: String(event.dateLabel || '').trim(),
-        location: String(event.location || '').trim(),
-        periodLabel: String(event.periodLabel || '').trim(),
-        tournaments: Array.isArray(event.tournaments) ? event.tournaments : []
-      }))
+      .map((event) => {
+        const normalizedDate = normalizeEventDate(event);
+        return {
+          id: String(event.id || '').trim(),
+          title: String(event.title || '').trim(),
+          day: normalizedDate.day,
+          month: normalizedDate.month,
+          dateLabel: normalizedDate.dateLabel,
+          location: String(event.location || '').trim(),
+          periodLabel: String(event.periodLabel || '').trim(),
+          tournaments: Array.isArray(event.tournaments) ? event.tournaments : []
+        };
+      })
       .filter((event) => event.id && event.tournaments.length > 0)
       .map((event) => ({
         ...event,
@@ -2506,16 +2485,17 @@
             tabLabel: String(tournament.tabLabel || tournament.title || '').trim(),
             title: String(tournament.title || '').trim(),
             format: String(tournament.format || '').trim(),
-            category: String(tournament.category || '').trim(),
-            time: String(tournament.time || '').trim(),
-            price: String(tournament.price || '').trim(),
+            category: String(tournament.category?.name || tournament.category || '').trim(),
+            time: formatTournamentTime(tournament.startTime, tournament.endTime, tournament.time),
+            price: formatTournamentPrice(tournament.price),
             maxTeams: Number.isFinite(Number(tournament.maxTeams)) ? Number(tournament.maxTeams) : null,
             maxTeamsLabel: String(tournament.maxTeamsLabel || '').trim(),
             level: String(tournament.level || '').trim(),
-            playersLabel: String(tournament.playersLabel || '').trim(),
+            playersLabel: Number.isFinite(Number(tournament.minPlayers))
+              ? 'Min. ' + Number(tournament.minPlayers)
+              : String(tournament.playersLabel || '').trim(),
             formUrl: String(tournament.formUrl || '').trim(),
             waitlistFormUrl: String(tournament.waitlistFormUrl || '').trim(),
-            statusEndpoint: String(tournament.statusEndpoint || '').trim(),
             defaultStatus: tournament.defaultStatus ? String(tournament.defaultStatus) : 'OPEN',
             availableSpots: Number.isFinite(tournament.availableSpots) ? tournament.availableSpots : null,
             waitlistCount: Number.isFinite(tournament.waitlistCount) ? tournament.waitlistCount : 0
@@ -2532,18 +2512,8 @@
 
     events.forEach((event) => {
       event.tournaments.forEach((tournament) => {
-        if (tournament.statusEndpoint) {
-          const waitlistFormUrl = String(tournament.waitlistFormUrl || '').trim();
-          const statusEndpoint = new URL(tournament.statusEndpoint);
-
-          if (waitlistFormUrl) {
-            statusEndpoint.searchParams.set('waitlist', 'true');
-          } else {
-            statusEndpoint.searchParams.delete('waitlist');
-          }
-
-          TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = statusEndpoint.toString();
-        }
+        TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = REGISTRATIONS_API_URL
+          + '/tournament/' + encodeURIComponent(tournament.id) + '/status';
         TOURNAMENT_STATUS_FALLBACK[tournament.id] = {
           status: tournament.defaultStatus || 'OPEN',
           availableSpots: Number.isFinite(tournament.availableSpots) ? tournament.availableSpots : null,
@@ -2703,17 +2673,39 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   async function loadTournamentConfig() {
-    const events = normalizeTournamentConfig(LOCAL_TOURNAMENT_EVENTS);
-    applyTournamentEvents(events);
-    applyTournamentStatuses();
-    return true;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), EVENTS_REQUEST_TIMEOUT);
+
+    try {
+      const response = await fetch(EVENTS_API_URL, { cache: 'no-store', signal: controller.signal });
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status);
+      }
+
+      const events = normalizeTournamentConfig(await response.json());
+      if (events.length === 0) {
+        throw new Error('Nessun torneo valido ricevuto');
+      }
+
+      applyTournamentEvents(events);
+      applyTournamentStatuses();
+      return true;
+    } finally {
+      clearTimeout(timeoutId);
+    }
   }
 
   async function initializeTournamentData() {
-    // Render immediato con configurazione fissa
-    applyTournamentStatuses();
-    await loadTournamentConfig();
-    await loadTournamentStatuses();
+    setTournamentLoadingState(true);
+
+    try {
+      await loadTournamentConfig();
+      await loadTournamentStatuses();
+    } catch (error) {
+      console.error('Errore caricamento tornei:', error.message || error);
+      setTournamentLoadingState(false, 'Impossibile caricare i tornei. Verifica che il servizio sia disponibile e riprova.');
+      document.getElementById('countdown-section').style.display = 'none';
+    }
   }
 
   function normalizeStatus(status) {
@@ -2770,9 +2762,9 @@ ${renderTournamentInfoGrid(tournament)}
     }
 
     const rawMaxSpots = pickNumericValue(source, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']) ?? pickNumericValue(raw, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']);
-    const rawRegistered = pickNumericValue(source, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']) ?? pickNumericValue(raw, ['registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
+    const rawRegistered = pickNumericValue(source, ['confirmedRegistrations', 'registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']) ?? pickNumericValue(raw, ['confirmedRegistrations', 'registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
     const rawAvailable = pickNumericValue(source, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']) ?? pickNumericValue(raw, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']);
-    const rawWaitlistCount = pickNumericValue(source, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']) ?? pickNumericValue(raw, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
+    const rawWaitlistCount = pickNumericValue(source, ['waitlistRegistrations', 'waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']) ?? pickNumericValue(raw, ['waitlistRegistrations', 'waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
 
     if (Number.isFinite(rawMaxSpots) && rawMaxSpots >= 0) {
       result.maxSpots = rawMaxSpots;
@@ -2786,6 +2778,10 @@ ${renderTournamentInfoGrid(tournament)}
 
     if (Number.isFinite(rawWaitlistCount) && rawWaitlistCount >= 0) {
       result.waitlistCount = rawWaitlistCount;
+    }
+
+    if (Number.isFinite(result.availableSpots)) {
+      result.status = result.availableSpots <= 0 ? 'SOLD_OUT' : 'OPEN';
     }
 
     return result;
