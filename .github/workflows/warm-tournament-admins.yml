@@ -1,4 +1,4 @@
-name: Warm tournament Admins
+name: Warm SiMax API
 
 on:
   schedule:
@@ -8,8 +8,8 @@ on:
 permissions: {}
 
 jobs:
-  warm-admins:
+  warm-api:
     runs-on: ubuntu-latest
     steps:
-      - name: Warm future tournaments Admin
-        run: curl --fail --location --silent --show-error --max-time 20 "https://script.google.com/macros/s/AKfycbxMiumaPx3JI25L1sMWCdupGEptbYWPHJ_0_MK1clt2MXWogWqWfOXrPm2ksOBeiq4FKg/exec" > /dev/null
+      - name: Warm events endpoint
+        run: curl --fail --location --silent --show-error --max-time 60 "https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/api/events" > /dev/null
