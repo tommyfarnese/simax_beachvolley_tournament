@@ -894,11 +894,14 @@
       animation: spots-spin 0.8s linear infinite;
     }
 
+    .js-spots-available { display: none; }
+
     @keyframes spots-spin {
       to { transform: rotate(360deg); }
     }
 
     .spots-bar {
+      display: none;
       height: 8px;
       background: rgba(255,255,255,0.1);
       border-radius: 4px;
@@ -1659,6 +1662,7 @@
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#contatti">Contatti</a></li>
     <li><a href="#iscrizioni" class="btn-nav"><i class="fas fa-volleyball-ball"></i> Iscriviti</a></li>
+    <li><a href="admin/" class="btn-nav"><i class="fas fa-right-to-bracket"></i> Login</a></li>
   </ul>
 
   <button id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
@@ -1675,6 +1679,7 @@
   <a href="#faq" onclick="closeMobileNav()">FAQ</a>
   <a href="#contatti" onclick="closeMobileNav()">Contatti</a>
   <a href="#iscrizioni" class="btn-mobile" onclick="closeMobileNav()">🏐 Iscriviti ora</a>
+  <a href="admin/" class="btn-mobile" onclick="closeMobileNav()"><i class="fas fa-right-to-bracket"></i> Login</a>
 </nav>
 
 <!-- ============================================================
