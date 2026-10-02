@@ -676,7 +676,6 @@
   <div class="toast" id="toast" role="status"><i data-lucide="circle-check" class="icon"></i><span id="toast-message">Operazione completata</span></div>
 
   <script>
-    const teamNames = ['Beach Please', 'Block Party', 'Ace Ventura', 'Net Results', 'Sandstorm', 'No Look', 'Set Me Up', 'Dig This', 'Volley Llamas', 'Side Out', 'Top Spin'];
     const viewLabels = { dashboard: 'Dashboard', events: 'Eventi e tornei', registrations: 'Iscrizioni', payments: 'Pagamenti', pools: 'Gironi', finals: 'Fasi finali', courts: 'Campi e partite', audit: 'Registro attivit\u00E0' };
 
     const loginScreen = document.getElementById('login-screen');
@@ -1834,50 +1833,6 @@
     document.getElementById('payment-search').addEventListener('input', renderPaymentRows);
     document.getElementById('dashboard-event').addEventListener('change', renderDashboard);
     document.getElementById('payments-event').addEventListener('change', loadPayments);
-
-    function updateCapacity() {
-      const poolCount = Math.max(1, Number(document.getElementById('pool-count').value) || 1);
-      const teamsPerPool = Math.max(2, Number(document.getElementById('teams-per-pool').value) || 2);
-      const capacity = poolCount * teamsPerPool;
-      const difference = capacity - teamNames.length;
-      const detail = difference >= 0 ? difference + ' posti vuoti' : Math.abs(difference) + ' squadre escluse';
-      document.getElementById('capacity-message').innerHTML = '<strong>' + capacity + ' posti</strong><br>' + teamNames.length + ' squadre &middot; ' + detail;
-    }
-
-    function seededTeams(method) {
-      if (method !== 'random') return [...teamNames];
-      return [...teamNames].sort(() => Math.random() - .5);
-    }
-
-    function generatePools() {
-      const poolCount = Math.max(1, Math.min(8, Number(document.getElementById('pool-count').value) || 1));
-      const teamsPerPool = Math.max(2, Math.min(8, Number(document.getElementById('teams-per-pool').value) || 2));
-      const method = document.getElementById('pool-method').value;
-      const teams = seededTeams(method);
-      const pools = Array.from({ length: poolCount }, () => []);
-      teams.slice(0, poolCount * teamsPerPool).forEach((team, index) => pools[index % poolCount].push(team));
-
-      document.getElementById('pool-grid').innerHTML = pools.map((pool, poolIndex) => `
-        <article class="pool">
-          <div class="pool-head"><strong>Girone ${String.fromCharCode(65 + poolIndex)}</strong><span>${pool.length} / ${teamsPerPool}</span></div>
-          <div class="pool-teams">${pool.map((team, teamIndex) => `
-            <div class="pool-team"><span class="seed">${teamIndex + 1}</span><strong>${team}</strong><i data-lucide="grip-vertical" class="icon drag"></i></div>`).join('')}
-            ${pool.length < teamsPerPool ? '<div class="pool-team"><span class="seed">&ndash;</span><span style="color:var(--muted)">Posto libero</span></div>' : ''}
-          </div>
-        </article>`).join('');
-      document.getElementById('confirm-pools').disabled = false;
-      refreshIcons();
-      showToast('Anteprima gironi generata');
-    }
-
-    ['pool-count', 'teams-per-pool'].forEach(id => document.getElementById(id).addEventListener('input', updateCapacity));
-    document.getElementById('generate-pools').addEventListener('click', generatePools);
-    document.getElementById('clear-pools').addEventListener('click', () => {
-      document.getElementById('pool-grid').innerHTML = '<div class="panel pool-empty" style="grid-column:1/-1"><div><i data-lucide="network" style="width:34px;height:34px;margin-bottom:10px"></i><br>Imposta i parametri e genera l\'anteprima dei gironi.</div></div>';
-      document.getElementById('confirm-pools').disabled = true;
-      refreshIcons();
-    });
-    document.getElementById('confirm-pools').addEventListener('click', () => showToast('Composizione gironi confermata'));
 
     const previewView = new URLSearchParams(window.location.search).get('preview');
     if (previewView) {
