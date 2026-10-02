@@ -2361,42 +2361,13 @@
   setInterval(updateCountdown, 1000);
 
   /* ---------- Configurazione API ---------- */
-  const API_BASE_URL = 'https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/api';
-  const EVENTS_API_URL = API_BASE_URL + '/events';
-  const REGISTRATIONS_API_URL = API_BASE_URL + '/registrations';
-  const EVENTS_REQUEST_TIMEOUT = 60000;
-  const TOURNAMENT_STATUS_CACHE_KEY = 'simax_tournament_status_cache';
-  const TOURNAMENT_STATUS_CACHE_TTL = 3 * 60 * 1000;
-  const TOURNAMENT_REQUEST_TIMEOUT = 30000;
+  const EVENTS_CONFIG_URL = new URL('./events.json', document.baseURI).toString();
+  const EVENTS_CONFIG_REQUEST_TIMEOUT = 60000;
   const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
 
-  /* ---------- Stato iscrizioni da Google Apps Script ---------- */
-  const TOURNAMENT_STATUS_ENDPOINTS = {};
-  // Fallback / stato iniziale locale per i tornei
+  /* ---------- Stato tornei letto dalla configurazione statica ---------- */
   const TOURNAMENT_STATUS_FALLBACK = {};
-
-  function readTournamentStatusCache() {
-    try {
-      const cached = JSON.parse(localStorage.getItem(TOURNAMENT_STATUS_CACHE_KEY) || 'null');
-      if (!cached || !cached.statusMap || Date.now() - Number(cached.savedAt) > TOURNAMENT_STATUS_CACHE_TTL) {
-        return null;
-      }
-      return cached.statusMap;
-    } catch (error) {
-      localStorage.removeItem(TOURNAMENT_STATUS_CACHE_KEY);
-      return null;
-    }
-  }
-
-  function writeTournamentStatusCache(statusMap) {
-    try {
-      localStorage.setItem(TOURNAMENT_STATUS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), statusMap }));
-    } catch (error) {
-      console.warn('Cache stato tornei non disponibile:', error);
-    }
-  }
-
-  let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...(readTournamentStatusCache() || {}) };
+  let tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
 
   function escapeHtml(value) {
     return String(value || '')
@@ -2458,6 +2429,16 @@
     return '€ ' + value;
   }
 
+  function normalizeJsonPropertyNames(value) {
+    if (Array.isArray(value)) return value.map(normalizeJsonPropertyNames);
+    if (!value || typeof value !== 'object') return value;
+
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [
+      key.charAt(0).toLowerCase() + key.slice(1),
+      normalizeJsonPropertyNames(item)
+    ]));
+  }
+
   function normalizeTournamentConfig(events) {
     if (!Array.isArray(events)) return [];
 
@@ -2507,13 +2488,10 @@
   }
 
   function syncTournamentStatusConfig(events) {
-    Object.keys(TOURNAMENT_STATUS_ENDPOINTS).forEach((key) => delete TOURNAMENT_STATUS_ENDPOINTS[key]);
     Object.keys(TOURNAMENT_STATUS_FALLBACK).forEach((key) => delete TOURNAMENT_STATUS_FALLBACK[key]);
 
     events.forEach((event) => {
       event.tournaments.forEach((tournament) => {
-        TOURNAMENT_STATUS_ENDPOINTS[tournament.id] = REGISTRATIONS_API_URL
-          + '/tournament/' + encodeURIComponent(tournament.id) + '/status';
         TOURNAMENT_STATUS_FALLBACK[tournament.id] = {
           status: tournament.defaultStatus || 'OPEN',
           availableSpots: Number.isFinite(tournament.availableSpots) ? tournament.availableSpots : null,
@@ -2523,8 +2501,7 @@
       });
     });
 
-    const cachedStatuses = readTournamentStatusCache() || {};
-    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK, ...cachedStatuses, ...tournamentStatusMap };
+    tournamentStatusMap = { ...TOURNAMENT_STATUS_FALLBACK };
     Object.entries(TOURNAMENT_STATUS_FALLBACK).forEach(([tournamentId, fallback]) => {
       if (normalizeStatus(fallback.status) !== 'SOLD_OUT') return;
       tournamentStatusMap[tournamentId] = {
@@ -2634,7 +2611,13 @@ ${renderTournamentInfoGrid(tournament)}
   function renderTournamentConfig(events) {
     const eventsList = document.querySelector('.events-list');
     const registrationCards = document.querySelector('.reg-cards');
-    if (!eventsList || !registrationCards || events.length === 0) return;
+    if (!eventsList || !registrationCards) return;
+
+    if (events.length === 0) {
+      eventsList.innerHTML = '<div class="tournament-loader" role="status">Al momento non ci sono tornei in programma.</div>';
+      registrationCards.innerHTML = '<div class="tournament-loader" role="status">Non ci sono tornei disponibili per l\'iscrizione.</div>';
+      return;
+    }
 
     eventsList.innerHTML = events.map(renderEventCard).join('');
     registrationCards.innerHTML = events
@@ -2674,18 +2657,17 @@ ${renderTournamentInfoGrid(tournament)}
 
   async function loadTournamentConfig() {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), EVENTS_REQUEST_TIMEOUT);
+    const timeoutId = setTimeout(() => controller.abort(), EVENTS_CONFIG_REQUEST_TIMEOUT);
 
     try {
-      const response = await fetch(EVENTS_API_URL, { cache: 'no-store', signal: controller.signal });
+      const response = await fetch(EVENTS_CONFIG_URL, { cache: 'no-store', signal: controller.signal });
       if (!response.ok) {
         throw new Error('HTTP ' + response.status);
       }
 
-      const events = normalizeTournamentConfig(await response.json());
-      if (events.length === 0) {
-        throw new Error('Nessun torneo valido ricevuto');
-      }
+      const payload = await response.json();
+      const eventData = Array.isArray(payload) ? payload : payload.events;
+      const events = normalizeTournamentConfig(normalizeJsonPropertyNames(eventData));
 
       applyTournamentEvents(events);
       applyTournamentStatuses();
@@ -2700,91 +2682,15 @@ ${renderTournamentInfoGrid(tournament)}
 
     try {
       await loadTournamentConfig();
-      await loadTournamentStatuses();
     } catch (error) {
       console.error('Errore caricamento tornei:', error.message || error);
-      setTournamentLoadingState(false, 'Impossibile caricare i tornei. Verifica che il servizio sia disponibile e riprova.');
+      setTournamentLoadingState(false, 'Impossibile caricare il calendario dei tornei. Riprova più tardi.');
       document.getElementById('countdown-section').style.display = 'none';
     }
   }
 
   function normalizeStatus(status) {
     return String(status || '').trim().toUpperCase();
-  }
-
-  function pickNumericValue(obj, keys) {
-    for (const key of keys) {
-      const value = obj && obj[key];
-      if (Number.isFinite(value)) return value;
-      if (typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))) {
-        return Number(value);
-      }
-    }
-    return null;
-  }
-
-  function getWaitlistCount(tournamentId) {
-    const tournamentData = tournamentStatusMap[tournamentId] || {};
-    const value = pickNumericValue(tournamentData, ['waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
-    if (Number.isFinite(value)) return Math.max(0, value);
-    return 0;
-  }
-
-  function parseEndpointStatus(payload, tournamentId) {
-    const fallback = TOURNAMENT_STATUS_FALLBACK[tournamentId] || { status: 'OPEN', availableSpots: null, maxSpots: null, waitlistCount: 0 };
-    const raw = payload || {};
-    const nested = raw && typeof raw === 'object' && raw[tournamentId] && typeof raw[tournamentId] === 'object' ? raw[tournamentId] : {};
-    const source = Object.keys(nested).length > 0 ? nested : raw;
-    const result = {
-      status: normalizeStatus(fallback.status),
-      availableSpots: Number.isFinite(fallback.availableSpots) ? fallback.availableSpots : null,
-      maxSpots: Number.isFinite(fallback.maxSpots) ? fallback.maxSpots : null,
-      waitlistCount: Number.isFinite(fallback.waitlistCount) ? fallback.waitlistCount : 0
-    };
-
-    if (typeof raw === 'string') {
-      result.status = normalizeStatus(raw);
-      return result;
-    }
-
-    if (typeof source.status === 'string') {
-      result.status = normalizeStatus(source.status);
-    }
-
-    if (typeof raw[tournamentId] === 'string') {
-      result.status = normalizeStatus(raw[tournamentId]);
-    }
-
-    if (typeof source.soldOut === 'boolean') {
-      result.status = source.soldOut ? 'SOLD_OUT' : 'OPEN';
-    } else if (typeof raw.soldOut === 'boolean') {
-      result.status = raw.soldOut ? 'SOLD_OUT' : 'OPEN';
-    }
-
-    const rawMaxSpots = pickNumericValue(source, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']) ?? pickNumericValue(raw, ['maxSpots', 'max_teams', 'maxTeams', 'totalSpots', 'total_teams']);
-    const rawRegistered = pickNumericValue(source, ['confirmedRegistrations', 'registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']) ?? pickNumericValue(raw, ['confirmedRegistrations', 'registeredSpots', 'registered_teams', 'registeredTeams', 'submissions', 'currentTeams']);
-    const rawAvailable = pickNumericValue(source, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']) ?? pickNumericValue(raw, ['availableSpots', 'available_spots', 'spotsAvailable', 'freeSpots', 'free_spots']);
-    const rawWaitlistCount = pickNumericValue(source, ['waitlistRegistrations', 'waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']) ?? pickNumericValue(raw, ['waitlistRegistrations', 'waitlistCount', 'waitlist_count', 'waitlistPeople', 'waitlist_people', 'waitingList', 'waiting_list']);
-
-    if (Number.isFinite(rawMaxSpots) && rawMaxSpots >= 0) {
-      result.maxSpots = rawMaxSpots;
-    }
-
-    if (Number.isFinite(rawAvailable) && rawAvailable >= 0) {
-      result.availableSpots = rawAvailable;
-    } else if (Number.isFinite(rawRegistered) && Number.isFinite(result.maxSpots)) {
-      result.availableSpots = Math.max(0, result.maxSpots - rawRegistered);
-    }
-
-    if (Number.isFinite(rawWaitlistCount) && rawWaitlistCount >= 0) {
-      result.waitlistCount = rawWaitlistCount;
-    }
-
-    if (Number.isFinite(result.availableSpots)) {
-      result.status = result.availableSpots <= 0 ? 'SOLD_OUT' : 'OPEN';
-    }
-
-    return result;
   }
 
   function isTournamentSoldOut(tournamentId) {
@@ -2843,8 +2749,10 @@ ${renderTournamentInfoGrid(tournament)}
         label.textContent = 'Posti disponibili: ' + availableSpots + ' / ' + maxSpots;
         label.setAttribute('aria-label', 'Posti disponibili: ' + availableSpots + ' su ' + maxSpots);
       } else {
-        label.innerHTML = 'Posti disponibili: <span class="spots-loading-spinner" aria-hidden="true"></span>';
-        label.setAttribute('aria-label', 'Caricamento posti disponibili');
+        label.textContent = Number.isFinite(maxSpots)
+          ? 'Posti disponibili: n/d / ' + maxSpots
+          : 'Posti disponibili: n/d';
+        label.setAttribute('aria-label', 'Disponibilità posti non disponibile');
       }
     });
 
@@ -2950,38 +2858,6 @@ ${renderTournamentInfoGrid(tournament)}
     updateGlobalEventBadge();
   }
 
-  async function loadTournamentStatuses() {
-    const configuredEndpoints = Object.entries(TOURNAMENT_STATUS_ENDPOINTS)
-      .filter(([, url]) => Boolean(String(url || '').trim()));
-
-    if (configuredEndpoints.length === 0) {
-      applyTournamentStatuses();
-      return;
-    }
-
-    const requests = configuredEndpoints.map(async ([tournamentId, endpointUrl]) => {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), TOURNAMENT_REQUEST_TIMEOUT);
-      try {
-        const response = await fetch(endpointUrl, { cache: 'no-store', signal: controller.signal });
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-
-        const data = await response.json();
-        tournamentStatusMap[tournamentId] = parseEndpointStatus(data, tournamentId);
-      } catch (error) {
-        console.warn('Errore endpoint stato torneo ' + tournamentId + ':', error.message || error);
-      } finally {
-        clearTimeout(timeoutId);
-      }
-    });
-
-    await Promise.all(requests);
-    writeTournamentStatusCache(tournamentStatusMap);
-    applyTournamentStatuses();
-  }
-
   function handleRegisterClick(button) {
     const tournamentId = button?.dataset?.tournamentId;
     if (!tournamentId) return;
@@ -3042,7 +2918,6 @@ ${renderTournamentInfoGrid(tournament)}
     document.getElementById('modal').classList.remove('open');
     document.getElementById('modal-body').innerHTML = '';
     document.body.style.overflow = '';
-    loadTournamentStatuses();
   }
 
   function closeModalOutside(e) {
