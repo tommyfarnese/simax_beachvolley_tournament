@@ -106,13 +106,13 @@
     .login-scene {
       position: relative;
       overflow: hidden;
-      background: #10254c url('../Tornei/WhatsApp Image 2026-08-02 at 20.31.25.jpeg') center/cover no-repeat;
+      background: #10254c;
     }
-    .login-scene::after { content: ''; position: absolute; inset: 0; background: rgba(13, 29, 61, .62); }
-    .scene-copy { position: absolute; z-index: 1; left: 7%; bottom: 8%; max-width: 620px; color: white; }
+    .login-scene-logo { position: absolute; z-index: 1; top: 39%; left: 50%; width: min(360px, 48%); max-height: 38vh; object-fit: contain; transform: translate(-50%, -50%); filter: drop-shadow(0 8px 20px rgba(0, 0, 0, .3)); }
+    .scene-copy { position: absolute; z-index: 1; left: 7%; right: 7%; bottom: 6%; color: white; text-align: center; }
     .scene-copy .kicker { color: var(--yellow); font-weight: 800; text-transform: uppercase; font-size: .78rem; }
-    .scene-copy h2 { font-size: clamp(3rem, 7vw, 6.5rem); line-height: .82; margin: 12px 0 18px; }
-    .scene-copy p { max-width: 470px; color: #dfe7f5; line-height: 1.6; }
+    .scene-copy h2 { font-size: 3rem; line-height: 1; margin: 8px 0 10px; }
+    .scene-copy p { max-width: 470px; margin: 0 auto; color: #dfe7f5; line-height: 1.6; }
 
     /* App shell */
     #admin-app { min-height: 100vh; display: grid; grid-template-columns: 244px 1fr; }
@@ -422,6 +422,7 @@
       <div class="login-footer">SiMax Beach Volley Tournament &middot; Milano</div>
     </div>
     <div class="login-scene" aria-hidden="true">
+      <img class="login-scene-logo" src="../Tornei/logo.png" alt="">
       <div class="scene-copy">
         <div class="kicker">Tournament operations</div>
         <h2>DALLE ISCRIZIONI<br>AL MATCH POINT.</h2>
