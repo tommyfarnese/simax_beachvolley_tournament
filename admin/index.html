@@ -785,8 +785,7 @@
     document.querySelectorAll('[data-view-link]').forEach(item => item.addEventListener('click', event => { event.preventDefault(); showView(item.dataset.viewLink); }));
     document.querySelectorAll('[data-jump]').forEach(item => item.addEventListener('click', () => showView(item.dataset.jump)));
 
-    // Stessa origine: la pagina admin deve essere servita dall'App Service del backend (cookie di sessione).
-    const API_BASE = (location.port === '5500' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) ? 'https://localhost:7233' : '';
+    const API_BASE = 'https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net';
     let events = [];
     let tournaments = [];
     let categories = [];
