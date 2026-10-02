@@ -2733,6 +2733,7 @@ ${renderTournamentInfoGrid(tournament)}
     });
   }
 
+  // Legge disponibilita e capienza gia normalizzate nella configurazione del torneo.
   function updateSpotsAvailabilityUI() {
     document.querySelectorAll('.spots-bar-wrap').forEach((wrap) => {
       const tournamentId = wrap.querySelector('[data-tournament-id]')?.dataset?.tournamentId;
@@ -2770,6 +2771,7 @@ ${renderTournamentInfoGrid(tournament)}
         return;
       }
 
+      // La barra rappresenta la quota occupata: (capienza - posti liberi) / capienza.
       const occupiedSpots = Math.max(0, maxSpots - availableSpots);
       const occupiedRatio = Math.min(1, occupiedSpots / maxSpots);
       barFill.style.width = String(Math.round(occupiedRatio * 100)) + '%';
