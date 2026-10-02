@@ -1,0 +1,1894 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiMax Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --ink: #14213d;
+      --ink-2: #20315d;
+      --paper: #f4f5f2;
+      --surface: #ffffff;
+      --line: #dfe3dc;
+      --muted: #687266;
+      --yellow: #f4bf21;
+      --yellow-soft: #fff4c7;
+      --teal: #137c74;
+      --teal-soft: #dff3ee;
+      --coral: #d95f45;
+      --coral-soft: #fbe8e3;
+      --blue-soft: #e7eefb;
+      --radius: 8px;
+      --shadow: 0 8px 28px rgba(20, 33, 61, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { font-size: 16px; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image: linear-gradient(rgba(20, 33, 61, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 33, 61, 0.025) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3, .display { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0; }
+    .hidden { display: none !important; }
+    .icon { width: 18px; height: 18px; stroke-width: 2; flex: 0 0 auto; }
+
+    .btn {
+      min-height: 40px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 14px;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--surface);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--yellow); border-color: #dca900; }
+    .btn-dark { background: var(--ink); color: white; }
+    .btn-ghost { border-color: var(--line); }
+    .btn-danger { color: var(--coral); border-color: #efc3b9; background: var(--coral-soft); }
+    .icon-btn { width: 40px; padding: 0; }
+
+    .field { display: grid; gap: 7px; }
+    .field label { color: var(--muted); font-size: .78rem; font-weight: 700; text-transform: uppercase; }
+    .control {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #cfd5cc;
+      border-radius: 6px;
+      padding: 9px 11px;
+      color: var(--ink);
+      background: var(--surface);
+      outline: none;
+    }
+    .control:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(19, 124, 116, .12); }
+
+    /* Login */
+    #login-screen {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(300px, 460px) 1fr;
+      background: var(--surface);
+    }
+    .login-panel { padding: clamp(32px, 6vw, 80px); display: flex; flex-direction: column; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; }
+    .brand img { width: 48px; height: 48px; object-fit: contain; }
+    .brand-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; }
+    .brand-name span { color: var(--teal); }
+    .login-form { width: 100%; max-width: 340px; margin: 60px auto; }
+    .login-form h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); line-height: .92; margin-bottom: 12px; }
+    .login-form > p { color: var(--muted); line-height: 1.55; margin-bottom: 28px; }
+    .login-fields { display: grid; gap: 16px; }
+    .password-wrap { position: relative; }
+    .password-wrap .control { padding-right: 46px; }
+    .password-toggle { position: absolute; right: 4px; top: 4px; border: 0; background: transparent; width: 34px; height: 34px; color: var(--muted); }
+    .login-submit { width: 100%; margin-top: 6px; }
+    .login-error { color: var(--coral); font-size: .85rem; margin: 12px 0 0; min-height: 20px; }
+    .login-footer { color: var(--muted); font-size: .78rem; }
+    .login-scene {
+      position: relative;
+      overflow: hidden;
+      background: #10254c url('../Tornei/WhatsApp Image 2026-08-02 at 20.31.25.jpeg') center/cover no-repeat;
+    }
+    .login-scene::after { content: ''; position: absolute; inset: 0; background: rgba(13, 29, 61, .62); }
+    .scene-copy { position: absolute; z-index: 1; left: 7%; bottom: 8%; max-width: 620px; color: white; }
+    .scene-copy .kicker { color: var(--yellow); font-weight: 800; text-transform: uppercase; font-size: .78rem; }
+    .scene-copy h2 { font-size: clamp(3rem, 7vw, 6.5rem); line-height: .82; margin: 12px 0 18px; }
+    .scene-copy p { max-width: 470px; color: #dfe7f5; line-height: 1.6; }
+
+    /* App shell */
+    #admin-app { min-height: 100vh; display: grid; grid-template-columns: 244px 1fr; }
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: 244px; z-index: 20; display: flex; flex-direction: column; background: var(--ink); color: #dce5f4; }
+    .sidebar .brand { height: 76px; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .sidebar .brand img { width: 40px; height: 40px; }
+    .sidebar .brand-name span { color: var(--yellow); }
+    .nav { display: grid; gap: 5px; padding: 22px 12px; }
+    .nav-label { padding: 0 10px 7px; color: #8492ae; font-size: .68rem; font-weight: 800; text-transform: uppercase; }
+    .nav-item {
+      width: 100%; border: 0; border-radius: 6px; padding: 11px 12px; display: flex; align-items: center; gap: 11px;
+      color: #bbc7dc; background: transparent; text-align: left; font-weight: 600;
+    }
+    .nav-item:hover { color: white; background: rgba(255,255,255,.07); }
+    .nav-item.active { color: var(--ink); background: var(--yellow); }
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid rgba(255,255,255,.1); padding: 14px 12px; }
+    .admin-profile { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 9px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: white; display: grid; place-items: center; font-weight: 800; }
+    .profile-copy strong, .profile-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .profile-copy strong { color: white; font-size: .82rem; }
+    .profile-copy small { color: #9eabc2; font-size: .68rem; }
+
+    .app-main { grid-column: 2; min-width: 0; }
+    .topbar {
+      position: sticky; top: 0; z-index: 15; height: 76px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; background: rgba(244,245,242,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px);
+    }
+    .breadcrumb { color: var(--muted); font-size: .83rem; }
+    .breadcrumb strong { color: var(--ink); }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    #menu-toggle { display: none; }
+    .content { padding: 28px; max-width: 1520px; margin: 0 auto; }
+    .page { display: none; animation: enter .25s ease both; }
+    .page.active { display: block; }
+    @keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .page-head { display: flex; justify-content: space-between; gap: 20px; align-items: flex-end; margin-bottom: 24px; }
+    .eyebrow { color: var(--teal); font-size: .72rem; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
+    .page-head h1 { font-size: clamp(2rem, 4vw, 3.1rem); line-height: .92; margin-bottom: 7px; }
+    .page-head p { color: var(--muted); margin-bottom: 0; }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stat { min-height: 126px; padding: 18px; border: 1px solid var(--line); border-top: 4px solid var(--ink); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .stat:nth-child(2) { border-top-color: var(--teal); }
+    .stat:nth-child(3) { border-top-color: var(--yellow); }
+    .stat:nth-child(4) { border-top-color: var(--coral); }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: .78rem; font-weight: 700; }
+    .stat strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 2.5rem; line-height: 1; margin: 13px 0 5px; }
+    .stat small { color: var(--muted); }
+
+    .notice { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; margin-bottom: 20px; border: 1px solid #ead68e; border-left: 5px solid var(--yellow); border-radius: var(--radius); background: var(--yellow-soft); }
+    .notice-copy { display: flex; gap: 11px; align-items: center; }
+    .notice-copy strong, .notice-copy span { display: block; }
+    .notice-copy span { color: #716338; font-size: .82rem; margin-top: 2px; }
+
+    .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, .8fr); gap: 18px; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .panel-head { min-height: 60px; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); }
+    .panel-head h2 { font-size: 1.35rem; margin: 0; }
+    .panel-head p { color: var(--muted); font-size: .75rem; margin: 2px 0 0; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 680px; }
+    th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid #ebeee9; font-size: .84rem; }
+    th { color: var(--muted); background: #fafbf9; font-size: .7rem; text-transform: uppercase; }
+    tbody tr:hover { background: #fafbf9; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .team { display: flex; align-items: center; gap: 9px; font-weight: 700; }
+    .team-mark { width: 28px; height: 28px; border-radius: 5px; display: grid; place-items: center; background: var(--blue-soft); font-size: .7rem; }
+    .status { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 8px; font-size: .69rem; font-weight: 800; white-space: nowrap; }
+    .status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .status-ok { color: var(--teal); background: var(--teal-soft); }
+    .status-wait { color: #8c6900; background: var(--yellow-soft); }
+    .status-off { color: var(--coral); background: var(--coral-soft); }
+
+    .activity { list-style: none; padding: 8px 16px 16px; margin: 0; }
+    .activity li { position: relative; padding: 13px 0 13px 28px; border-bottom: 1px solid #ebeee9; }
+    .activity li:last-child { border-bottom: 0; }
+    .activity-dot { position: absolute; left: 2px; top: 18px; width: 10px; height: 10px; border: 3px solid var(--surface); border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 1px var(--teal); }
+    .activity strong { display: block; font-size: .82rem; }
+    .activity span { color: var(--muted); font-size: .74rem; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+    .toolbar .search { flex: 1 1 260px; position: relative; }
+    .toolbar .search .control { padding-left: 38px; }
+    .toolbar .search .icon { position: absolute; left: 12px; top: 12px; color: var(--muted); }
+    .toolbar select { width: auto; min-width: 170px; }
+
+    .event-list { display: grid; gap: 12px; }
+    .event-row { display: grid; grid-template-columns: 74px minmax(180px, 1fr) 140px 130px auto; align-items: center; gap: 16px; padding: 15px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .date-tile { height: 58px; border-radius: 6px; display: grid; place-items: center; align-content: center; color: var(--ink); background: var(--yellow); }
+    .date-tile strong { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; line-height: .9; }
+    .date-tile small { font-size: .65rem; font-weight: 800; text-transform: uppercase; }
+    .event-title strong { display: block; }
+    .event-title span, .event-meta { color: var(--muted); font-size: .78rem; }
+    .event-actions { display: flex; justify-content: flex-end; gap: 6px; }
+
+    .pool-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; align-items: start; }
+    .pool-config { padding: 18px; position: sticky; top: 94px; }
+    .pool-config h2 { font-size: 1.45rem; margin-bottom: 4px; }
+    .pool-config > p { color: var(--muted); font-size: .8rem; line-height: 1.5; }
+    .pool-fields { display: grid; gap: 13px; margin: 18px 0; }
+    .capacity { padding: 12px; border-radius: 6px; background: var(--teal-soft); color: #0d5e58; font-size: .8rem; }
+    .capacity strong { font-family: 'Barlow Condensed', sans-serif; font-size: 1.35rem; }
+    .pool-config .btn { width: 100%; }
+    .pool-workspace { min-width: 0; }
+    .pool-workspace-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .pool-workspace-head h2 { margin: 0; font-size: 1.5rem; }
+    .pool-grid { display: grid; grid-template-columns: repeat(2, minmax(230px, 1fr)); gap: 12px; }
+    .pool { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .pool-head { padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .pool-head strong { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; }
+    .pool-teams { min-height: 180px; padding: 8px; }
+    .pool-team { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 8px; padding: 9px; border-bottom: 1px solid #edf0eb; }
+    .pool-team:last-child { border-bottom: 0; }
+    .seed { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--blue-soft); font-size: .7rem; font-weight: 800; }
+    .drag { color: #9aa399; }
+    .pool-empty { height: 150px; display: grid; place-items: center; color: var(--muted); font-size: .8rem; text-align: center; padding: 20px; }
+    .pool-toolbar { display: grid; grid-template-columns: minmax(180px, 1.6fr) repeat(3, minmax(120px, .8fr)) auto auto; gap: 10px; align-items: end; padding: 16px; margin-bottom: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .pool-summary { margin-bottom: 14px; color: var(--muted); font-size: .82rem; }
+    .pool-card { min-width: 0; }
+    .pool-name { width: min(100%, 190px); min-height: 34px; border: 1px solid transparent; background: transparent; font-weight: 800; font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; color: var(--ink); }
+    .pool-name:focus { border-color: var(--teal); outline: 0; background: white; }
+    .pool-entry { display: grid; grid-template-columns: 1fr minmax(110px, auto); gap: 8px; align-items: center; padding: 8px; border-bottom: 1px solid #edf0eb; }
+    .pool-entry:last-child { border-bottom: 0; }
+    .pool-entry strong, .pool-entry small { display: block; }
+    .pool-entry small { color: var(--muted); font-size: .72rem; }
+    .pool-entry select { width: auto; min-width: 110px; min-height: 34px; padding: 5px 7px; font-size: .75rem; }
+    .court-admin-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .8fr); gap: 16px; align-items: start; }
+    .court-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 14px; }
+    .court-card { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 6px; background: #fbfcfa; }
+    .court-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .court-card h3 { margin: 0; font-size: 1.25rem; }
+    .court-card-actions { display: flex; gap: 5px; }
+    .availability-list { display: grid; gap: 6px; margin: 12px 0; }
+    .availability-row { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: .76rem; }
+    .availability-row:last-child { border-bottom: 0; }
+    .availability-actions { display: flex; gap: 4px; }
+    .availability-actions .btn { width: 30px; min-height: 30px; }
+    .court-assignment { padding: 16px; position: sticky; top: 94px; }
+    .court-checkbox-list { display: grid; gap: 8px; margin: 12px 0; }
+    .court-checkbox { display: flex; align-items: center; gap: 9px; min-height: 38px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 5px; background: white; font-size: .83rem; }
+    .match-list { display: grid; gap: 8px; padding: 12px; }
+    .match-row { display: grid; grid-template-columns: minmax(190px, 1.4fr) minmax(110px, .7fr) minmax(190px, 1.4fr) 76px 76px auto; align-items: center; gap: 8px; padding: 9px; border-bottom: 1px solid var(--line); font-size: .8rem; }
+    .match-row:last-child { border-bottom: 0; }
+    .match-row .control { min-height: 36px; padding: 6px; text-align: center; }
+    .match-team { min-width: 0; }
+    .standings-wrap { overflow-x: auto; }
+    .password-action { width: 40px; }
+
+    .final-toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; padding: 16px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .final-toolbar .field { min-width: min(100%, 260px); flex: 1; }
+    .final-layout { display: grid; grid-template-columns: minmax(290px, .8fr) minmax(0, 1.5fr); gap: 18px; align-items: start; }
+    .final-config { padding: 16px; }
+    .final-config-list { display: grid; gap: 12px; margin-top: 14px; }
+    .final-phase-editor { border: 1px solid var(--line); border-radius: 6px; padding: 12px; background: #fbfcfa; }
+    .final-phase-title, .final-rule { display: flex; align-items: center; gap: 8px; }
+    .final-phase-title .control { font-weight: 700; }
+    .final-rule { margin-top: 8px; }
+    .final-rule .control { min-width: 0; padding: 8px; }
+    .final-rule select:first-child { flex: 1.2; }
+    .final-rule select:nth-child(2) { flex: .75; }
+    .final-rule input { width: 70px; flex: 0 0 70px; }
+    .final-config-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .final-config-actions .btn { flex: 1; }
+    .final-workspace { min-width: 0; }
+    .final-phase-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .final-phase-strip h2 { margin: 0; font-size: 1.5rem; }
+    .final-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .qualifier-list { display: grid; gap: 0; }
+    .qualifier-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #ebeee9; }
+    .qualifier-row:last-child { border-bottom: 0; }
+    .qualifier-rank { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; color: #0d5e58; background: var(--teal-soft); font-weight: 800; font-size: .78rem; }
+    .qualifier-row strong, .qualifier-row small { display: block; }
+    .qualifier-row small { color: var(--muted); margin-top: 2px; }
+    .qualifier-stats { color: var(--muted); text-align: right; font-size: .75rem; white-space: nowrap; }
+    .bracket-scroll { overflow: visible; }
+    .bracket { display: flex; flex-direction: column; gap: 18px; width: 100%; min-width: 0; padding: 12px; }
+    .bracket-round { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 10px; }
+    .bracket-round h3 { grid-column: 1 / -1; margin: 0; padding: 8px 10px; color: var(--muted); border-bottom: 2px solid var(--yellow); font-size: 1rem; text-transform: uppercase; }
+    .final-match { padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+    .final-match-head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; color: var(--muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; }
+    .final-team { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid #edf0eb; font-size: .83rem; }
+    .final-team:last-of-type { border-bottom: 0; }
+    .final-team.winner { color: var(--teal); font-weight: 800; }
+    .final-team-score { font-variant-numeric: tabular-nums; font-weight: 800; }
+    .final-match-meta { display: flex; flex-wrap: wrap; gap: 8px 12px; padding-top: 9px; color: var(--muted); font-size: .74rem; }
+    .final-match-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 1fr) auto; gap: 7px; margin-top: 10px; }
+    .final-match-controls .control { min-height: 36px; padding: 6px 8px; font-size: .77rem; }
+    .final-match-controls .btn { min-height: 36px; padding: 6px 9px; }
+    .final-result-controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 7px; margin-top: 8px; }
+    .final-result-controls .control { min-height: 36px; padding: 6px 8px; }
+    .final-empty { padding: 28px 18px; color: var(--muted); text-align: center; }
+
+    .court-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .court { padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .court-top { display: flex; justify-content: space-between; align-items: center; }
+    .court h3 { font-size: 1.4rem; margin: 0; }
+    .court-time { margin: 20px 0 12px; display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: .82rem; }
+    .court-bar { height: 8px; border-radius: 4px; overflow: hidden; background: #e7ebe5; }
+    .court-bar span { display: block; height: 100%; background: var(--teal); }
+
+    dialog { width: min(680px, calc(100vw - 32px)); padding: 0; border: 0; border-radius: var(--radius); box-shadow: 0 24px 80px rgba(20,33,61,.24); }
+    dialog::backdrop { background: rgba(20,33,61,.58); backdrop-filter: blur(3px); }
+    .dialog-head { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }
+    .dialog-head h2 { margin: 0; font-size: 1.6rem; }
+    .dialog-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .dialog-body .wide { grid-column: 1 / -1; }
+    .dialog-actions { padding: 14px 20px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--line); background: #fafbf9; }
+
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 50; display: flex; align-items: center; gap: 9px; padding: 12px 15px; color: white; background: var(--ink); border-radius: 6px; box-shadow: var(--shadow); transform: translateY(20px); opacity: 0; pointer-events: none; transition: .2s ease; }
+    .toast.show { transform: none; opacity: 1; }
+
+    .event-block { display: grid; gap: 8px; }
+    .tournament-panel { margin-left: 24px; }
+    .category-list { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; }
+    .category-item { display: flex; align-items: center; gap: 6px; padding: 4px 4px 4px 12px; border: 1px solid var(--line); border-radius: 6px; font-weight: 700; }
+    .check-field { display: flex; align-items: center; gap: 8px; min-height: 42px; font-weight: 700; }
+    .dialog-body { max-height: 70vh; overflow-y: auto; }
+    @media (max-width: 760px) { .tournament-panel { margin-left: 0; } }
+
+    @media (max-width: 1100px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .pool-layout { grid-template-columns: 260px minmax(0, 1fr); }
+      .court-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-row { grid-template-columns: 70px 1fr 110px auto; }
+      .event-row .event-meta:nth-of-type(2) { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      #login-screen { grid-template-columns: 1fr; }
+      .login-scene { display: none; }
+      .login-panel { min-height: 100vh; }
+      #admin-app { grid-template-columns: 1fr; }
+      .sidebar { transform: translateX(-100%); transition: transform .2s ease; box-shadow: 12px 0 36px rgba(20,33,61,.18); }
+      .sidebar.open { transform: none; }
+      .app-main { grid-column: 1; }
+      #menu-toggle { display: inline-flex; }
+      .topbar { height: 64px; padding: 0 14px; }
+      .content { padding: 18px 14px 40px; }
+      .page-head { align-items: flex-start; flex-direction: column; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .notice { align-items: flex-start; flex-direction: column; }
+      .pool-layout { grid-template-columns: 1fr; }
+      .pool-config { position: static; }
+      .pool-grid { grid-template-columns: 1fr; }
+      .pool-toolbar { grid-template-columns: 1fr 1fr; }
+      .pool-toolbar .field:first-child { grid-column: 1 / -1; }
+      .pool-toolbar .btn { width: 100%; }
+      .final-layout { grid-template-columns: 1fr; }
+      .final-config { position: static; }
+      .final-rule { flex-wrap: wrap; }
+      .final-rule select:first-child { min-width: 130px; }
+      .final-match-controls { grid-template-columns: 1fr 1fr; }
+      .final-match-controls .btn { grid-column: 1 / -1; }
+      .court-admin-layout { grid-template-columns: 1fr; }
+      .court-assignment { position: static; }
+      .court-list { grid-template-columns: 1fr; }
+      .match-row { grid-template-columns: 1fr 1fr; }
+      .match-team { grid-column: 1 / -1; }
+      .match-row .btn { grid-column: 1 / -1; }
+      .court-grid { grid-template-columns: 1fr; }
+      .event-row { grid-template-columns: 62px 1fr auto; }
+      .event-row .event-meta { display: none; }
+      .dialog-body { grid-template-columns: 1fr; }
+      .dialog-body .wide { grid-column: auto; }
+    }
+
+    @media (max-width: 460px) {
+      .stats { grid-template-columns: 1fr; }
+      .top-actions .btn span { display: none; }
+      .event-row { grid-template-columns: 54px 1fr; }
+      .event-actions { grid-column: 1 / -1; justify-content: stretch; }
+      .event-actions .btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <section id="login-screen">
+    <div class="login-panel">
+      <a class="brand" href="../index.html">
+        <img src="../Tornei/logo.png" alt="SiMax">
+        <div class="brand-name">SiMax <span>Control Room</span></div>
+      </a>
+
+      <form class="login-form" id="login-form">
+        <div class="eyebrow">Area riservata</div>
+        <h1>IL TORNEO,<br>SOTTO CONTROLLO.</h1>
+        <p>Accedi per gestire eventi, iscrizioni, gironi e campi.</p>
+        <div class="login-fields">
+          <div class="field">
+            <label for="login-email">Email</label>
+            <input class="control" id="login-email" type="email" autocomplete="username" placeholder="nome@esempio.it" required>
+          </div>
+          <div class="field">
+            <label for="login-password">Password</label>
+            <div class="password-wrap">
+              <input class="control" id="login-password" type="password" autocomplete="current-password" placeholder="Password" required minlength="4">
+              <button class="password-toggle" id="password-toggle" type="button" aria-label="Mostra password" title="Mostra password"><i data-lucide="eye" class="icon"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-primary login-submit" type="submit"><i data-lucide="log-in" class="icon"></i> Accedi</button>
+        </div>
+        <p class="login-error" id="login-error" role="alert"></p>
+      </form>
+
+      <div class="login-footer">SiMax Beach Volley Tournament &middot; Milano</div>
+    </div>
+    <div class="login-scene" aria-hidden="true">
+      <div class="scene-copy">
+        <div class="kicker">Tournament operations</div>
+        <h2>DALLE ISCRIZIONI<br>AL MATCH POINT.</h2>
+        <p>Una regia unica per preparare ogni giornata, distribuire le squadre e tenere il ritmo del torneo.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="admin-app" class="hidden">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-view-link="dashboard">
+        <img src="../Tornei/logo.png" alt="SiMax">
+        <div class="brand-name">SiMax <span>Admin</span></div>
+      </a>
+
+      <nav class="nav" aria-label="Navigazione amministrazione">
+        <div class="nav-label">Operazioni</div>
+        <button class="nav-item active" data-view="dashboard"><i data-lucide="layout-dashboard" class="icon"></i> Dashboard</button>
+        <button class="nav-item" data-view="events"><i data-lucide="calendar-days" class="icon"></i> Eventi e tornei</button>
+        <button class="nav-item" data-view="registrations"><i data-lucide="users" class="icon"></i> Iscrizioni</button>
+        <button class="nav-item" data-view="payments"><i data-lucide="wallet" class="icon"></i> Pagamenti</button>
+        <button class="nav-item" data-view="pools"><i data-lucide="network" class="icon"></i> Gironi</button>
+        <button class="nav-item" data-view="finals"><i data-lucide="trophy" class="icon"></i> Fasi finali</button>
+        <button class="nav-item" data-view="courts"><i data-lucide="map" class="icon"></i> Campi e partite</button>
+        <div class="nav-label" style="margin-top:14px">Sistema</div>
+        <button class="nav-item" data-view="audit"><i data-lucide="history" class="icon"></i> Registro attivit&agrave;</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="admin-profile">
+          <div class="avatar" id="profile-avatar">MR</div>
+          <div class="profile-copy"><strong id="profile-name">Massimo</strong><small>Amministratore</small></div>
+          <button class="nav-item icon-btn" id="logout-button" type="button" aria-label="Esci" title="Esci"><i data-lucide="log-out" class="icon"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-ghost icon-btn" id="menu-toggle" type="button" aria-label="Apri menu" title="Apri menu"><i data-lucide="menu" class="icon"></i></button>
+          <div class="breadcrumb">SiMax Admin / <strong id="current-view-label">Dashboard</strong></div>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-ghost icon-btn" type="button" aria-label="Notifiche" title="Notifiche"><i data-lucide="bell" class="icon"></i></button>
+          <button class="btn btn-ghost icon-btn password-action" id="open-password-dialog" type="button" aria-label="Cambia password" title="Cambia password"><i data-lucide="key-round" class="icon"></i></button>
+          <button class="btn btn-primary" type="button" data-open-event><i data-lucide="plus" class="icon"></i><span>Nuovo evento</span></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="page active" data-page="dashboard">
+          <div class="page-head">
+            <div><div class="eyebrow">Marted&igrave;, 29 settembre</div><h1>BUONGIORNO, MASSIMO.</h1><p>Il prossimo evento &egrave; pronto al 78%.</p></div>
+            <select class="control" id="dashboard-event" style="width:auto;min-width:230px" aria-label="Evento selezionato"><option>10 Ott &middot; Fine Estate</option><option>31 Ott &middot; Halloween</option></select>
+          </div>
+
+          <div class="stats">
+            <article class="stat"><div class="stat-top"><span>Squadre confermate</span><i data-lucide="users" class="icon"></i></div><strong id="dash-confirmed">-</strong><small id="dash-confirmed-detail">Totale evento</small></article>
+            <article class="stat"><div class="stat-top"><span>Posti disponibili</span><i data-lucide="circle-dashed" class="icon"></i></div><strong id="dash-slots">-</strong><small id="dash-capacity">Su capienza totale</small></article>
+            <article class="stat"><div class="stat-top"><span>Lista d'attesa</span><i data-lucide="clock-3" class="icon"></i></div><strong>3</strong><small>2 MIX &middot; 1 Femminile</small></article>
+            <article class="stat"><div class="stat-top"><span>Incassi registrati</span><i data-lucide="wallet" class="icon"></i></div><strong id="dash-paid">-</strong><small id="dash-settlement">Riepilogo pagamenti</small></article>
+          </div>
+
+          <div class="notice">
+            <div class="notice-copy"><i data-lucide="triangle-alert" class="icon"></i><div><strong>Configurazione da completare</strong><span>Mancano gironi e assegnazione campi per 2&times;2 MIX.</span></div></div>
+            <button class="btn btn-ghost" type="button" data-jump="pools">Configura gironi <i data-lucide="arrow-right" class="icon"></i></button>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel">
+              <div class="panel-head"><div><h2>Stato tornei</h2><p>Capienza e avanzamento operativo</p></div><button class="btn btn-ghost icon-btn" aria-label="Altre opzioni" title="Altre opzioni"><i data-lucide="ellipsis" class="icon"></i></button></div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Torneo</th><th>Confermate</th><th>Attesa</th><th>Gironi</th><th>Stato</th></tr></thead>
+                  <tbody id="dashboard-tournaments"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head"><div><h2>Ultime attivit&agrave;</h2><p>Operazioni amministrative</p></div></div>
+              <ul class="activity" id="dashboard-payment-summary"></ul>
+            </section>
+          </div>
+        </section>
+
+        <section class="page" data-page="events">
+          <div class="page-head"><div><div class="eyebrow">Calendario</div><h1>EVENTI E TORNEI</h1><p>Configura date, categorie, capienza e pubblicazione.</p></div><button class="btn btn-primary" data-open-event><i data-lucide="plus" class="icon"></i> Nuovo evento</button></div>
+          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="event-search" placeholder="Cerca evento o luogo"></div><select class="control" id="event-filter"><option value="all">Tutti gli stati</option><option value="true">Pubblicati</option><option value="false">Bozze</option></select></div>
+          <div class="event-list" id="event-list">
+            <article class="event-row"><div class="date-tile"><strong>10</strong><small>Ott 2026</small></div><div class="event-title"><strong>Torneo di Fine Estate</strong><span>PalaUno &middot; Milano</span></div><div class="event-meta">3 tornei</div><div><span class="status status-ok">Pubblicato</span></div><div class="event-actions"><button class="btn btn-ghost icon-btn" title="Modifica" aria-label="Modifica"><i data-lucide="pencil" class="icon"></i></button><button class="btn btn-ghost icon-btn" title="Duplica" aria-label="Duplica"><i data-lucide="copy" class="icon"></i></button></div></article>
+            <article class="event-row"><div class="date-tile" style="background:#ff8b4c"><strong>31</strong><small>Ott 2026</small></div><div class="event-title"><strong>Torneo di Halloween</strong><span>PalaUno &middot; Milano</span></div><div class="event-meta">3 tornei</div><div><span class="status status-wait">Bozza</span></div><div class="event-actions"><button class="btn btn-ghost icon-btn" title="Modifica" aria-label="Modifica"><i data-lucide="pencil" class="icon"></i></button><button class="btn btn-ghost icon-btn" title="Duplica" aria-label="Duplica"><i data-lucide="copy" class="icon"></i></button></div></article>
+          </div>
+
+          <section class="panel" style="margin-top:22px">
+            <div class="panel-head" style="flex-wrap:wrap">
+              <div><h2>Categorie</h2><p>Disponibili per i tornei</p></div>
+              <form id="category-form" style="display:flex;gap:8px"><input class="control" id="category-name" placeholder="Nuova categoria" required maxlength="50"><button class="btn btn-primary" type="submit"><i data-lucide="plus" class="icon"></i> Aggiungi</button></form>
+            </div>
+            <div class="category-list" id="category-list"></div>
+          </section>
+        </section>
+
+        <section class="page" data-page="registrations">
+          <div class="page-head"><div><div class="eyebrow">Partecipanti</div><h1>ISCRIZIONI</h1><p>Conferme, lista d'attesa e disponibilit&agrave; per torneo.</p></div><button class="btn btn-ghost"><i data-lucide="download" class="icon"></i> Esporta CSV</button></div>
+          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="registration-search" placeholder="Cerca squadra, giocatore o email"></div><select class="control" id="registration-tournament"><option value="all">Tutti i tornei</option></select><select class="control" id="registration-status"><option value="all">Tutti gli stati</option><option value="Confirmed">Confermata</option><option value="Waitlist">Lista di attesa</option><option value="Cancelled">Annullata</option></select></div>
+          <section class="panel"><div class="table-wrap"><table id="registration-table"><thead><tr><th>Squadra</th><th>Torneo</th><th>Referente</th><th>Iscrizione</th><th>Stato</th><th></th></tr></thead><tbody id="registration-rows"></tbody></table></div></section>
+        </section>
+
+        <section class="page" data-page="payments">
+          <div class="page-head"><div><div class="eyebrow">Contabilita</div><h1>PAGAMENTI</h1><p>Incassi e pagamenti associati alle iscrizioni.</p></div><select class="control" id="payments-event" style="width:auto;min-width:230px" aria-label="Evento selezionato"></select></div>
+          <div class="stats"><article class="stat"><div class="stat-top"><span>Totale registrato</span><i data-lucide="wallet" class="icon"></i></div><strong id="payments-total">-</strong><small>Incassi evento</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Massimo</span><i data-lucide="user" class="icon"></i></div><strong id="payments-massimo">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Silvia</span><i data-lucide="user" class="icon"></i></div><strong id="payments-silvia">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Conguaglio</span><i data-lucide="scale" class="icon"></i></div><strong id="payments-difference">-</strong><small id="payments-settlement">-</small></article></div>
+          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="payment-search" placeholder="Cerca squadra, giocatore o email"></div></div>
+          <section class="panel"><div class="table-wrap"><table><thead><tr><th>Squadra</th><th>Torneo</th><th>Giocatore</th><th>Dovuto</th><th>Versato</th><th>Residuo</th><th>Pagamenti</th><th></th></tr></thead><tbody id="payments-rows"></tbody></table></div></section>
+        </section>
+
+        <section class="page" data-page="pools">
+          <div class="page-head"><div><div class="eyebrow">Fase a gironi</div><h1>GIRONI</h1><p>Genera l’anteprima, modifica assegnazioni e conferma la composizione.</p></div></div>
+          <div class="pool-toolbar"><div class="field"><label for="pool-tournament">Torneo</label><select class="control" id="pool-tournament"></select></div><div class="field"><label for="pool-count">Numero gironi</label><input class="control" id="pool-count" type="number" min="1" max="20" value="3"></div><div class="field"><label for="teams-per-pool">Squadre per girone</label><input class="control" id="teams-per-pool" type="number" min="1" max="20" value="4"></div><div class="field"><label for="pool-method">Criterio</label><select class="control" id="pool-method"><option value="Balanced">Bilanciato</option><option value="Random">Casuale</option><option value="Alphabetical">Alfabetico</option></select></div><button class="btn btn-dark" id="generate-pools" type="button"><i data-lucide="shuffle" class="icon"></i> Anteprima</button><button class="btn btn-primary" id="confirm-pools" type="button" disabled><i data-lucide="check" class="icon"></i> Conferma</button></div>
+          <div class="pool-summary" id="capacity-message">Scegli un torneo e genera l’anteprima.</div>
+          <div class="pool-grid" id="pool-grid"><div class="panel pool-empty" style="grid-column:1/-1">L’anteprima dei gironi apparirà qui.</div></div>
+        </section>
+
+        <section class="page" data-page="finals">
+          <div class="page-head"><div><div class="eyebrow">Eliminazione diretta</div><h1>FASI FINALI</h1><p>Configura le qualificazioni, consulta il tabellone e gestisci orari e risultati.</p></div></div>
+          <div class="final-toolbar">
+            <div class="field"><label for="final-tournament">Torneo</label><select class="control" id="final-tournament"></select></div>
+            <button class="btn btn-ghost" id="refresh-finals" type="button" title="Aggiorna"><i data-lucide="refresh-cw" class="icon"></i> Aggiorna</button>
+          </div>
+          <div class="final-layout">
+            <section class="panel final-config">
+              <div class="panel-head" style="padding:0 0 12px;border-bottom:1px solid var(--line)"><div><h2>Configurazione</h2><p>Le regole vengono validate dal backend.</p></div></div>
+              <div id="final-config-list" class="final-config-list"></div>
+              <div class="final-config-actions"><button class="btn btn-ghost" id="add-final-phase" type="button"><i data-lucide="plus" class="icon"></i> Aggiungi fase</button><button class="btn btn-primary" id="save-final-phases" type="button"><i data-lucide="save" class="icon"></i> Salva</button></div>
+            </section>
+            <div class="final-workspace">
+              <div class="final-phase-strip"><h2 id="final-current-title">Tabellone</h2><select class="control" id="final-phase-select" aria-label="Fase selezionata"><option value="">Nessuna fase</option></select></div>
+              <div class="final-actions" style="margin-bottom:12px"><button class="btn btn-dark" id="generate-final-bracket" type="button"><i data-lucide="git-branch" class="icon"></i> Genera tabellone</button><button class="btn btn-ghost" id="schedule-finals" type="button"><i data-lucide="calendar-clock" class="icon"></i> Programma automaticamente</button></div>
+              <section class="panel" style="margin-bottom:14px">
+                <div class="panel-head"><div><h2>Qualificate</h2><p>Classifica calcolata dal backend</p></div><button class="btn btn-ghost icon-btn" id="refresh-qualifiers" type="button" title="Aggiorna qualificate" aria-label="Aggiorna qualificate"><i data-lucide="refresh-cw" class="icon"></i></button></div>
+                <div id="final-qualifiers" class="qualifier-list"><div class="final-empty">Seleziona un torneo e una fase.</div></div>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><div><h2>Tabellone</h2><p>Squadre e avanzamento forniti dalle API</p></div><button class="btn btn-ghost icon-btn" id="refresh-final-matches" type="button" title="Aggiorna partite" aria-label="Aggiorna partite"><i data-lucide="refresh-cw" class="icon"></i></button></div>
+                <div class="bracket-scroll"><div id="final-bracket" class="bracket"><div class="final-empty">Genera il tabellone per visualizzare le partite.</div></div></div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="courts">
+          <div class="page-head"><div><div class="eyebrow">Logistica</div><h1>CAMPI E PARTITE</h1><p>Gestisci campi, disponibilità, assegnazioni, risultati e classifiche.</p></div></div>
+          <div class="toolbar"><div class="field"><label for="courts-event">Evento</label><select class="control" id="courts-event"></select></div><div class="field"><label for="courts-tournament">Torneo</label><select class="control" id="courts-tournament"></select></div></div>
+          <div class="court-admin-layout"><section class="panel"><div class="panel-head"><div><h2>Campi evento</h2><p>Disponibilità orarie e stato</p></div><button class="btn btn-primary" id="add-court" type="button"><i data-lucide="plus" class="icon"></i> Aggiungi campo</button></div><div id="court-list" class="court-list"><div class="final-empty">Seleziona un evento.</div></div></section><section class="panel court-assignment"><h2>Campi del torneo</h2><p style="color:var(--muted);font-size:.8rem">Seleziona i campi attivi utilizzabili per questo torneo.</p><div id="court-assignment-list" class="court-checkbox-list"><div class="final-empty">Seleziona un torneo.</div></div><button class="btn btn-primary" id="save-tournament-courts" type="button"><i data-lucide="save" class="icon"></i> Salva assegnazione</button></section></div>
+          <section class="panel" style="margin-top:16px"><div class="panel-head"><div><h2>Partite dei gironi</h2><p>Calendario generato dal backend; risultati modificabili qui.</p></div><button class="btn btn-dark" id="generate-matches" type="button"><i data-lucide="calendar-plus" class="icon"></i> Genera calendario</button></div><div id="match-list" class="match-list"><div class="final-empty">Seleziona un torneo per leggere le partite.</div></div></section>
+          <section class="panel" style="margin-top:16px"><div class="panel-head"><div><h2>Classifiche</h2><p>Calcolate dal backend in base ai risultati conclusi.</p></div><select class="control" id="standings-pool" style="width:auto;min-width:170px"><option value="all">Tutti i gironi</option></select></div><div id="standings-list" class="standings-wrap"><div class="final-empty">Seleziona un torneo.</div></div></section>
+        </section>
+
+        <section class="page" data-page="audit">
+          <div class="page-head"><div><div class="eyebrow">Sicurezza</div><h1>REGISTRO ATTIVIT&Agrave;</h1><p>Traccia delle operazioni amministrative.</p></div><button class="btn btn-ghost"><i data-lucide="download" class="icon"></i> Esporta</button></div>
+          <section class="panel"><div class="table-wrap"><table><thead><tr><th>Data e ora</th><th>Amministratore</th><th>Operazione</th><th>Entit&agrave;</th><th>Esito</th></tr></thead><tbody>
+            <tr><td>29 Set &middot; 10:42</td><td>Massimo Rosselli</td><td>Capienza aggiornata 14 &rarr; 16</td><td>Torneo #3</td><td><span class="status status-ok">Completata</span></td></tr>
+            <tr><td>29 Set &middot; 10:18</td><td>Silvia Bertolino</td><td>Iscrizione promossa</td><td>Registration #28</td><td><span class="status status-ok">Completata</span></td></tr>
+            <tr><td>28 Set &middot; 22:11</td><td>Massimo Rosselli</td><td>Evento pubblicato</td><td>Evento #1</td><td><span class="status status-ok">Completata</span></td></tr>
+          </tbody></table></div></section>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="event-dialog">
+    <form id="event-form">
+      <div class="dialog-head"><h2 id="event-dialog-title">Nuovo evento</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi" title="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body">
+        <div class="field wide"><label for="event-title">Titolo</label><input class="control" id="event-title" placeholder="Es. Winter Beach Cup" required maxlength="150"></div>
+        <div class="field"><label for="event-date">Data</label><input class="control" id="event-date" type="date" required></div>
+        <div class="field"><label for="event-period">Fascia</label><input class="control" id="event-period" list="period-options" value="Mattina &amp; Pomeriggio" required><datalist id="period-options"><option value="Mattina &amp; Pomeriggio"><option value="Mattina"><option value="Pomeriggio"><option value="Sera"></datalist></div>
+        <div class="field"><label for="event-location">Struttura</label><input class="control" id="event-location" placeholder="PalaUno" required></div>
+        <div class="field"><label for="event-address">Indirizzo</label><input class="control" id="event-address" placeholder="Via, civico, citt&agrave;" required></div>
+        <label class="check-field wide"><input type="checkbox" id="event-active"> Pubblica sul sito</label>
+      </div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit"><i data-lucide="save" class="icon"></i> Salva</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="tournament-dialog">
+    <form id="tournament-form">
+      <div class="dialog-head"><h2 id="tournament-dialog-title">Nuovo torneo</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi" title="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body">
+        <div class="field wide"><label for="tournament-title">Titolo</label><input class="control" id="tournament-title" required maxlength="150"></div>
+        <div class="field"><label for="tournament-tab">Etichetta tab</label><input class="control" id="tournament-tab" placeholder="2&times;2 MIX" required maxlength="50"></div>
+        <div class="field"><label for="tournament-category">Categoria</label><select class="control" id="tournament-category" required></select></div>
+        <div class="field"><label for="tournament-format">Formato</label><input class="control" id="tournament-format" placeholder="2&times;2" required></div>
+        <div class="field"><label for="tournament-level">Livello</label><input class="control" id="tournament-level" value="Open" required></div>
+        <div class="field"><label for="tournament-start">Inizio</label><input class="control" id="tournament-start" type="time" required></div>
+        <div class="field"><label for="tournament-end">Fine</label><input class="control" id="tournament-end" type="time" required></div>
+        <div class="field"><label for="tournament-price">Quota (&euro;)</label><input class="control" id="tournament-price" type="number" min="0" required></div>
+        <div class="field"><label for="tournament-max">Max squadre</label><input class="control" id="tournament-max" type="number" min="1" required></div>
+        <div class="field"><label for="tournament-min-players">Min. giocatori</label><input class="control" id="tournament-min-players" type="number" min="1" value="2" required></div>
+        <div class="field"><label for="tournament-order">Ordine</label><input class="control" id="tournament-order" type="number" min="0" value="1" required></div>
+        <div class="field wide"><label for="tournament-form-url">Link Google Form</label><input class="control" id="tournament-form-url" type="url"></div>
+        <div class="field wide"><label for="tournament-waitlist-url">Link lista d'attesa</label><input class="control" id="tournament-waitlist-url" type="url"></div>
+        <div class="field"><label for="tournament-form-id">Google Form ID</label><input class="control" id="tournament-form-id"></div>
+        <label class="check-field"><input type="checkbox" id="tournament-active" checked> Torneo attivo</label>
+      </div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit"><i data-lucide="save" class="icon"></i> Salva</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="registration-dialog">
+    <form id="registration-form">
+      <div class="dialog-head"><h2>Modifica iscrizione</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body"><div class="field"><label for="reg-team">Squadra</label><input class="control" id="reg-team" maxlength="200" required></div><div class="field"><label for="reg-email">Email</label><input class="control" id="reg-email" type="email" maxlength="100" required></div><div class="field"><label for="reg-p1-first">Nome giocatore 1</label><input class="control" id="reg-p1-first" maxlength="100" required></div><div class="field"><label for="reg-p1-last">Cognome giocatore 1</label><input class="control" id="reg-p1-last" maxlength="100" required></div><div class="field"><label for="reg-p1-phone">Telefono giocatore 1</label><input class="control" id="reg-p1-phone" maxlength="30"></div><div class="field"><label for="reg-p2-first">Nome giocatore 2</label><input class="control" id="reg-p2-first" maxlength="100" required></div><div class="field"><label for="reg-p2-last">Cognome giocatore 2</label><input class="control" id="reg-p2-last" maxlength="100" required></div></div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit">Salva iscrizione</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="payment-dialog">
+    <form id="payment-form">
+      <div class="dialog-head"><div><h2 id="payment-dialog-title">Pagamenti iscrizione</h2><p id="payment-team-label"></p></div><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body"><div class="field"><label for="payment-player">Giocatore</label><select class="control" id="payment-player" required></select></div><div class="field"><label for="payment-amount">Importo (EUR)</label><input class="control" id="payment-amount" type="number" min="1" max="10000" step="1" required></div><div class="field"><label for="payment-method">Metodo di pagamento</label><select class="control" id="payment-method" required><option value="Satispay">Satispay</option><option value="Revolut">Revolut</option><option value="PayPal">PayPal</option><option value="Bonifico">Bonifico</option><option value="Contanti">Contanti</option></select></div><div class="field"><label for="payment-recipient">Ricevuto da</label><select class="control" id="payment-recipient"><option value="">Fondo cassa</option><option value="Massimo">Massimo</option><option value="Silvia">Silvia</option></select></div></div>
+      <div class="dialog-actions" style="justify-content:space-between"><button class="btn btn-danger hidden" id="payment-delete" type="button">Elimina pagamento</button><div style="display:flex;gap:8px;margin-left:auto"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit">Registra pagamento</button></div></div>
+    </form>
+    <div class="panel-head"><div><h2>Pagamenti registrati</h2></div></div><div class="table-wrap"><table><thead><tr><th>Giocatore</th><th>Metodo</th><th>Ricevuto da</th><th>Importo</th><th></th></tr></thead><tbody id="registration-payments"></tbody></table></div>
+  </dialog>
+
+  <dialog id="court-dialog">
+    <form id="court-form">
+      <div class="dialog-head"><h2 id="court-dialog-title">Nuovo campo</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body"><div class="field wide"><label for="court-name">Nome campo</label><input class="control" id="court-name" maxlength="100" required></div><div class="field"><label for="court-order">Ordine</label><input class="control" id="court-order" type="number" min="1" max="100" value="1" required></div><label class="check-field"><input type="checkbox" id="court-active" checked> Campo attivo</label></div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit">Salva campo</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="availability-dialog">
+    <form id="availability-form">
+      <div class="dialog-head"><h2 id="availability-dialog-title">Nuova disponibilità</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body"><div class="field"><label for="availability-start">Dalle</label><input class="control" id="availability-start" type="time" required></div><div class="field"><label for="availability-end">Alle</label><input class="control" id="availability-end" type="time" required></div></div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit">Salva disponibilità</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="password-dialog">
+    <form id="password-form">
+      <div class="dialog-head"><h2>Cambia password</h2><button class="btn btn-ghost icon-btn" type="button" data-close aria-label="Chiudi"><i data-lucide="x" class="icon"></i></button></div>
+      <div class="dialog-body"><div class="field wide"><label for="current-password">Password attuale</label><input class="control" id="current-password" type="password" autocomplete="current-password" required></div><div class="field"><label for="new-password">Nuova password</label><input class="control" id="new-password" type="password" autocomplete="new-password" minlength="8" required></div><div class="field"><label for="confirm-password">Conferma password</label><input class="control" id="confirm-password" type="password" autocomplete="new-password" minlength="8" required></div></div>
+      <div class="dialog-actions"><button class="btn btn-ghost" type="button" data-close>Annulla</button><button class="btn btn-primary" type="submit">Aggiorna password</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"><i data-lucide="circle-check" class="icon"></i><span id="toast-message">Operazione completata</span></div>
+
+  <script>
+    const teamNames = ['Beach Please', 'Block Party', 'Ace Ventura', 'Net Results', 'Sandstorm', 'No Look', 'Set Me Up', 'Dig This', 'Volley Llamas', 'Side Out', 'Top Spin'];
+    const viewLabels = { dashboard: 'Dashboard', events: 'Eventi e tornei', registrations: 'Iscrizioni', payments: 'Pagamenti', pools: 'Gironi', finals: 'Fasi finali', courts: 'Campi e partite', audit: 'Registro attivit\u00E0' };
+
+    const loginScreen = document.getElementById('login-screen');
+    const adminApp = document.getElementById('admin-app');
+    const sidebar = document.getElementById('sidebar');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const passwordInput = document.getElementById('login-password');
+    const toast = document.getElementById('toast');
+    let toastTimer;
+
+    function refreshIcons() {
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function showToast(message) {
+      document.getElementById('toast-message').textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function showView(viewName) {
+      document.querySelectorAll('.page').forEach(page => page.classList.toggle('active', page.dataset.page === viewName));
+      document.querySelectorAll('.nav-item[data-view]').forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
+      document.getElementById('current-view-label').textContent = viewLabels[viewName] || viewName;
+      sidebar.classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (viewName === 'finals' && tournaments.length) loadFinals().catch(error => showToast(error.message));
+      if (viewName === 'pools' && tournaments.length) loadPoolWorkspace().catch(error => showToast(error.message));
+      if (viewName === 'courts' && events.length) loadCourtWorkspace().catch(error => showToast(error.message));
+    }
+
+    function openPrototype(email, viewName) {
+      const isSilvia = email.startsWith('silvia');
+      document.getElementById('profile-name').textContent = isSilvia ? 'Silvia' : 'Massimo';
+      document.getElementById('profile-avatar').textContent = isSilvia ? 'SB' : 'MR';
+      loginScreen.classList.add('hidden');
+      adminApp.classList.remove('hidden');
+      showView(viewLabels[viewName] ? viewName : 'dashboard');
+      refreshIcons();
+    }
+
+    loginForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      loginError.textContent = '';
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      try {
+        const response = await fetch(API_BASE + '/admin/account/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: passwordInput.value })
+        });
+        if (!response.ok) {
+          loginError.textContent = 'Credenziali non valide.';
+          return;
+        }
+      } catch (error) {
+        loginError.textContent = 'Servizio non raggiungibile. Riprova.';
+        return;
+      }
+      passwordInput.value = '';
+      openPrototype(email, 'dashboard');
+      loadAdminData().catch(error => showToast(error.message));
+    });
+
+    document.getElementById('password-toggle').addEventListener('click', () => {
+      const show = passwordInput.type === 'password';
+      passwordInput.type = show ? 'text' : 'password';
+      document.getElementById('password-toggle').setAttribute('aria-label', show ? 'Nascondi password' : 'Mostra password');
+    });
+
+    const passwordDialog = document.getElementById('password-dialog');
+    document.getElementById('open-password-dialog').addEventListener('click', () => passwordDialog.showModal());
+    document.getElementById('password-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const newPassword = fieldValue('new-password');
+      if (newPassword !== fieldValue('confirm-password')) return showToast('Le password nuove non coincidono.');
+      try {
+        await api('/admin/account/change-password', { method: 'POST', body: { currentPassword: fieldValue('current-password'), newPassword } });
+        passwordDialog.close();
+        event.currentTarget.reset();
+        showToast('Password aggiornata');
+      } catch (error) { showToast(error.message); }
+    });
+
+    function showLogin() {
+      adminApp.classList.add('hidden');
+      loginScreen.classList.remove('hidden');
+      loginForm.reset();
+    }
+
+    document.getElementById('logout-button').addEventListener('click', async () => {
+      try {
+        await fetch(API_BASE + '/admin/account/logout', { method: 'POST', credentials: 'include' });
+      } catch (error) {
+        // La sessione locale viene comunque chiusa.
+      }
+      showLogin();
+      showView('dashboard');
+    });
+
+    document.getElementById('menu-toggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+    document.querySelectorAll('[data-view]').forEach(item => item.addEventListener('click', () => showView(item.dataset.view)));
+    document.querySelectorAll('[data-view-link]').forEach(item => item.addEventListener('click', event => { event.preventDefault(); showView(item.dataset.viewLink); }));
+    document.querySelectorAll('[data-jump]').forEach(item => item.addEventListener('click', () => showView(item.dataset.jump)));
+
+    // Stessa origine: la pagina admin deve essere servita dall'App Service del backend (cookie di sessione).
+    const API_BASE = (location.port === '5500' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) ? 'https://localhost:7233' : '';
+    let events = [];
+    let tournaments = [];
+    let categories = [];
+    let registrations = [];
+    let participantPrices = [];
+    let dashboard = { events: [] };
+    let activePaymentSummary = null;
+    let finalPhases = [];
+    let finalPools = [];
+    let finalCourts = [];
+    let finalMatches = [];
+    let finalQualifiers = [];
+    let poolDraft = [];
+    let poolDraftIsPreview = false;
+    let eventCourts = [];
+    let selectedTournamentCourtIds = [];
+    let courtAvailabilities = {};
+    let regularMatches = [];
+    let tournamentPools = [];
+    let editingCourtId = null;
+    let editingAvailability = null;
+    let activeAvailabilityCourtId = null;
+    const expandedEvents = new Set();
+
+    const fieldValue = id => document.getElementById(id).value.trim();
+    const formatTime = value => String(value || '').slice(0, 5);
+    const categoryName = id => (categories.find(c => c.id === id) || {}).name || '-';
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    }
+
+    async function api(path, options = {}) {
+      const hasBody = options.body !== undefined;
+      const response = await fetch(API_BASE + path, {
+        method: options.method || 'GET',
+        credentials: 'include',
+        headers: hasBody ? { 'Content-Type': 'application/json' } : undefined,
+        body: hasBody ? JSON.stringify(options.body) : undefined
+      });
+      if (response.redirected || response.status === 401 || response.status === 403) {
+        showLogin();
+        throw new Error('Sessione scaduta. Accedi di nuovo.');
+      }
+      const text = await response.text();
+      if (!response.ok) {
+        let message = text;
+        try {
+          const data = JSON.parse(text);
+          message = typeof data === 'string' ? data : (data.title || data.message || text);
+        } catch (error) {
+          // Risposta testuale.
+        }
+        throw new Error(message || 'Errore ' + response.status);
+      }
+      return text ? JSON.parse(text) : null;
+    }
+
+    const money = amount => `${Number(amount || 0).toLocaleString('it-IT', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}\u00A0\u20AC`;
+    const statusLabels = { Confirmed: 'Confermata', Waitlist: 'Lista di attesa', Cancelled: 'Annullata' };
+    const dateTime = value => new Date(value).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    const selectedEventId = () => Number(document.getElementById('dashboard-event').value || events[0]?.id || 0);
+    const selectedPaymentsEventId = () => Number(document.getElementById('payments-event').value || events[0]?.id || 0);
+
+    async function loadAdminData() {
+      [events, tournaments, categories, dashboard] = await Promise.all([
+        api('/api/admin/events'), api('/api/admin/tournaments'), api('/api/admin/categories'), api('/api/admin/dashboard')
+      ]);
+      renderEvents();
+      renderCategories();
+      const eventOptions = events.map(e => `<option value="${e.id}">${escapeHtml(e.title)} ? ${new Date(e.date).toLocaleDateString('it-IT')}</option>`).join('');
+      ['dashboard-event', 'payments-event'].forEach(id => {
+        const select = document.getElementById(id); const previous = select.value;
+        select.innerHTML = eventOptions || '<option value="">Nessun evento</option>';
+        if (events.some(e => String(e.id) === previous)) select.value = previous;
+      });
+      const tournamentSelect = document.getElementById('registration-tournament');
+      const previousTournament = tournamentSelect.value;
+      tournamentSelect.innerHTML = '<option value="all">Tutti i tornei</option>' + tournaments.map(t => `<option value="${t.id}">${escapeHtml(t.tabLabel || t.title)}</option>`).join('');
+      if (tournaments.some(t => String(t.id) === previousTournament)) tournamentSelect.value = previousTournament;
+      const finalTournamentSelect = document.getElementById('final-tournament');
+      const previousFinalTournament = finalTournamentSelect.value;
+      finalTournamentSelect.innerHTML = tournaments.map(t => `<option value="${t.id}">${escapeHtml(t.tabLabel || t.title)}</option>`).join('') || '<option value="">Nessun torneo</option>';
+      if (tournaments.some(t => String(t.id) === previousFinalTournament)) finalTournamentSelect.value = previousFinalTournament;
+      populatePoolTournamentOptions();
+      populateCourtSelectors();
+      await Promise.all([loadRegistrations(), renderDashboard(), loadPayments()]);
+      if (document.querySelector('[data-page="finals"]').classList.contains('active')) await loadFinals();
+      if (document.querySelector('[data-page="pools"]').classList.contains('active')) await loadPoolWorkspace();
+      if (document.querySelector('[data-page="courts"]').classList.contains('active')) await loadCourtWorkspace();
+    }
+
+    const selectedFinalTournamentId = () => Number(document.getElementById('final-tournament').value || 0);
+    const selectedFinalPhase = () => finalPhases.find(phase => phase.id === Number(document.getElementById('final-phase-select').value));
+    const finalBasePath = () => `/api/admin/tournaments/${selectedFinalTournamentId()}/final-phases`;
+    const maxFinalPosition = () => Math.max(1, ...finalPools.map(pool => (pool.entries || []).length));
+
+    function renderFinalConfig(phases) {
+      const target = document.getElementById('final-config-list');
+      target.innerHTML = phases.length ? phases.map((phase, phaseIndex) => `
+        <article class="final-phase-editor" data-phase-editor>
+          <div class="final-phase-title"><input class="control" data-phase-name value="${escapeHtml(phase.name || '')}" maxlength="80" aria-label="Nome fase"><button class="btn btn-danger icon-btn" type="button" data-remove-phase="${phaseIndex}" title="Rimuovi fase" aria-label="Rimuovi fase"><i data-lucide="trash-2" class="icon"></i></button></div>
+          <div class="final-rule" style="margin-top:10px"><select class="control" data-elimination-type aria-label="Tipo eliminazione"><option value="SingleElimination" selected>Eliminazione diretta</option></select><span class="status status-ok">${phase.qualifiedTeamsCount ?? ''} squadre</span></div>
+          ${(phase.rules || []).map((rule, ruleIndex) => `<div class="final-rule" data-rule-row><select class="control" data-rule-type aria-label="Tipo qualificazione"><option value="Position" ${rule.ruleType === 'Position' ? 'selected' : ''}>Posizione</option><option value="BestOfPosition" ${rule.ruleType === 'BestOfPosition' ? 'selected' : ''}>Migliori per posizione</option><option value="WorstOfPosition" ${rule.ruleType === 'WorstOfPosition' ? 'selected' : ''}>Peggiori per posizione</option></select><select class="control" data-rule-position aria-label="Posizione girone">${Array.from({ length: maxFinalPosition() }, (_, index) => `<option value="${index + 1}" ${Number(rule.poolPosition) === index + 1 ? 'selected' : ''}>${index + 1}&deg; posto</option>`).join('')}</select><input class="control" data-rule-count type="number" min="1" max="${Math.max(1, finalPools.length)}" value="${rule.count || 1}" aria-label="Numero qualificate" ${rule.ruleType === 'Position' ? 'disabled' : ''}><button class="btn btn-ghost icon-btn" type="button" data-remove-rule="${phaseIndex}:${ruleIndex}" title="Rimuovi regola" aria-label="Rimuovi regola"><i data-lucide="x" class="icon"></i></button></div>`).join('')}
+          <button class="btn btn-ghost" type="button" data-add-rule="${phaseIndex}" style="width:100%;margin-top:9px"><i data-lucide="plus" class="icon"></i> Aggiungi regola</button>
+        </article>`).join('') : '<div class="final-empty">Nessuna fase configurata. Aggiungine una per iniziare.</div>';
+      refreshIcons();
+    }
+
+    async function loadFinals() {
+      const tournamentId = selectedFinalTournamentId();
+      if (!tournamentId) {
+        finalPhases = []; finalPools = []; finalCourts = []; finalMatches = []; finalQualifiers = [];
+        renderFinalConfig([]);
+        document.getElementById('final-phase-select').innerHTML = '<option value="">Nessuna fase</option>';
+        document.getElementById('final-qualifiers').innerHTML = '<div class="final-empty">Seleziona un torneo con fasi configurate.</div>';
+        document.getElementById('final-bracket').innerHTML = '<div class="final-empty">Nessun tabellone disponibile.</div>';
+        return;
+      }
+      const currentPhaseId = document.getElementById('final-phase-select').value;
+      [finalPhases, finalPools, finalCourts] = await Promise.all([
+        api(finalBasePath()), api(`/api/admin/tournaments/${tournamentId}/pools`), api(`/api/admin/tournaments/${tournamentId}/courts`)
+      ]);
+      renderFinalConfig(finalPhases);
+      const phaseSelect = document.getElementById('final-phase-select');
+      phaseSelect.innerHTML = finalPhases.map(phase => `<option value="${phase.id}">${escapeHtml(phase.name)} &middot; ${phase.qualifiedTeamsCount} squadre</option>`).join('') || '<option value="">Nessuna fase configurata</option>';
+      phaseSelect.value = finalPhases.some(phase => String(phase.id) === currentPhaseId) ? currentPhaseId : String(finalPhases[0]?.id || '');
+      await loadFinalPhaseDetails();
+    }
+
+    async function loadFinalPhaseDetails() {
+      const phase = selectedFinalPhase();
+      document.getElementById('final-current-title').textContent = phase ? phase.name : 'Tabellone';
+      if (!phase) {
+        finalMatches = []; finalQualifiers = [];
+        document.getElementById('final-qualifiers').innerHTML = '<div class="final-empty">Salva almeno una fase per vedere le qualificate.</div>';
+        document.getElementById('final-bracket').innerHTML = '<div class="final-empty">Nessun tabellone disponibile.</div>';
+        return;
+      }
+      const path = `${finalBasePath()}/${phase.id}`;
+      const [qualifierResult, matchResult] = await Promise.allSettled([api(`${path}/qualifiers`), api(`${path}/matches`)]);
+      finalQualifiers = qualifierResult.status === 'fulfilled' ? qualifierResult.value : [];
+      finalMatches = matchResult.status === 'fulfilled' ? matchResult.value : [];
+      if (qualifierResult.status === 'rejected') showToast(qualifierResult.reason.message);
+      if (matchResult.status === 'rejected') showToast(matchResult.reason.message);
+      renderFinalQualifiers();
+      renderFinalBracket();
+    }
+
+    function renderFinalQualifiers() {
+      const target = document.getElementById('final-qualifiers');
+      target.innerHTML = finalQualifiers.length ? finalQualifiers.map((team, index) => `<div class="qualifier-row"><span class="qualifier-rank">${index + 1}</span><div><strong>${escapeHtml(team.teamName)}</strong><small>${escapeHtml(team.poolName)} &middot; ${team.position}&deg; posto</small></div><div class="qualifier-stats">${team.wins}V-${team.losses}P<br>${team.pointsFor} PF &middot; ${team.pointDifference > 0 ? '+' : ''}${team.pointDifference}</div></div>`).join('') : '<div class="final-empty">Nessuna squadra qualificata disponibile.</div>';
+    }
+
+    function renderFinalBracket() {
+      const target = document.getElementById('final-bracket');
+      if (!finalMatches.length) {
+        target.innerHTML = '<div class="final-empty">Nessun tabellone generato per questa fase.</div>';
+        return;
+      }
+      const rounds = [...new Set(finalMatches.map(match => match.roundNumber))].sort((a, b) => a - b);
+      const labels = { 1: 'Finale', 2: 'Semifinali', 4: 'Quarti di finale', 8: 'Ottavi di finale' };
+      target.innerHTML = rounds.map(round => {
+        const matches = finalMatches.filter(match => match.roundNumber === round);
+        const label = round === rounds.at(-1) ? 'Finale' : (labels[matches.length] || `Turno ${round}`);
+        return `<section class="bracket-round"><h3>${label}</h3>${matches.map(match => {
+          const source1 = match.team1SourceMatchId ? `Vincente match ${finalMatches.find(source => source.id === match.team1SourceMatchId)?.matchNumber || ''}` : 'In attesa squadra';
+          const source2 = match.team2SourceMatchId ? `Vincente match ${finalMatches.find(source => source.id === match.team2SourceMatchId)?.matchNumber || ''}` : 'In attesa squadra';
+          const team1 = match.team1Name || (match.team1SourceMatchId ? source1 : 'Da definire');
+          const team2 = match.team2Name || (match.team2SourceMatchId ? source2 : 'Da definire');
+          const team1Winner = match.status === 'Completed' && match.team1Score > match.team2Score;
+          const team2Winner = match.status === 'Completed' && match.team2Score > match.team1Score;
+          const courtOptions = `<option value="">Seleziona campo</option>${finalCourts.map(court => `<option value="${court.id}" ${Number(match.courtId) === court.id ? 'selected' : ''}>${escapeHtml(court.name)}</option>`).join('')}`;
+          const statusClass = match.status === 'Completed' ? 'status-ok' : (match.status === 'Cancelled' ? 'status-off' : 'status-wait');
+          return `<article class="final-match" data-match-id="${match.id}"><div class="final-match-head"><span>Match ${match.matchNumber}</span><span class="status ${statusClass}">${escapeHtml(match.status)}</span></div><div class="final-team ${team1Winner ? 'winner' : ''}"><span>${escapeHtml(team1)}</span><span class="final-team-score">${match.team1Score ?? ''}</span></div><div class="final-team ${team2Winner ? 'winner' : ''}"><span>${escapeHtml(team2)}</span><span class="final-team-score">${match.team2Score ?? ''}</span></div><div class="final-match-meta"><span>${escapeHtml(finalCourts.find(court => court.id === match.courtId)?.name || 'Campo da assegnare')}</span><span>${match.startTime ? `${dateTime(match.startTime)}${match.endTime ? ` - ${new Date(match.endTime).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}` : ''}` : 'Orario da definire'}</span></div><div class="final-match-controls"><select class="control" data-match-court aria-label="Campo">${courtOptions || '<option value="">Nessun campo assegnato</option>'}</select><input class="control" data-match-start type="datetime-local" value="${match.startTime ? String(match.startTime).slice(0, 16) : ''}" aria-label="Data e ora inizio"><button class="btn btn-ghost" type="button" data-save-schedule="${match.id}" ${match.status === 'Cancelled' || !finalCourts.length ? 'disabled' : ''}>Salva orario</button></div><div class="final-result-controls"><input class="control" data-score-one type="number" min="0" max="999" value="${match.team1Score ?? ''}" aria-label="Punteggio squadra 1"><input class="control" data-score-two type="number" min="0" max="999" value="${match.team2Score ?? ''}" aria-label="Punteggio squadra 2"><button class="btn btn-primary" type="button" data-save-result="${match.id}" ${match.status === 'Cancelled' || !match.team1RegistrationId || !match.team2RegistrationId ? 'disabled' : ''}>Risultato</button></div></article>`;
+        }).join('')}</section>`;
+      }).join('');
+    }
+
+    function populatePoolTournamentOptions() {
+      const select = document.getElementById('pool-tournament');
+      const previous = select.value;
+      select.innerHTML = tournaments.map(tournament => `<option value="${tournament.id}">${escapeHtml(tournament.tabLabel || tournament.title)}</option>`).join('') || '<option value="">Nessun torneo</option>';
+      if (tournaments.some(tournament => String(tournament.id) === previous)) select.value = previous;
+    }
+
+    function populateCourtSelectors() {
+      const eventSelect = document.getElementById('courts-event');
+      const previousEvent = eventSelect.value;
+      eventSelect.innerHTML = events.map(item => `<option value="${item.id}">${escapeHtml(item.title)}</option>`).join('') || '<option value="">Nessun evento</option>';
+      if (events.some(item => String(item.id) === previousEvent)) eventSelect.value = previousEvent;
+      populateCourtTournamentOptions();
+    }
+
+    function populateCourtTournamentOptions() {
+      const eventId = Number(document.getElementById('courts-event').value || 0);
+      const select = document.getElementById('courts-tournament');
+      const previous = select.value;
+      const options = tournaments.filter(tournament => Number(tournament.eventId) === eventId);
+      select.innerHTML = options.map(tournament => `<option value="${tournament.id}">${escapeHtml(tournament.tabLabel || tournament.title)}</option>`).join('') || '<option value="">Nessun torneo per l’evento</option>';
+      if (options.some(tournament => String(tournament.id) === previous)) select.value = previous;
+    }
+
+    const selectedPoolTournamentId = () => Number(document.getElementById('pool-tournament').value || 0);
+    const selectedCourtsEventId = () => Number(document.getElementById('courts-event').value || 0);
+    const selectedCourtsTournamentId = () => Number(document.getElementById('courts-tournament').value || 0);
+
+    function normalizeSavedPools(pools) {
+      return pools.map(pool => ({
+        id: pool.id,
+        name: pool.name,
+        sortOrder: pool.sortOrder,
+        teams: (pool.entries || []).map(entry => ({
+          registrationId: entry.registrationId,
+          teamName: entry.teamName || entry.registration?.teamName || '',
+          player1FirstName: entry.player1FirstName || entry.registration?.player1FirstName || '',
+          player1LastName: entry.player1LastName || entry.registration?.player1LastName || '',
+          player2FirstName: entry.player2FirstName || entry.registration?.player2FirstName || '',
+          player2LastName: entry.player2LastName || entry.registration?.player2LastName || ''
+        }))
+      }));
+    }
+
+    async function loadPoolWorkspace() {
+      const tournamentId = selectedPoolTournamentId();
+      if (!tournamentId) {
+        poolDraft = [];
+        renderPoolDraft();
+        return;
+      }
+      const savedPools = await api(`/api/admin/tournaments/${tournamentId}/pools`);
+      if (!poolDraftIsPreview || !poolDraft.length) {
+        poolDraft = normalizeSavedPools(savedPools);
+        document.getElementById('pool-count').value = poolDraft.length || 3;
+        document.getElementById('teams-per-pool').value = poolDraft.length ? Math.max(1, ...poolDraft.map(pool => pool.teams.length)) : 4;
+      }
+      document.getElementById('confirm-pools').disabled = !poolDraft.length;
+      updatePoolSummary();
+      renderPoolDraft();
+    }
+
+    function updatePoolSummary(confirmedTeams) {
+      const count = Number(document.getElementById('pool-count').value || 0);
+      const size = Number(document.getElementById('teams-per-pool').value || 0);
+      const confirmedCount = confirmedTeams ?? registrations.filter(registration => Number(registration.tournamentId) === selectedPoolTournamentId() && registration.status === 'Confirmed').length;
+      const capacity = count * size;
+      document.getElementById('capacity-message').textContent = `${confirmedCount} squadre confermate · capienza ${capacity}${capacity > confirmedCount ? ` · ${capacity - confirmedCount} posti liberi` : ''}${poolDraftIsPreview ? ' · Anteprima non confermata' : ''}`;
+    }
+
+    function renderPoolDraft() {
+      const target = document.getElementById('pool-grid');
+      document.getElementById('confirm-pools').disabled = !poolDraft.length;
+      if (!poolDraft.length) {
+        target.innerHTML = '<div class="panel pool-empty" style="grid-column:1/-1">Imposta i parametri e genera un’anteprima dei gironi.</div>';
+        return;
+      }
+      target.innerHTML = poolDraft.map((pool, poolIndex) => `<section class="pool pool-card"><div class="pool-head"><input class="pool-name" data-pool-name="${poolIndex}" value="${escapeHtml(pool.name)}" aria-label="Nome girone"><span>${pool.teams.length} squadre</span></div><div class="pool-teams">${pool.teams.length ? pool.teams.map(team => `<div class="pool-entry"><div><strong>${escapeHtml(team.teamName)}</strong><small>${escapeHtml(`${team.player1FirstName || ''} ${team.player1LastName || ''} · ${team.player2FirstName || ''} ${team.player2LastName || ''}`.trim())}</small></div><select class="control" data-move-team="${team.registrationId}" data-from-pool="${poolIndex}" aria-label="Sposta ${escapeHtml(team.teamName)}">${poolDraft.map((destination, destinationIndex) => `<option value="${destinationIndex}" ${destinationIndex === poolIndex ? 'selected' : ''}>${escapeHtml(destination.name)}</option>`).join('')}</select></div>`).join('') : '<div class="pool-empty">Nessuna squadra assegnata.</div>'}</div></section>`).join('');
+    }
+
+    document.getElementById('pool-tournament').addEventListener('change', () => {
+      poolDraft = [];
+      poolDraftIsPreview = false;
+      loadPoolWorkspace().catch(error => showToast(error.message));
+    });
+    ['pool-count', 'teams-per-pool'].forEach(id => document.getElementById(id).addEventListener('input', () => updatePoolSummary()));
+    document.getElementById('generate-pools').addEventListener('click', async () => {
+      const tournamentId = selectedPoolTournamentId();
+      if (!tournamentId) return showToast('Seleziona un torneo.');
+      try {
+        const result = await api(`/api/admin/tournaments/${tournamentId}/pools/preview`, { method: 'POST', body: { poolCount: Number(document.getElementById('pool-count').value), maxTeamsPerPool: Number(document.getElementById('teams-per-pool').value), criterion: document.getElementById('pool-method').value } });
+        poolDraft = (result.pools || []).map(pool => ({ name: pool.name, sortOrder: pool.sortOrder, teams: pool.teams || [] }));
+        poolDraftIsPreview = true;
+        updatePoolSummary(result.confirmedTeams);
+        renderPoolDraft();
+      } catch (error) { showToast(error.message); }
+    });
+    document.getElementById('pool-grid').addEventListener('change', event => {
+      const nameInput = event.target.closest('[data-pool-name]');
+      if (nameInput) {
+        const pool = poolDraft[Number(nameInput.dataset.poolName)];
+        if (pool) pool.name = nameInput.value.trim();
+        return;
+      }
+      const select = event.target.closest('[data-move-team]');
+      if (!select) return;
+      const fromPool = poolDraft[Number(select.dataset.fromPool)];
+      const destination = poolDraft[Number(select.value)];
+      const teamIndex = fromPool?.teams.findIndex(team => team.registrationId === Number(select.dataset.moveTeam)) ?? -1;
+      if (!fromPool || !destination || teamIndex < 0 || fromPool === destination) return;
+      destination.teams.push(fromPool.teams.splice(teamIndex, 1)[0]);
+      poolDraftIsPreview = true;
+      renderPoolDraft();
+    });
+    document.getElementById('confirm-pools').addEventListener('click', async () => {
+      const tournamentId = selectedPoolTournamentId();
+      if (!tournamentId || !poolDraft.length) return;
+      if (!confirm('Confermare questa composizione? I gironi salvati in precedenza saranno sostituiti.')) return;
+      try {
+        await api(`/api/admin/tournaments/${tournamentId}/pools/confirm`, { method: 'POST', body: { pools: poolDraft.map((pool, index) => ({ name: pool.name.trim(), sortOrder: index + 1, registrationIds: pool.teams.map(team => team.registrationId) })) } });
+        poolDraftIsPreview = false;
+        await loadPoolWorkspace();
+        showToast('Gironi confermati');
+      } catch (error) { showToast(error.message); }
+    });
+
+    function renderCourtList() {
+      const target = document.getElementById('court-list');
+      target.innerHTML = eventCourts.length ? eventCourts.map(court => {
+        const availability = courtAvailabilities[court.id] || [];
+        return `<article class="court-card"><div class="court-card-head"><div><h3>${escapeHtml(court.name)}</h3><span class="status ${court.isActive ? 'status-ok' : 'status-off'}">${court.isActive ? 'Attivo' : 'Disattivato'}</span></div><div class="court-card-actions"><button class="btn btn-ghost icon-btn" type="button" data-edit-court="${court.id}" title="Modifica campo" aria-label="Modifica campo"><i data-lucide="pencil" class="icon"></i></button>${court.isActive ? `<button class="btn btn-danger icon-btn" type="button" data-disable-court="${court.id}" title="Disattiva campo" aria-label="Disattiva campo"><i data-lucide="eye-off" class="icon"></i></button>` : ''}</div></div><div class="availability-list">${availability.length ? availability.map(item => `<div class="availability-row"><span>${escapeHtml(formatTime(item.startTime))} - ${escapeHtml(formatTime(item.endTime))}</span><span class="availability-actions"><button class="btn btn-ghost icon-btn" type="button" data-edit-availability="${item.id}" data-court-id="${court.id}" title="Modifica disponibilità" aria-label="Modifica disponibilità"><i data-lucide="pencil" class="icon"></i></button><button class="btn btn-danger icon-btn" type="button" data-delete-availability="${item.id}" data-court-id="${court.id}" title="Elimina disponibilità" aria-label="Elimina disponibilità"><i data-lucide="trash-2" class="icon"></i></button></span></div>`).join('') : '<small style="color:var(--muted)">Nessuna finestra di disponibilità.</small>'}</div><button class="btn btn-ghost" type="button" data-add-availability="${court.id}"><i data-lucide="clock-3" class="icon"></i> Aggiungi orario</button></article>`;
+      }).join('') : '<div class="final-empty" style="grid-column:1/-1">Nessun campo configurato per questo evento.</div>';
+      refreshIcons();
+    }
+
+    function renderCourtAssignments() {
+      const target = document.getElementById('court-assignment-list');
+      const activeCourts = eventCourts.filter(court => court.isActive);
+      target.innerHTML = activeCourts.length ? activeCourts.map(court => `<label class="court-checkbox"><input type="checkbox" data-court-assignment value="${court.id}" ${selectedTournamentCourtIds.includes(court.id) ? 'checked' : ''}> ${escapeHtml(court.name)}</label>`).join('') : '<div class="final-empty">Crea e attiva un campo per poterlo assegnare.</div>';
+    }
+
+    function renderRegularMatches() {
+      const target = document.getElementById('match-list');
+      target.innerHTML = regularMatches.length ? regularMatches.map(match => `<div class="match-row" data-regular-match="${match.id}"><strong>Partita ${match.matchNumber}<br><small>${escapeHtml(match.poolName)} · ${escapeHtml(match.courtName)} · ${dateTime(match.startTime)}-${new Date(match.endTime).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}</small></strong><span class="match-team">${escapeHtml(match.team1Name)}</span><span class="match-team">${escapeHtml(match.team2Name)}</span><input class="control" data-match-score-one type="number" min="0" max="100" value="${match.team1Score ?? ''}" aria-label="Punteggio ${escapeHtml(match.team1Name)}"><input class="control" data-match-score-two type="number" min="0" max="100" value="${match.team2Score ?? ''}" aria-label="Punteggio ${escapeHtml(match.team2Name)}"><button class="btn btn-primary" type="button" data-save-match-result="${match.id}" ${match.status === 'Cancelled' ? 'disabled' : ''}>${match.status === 'Completed' ? 'Aggiorna' : 'Risultato'}</button></div>`).join('') : '<div class="final-empty">Nessuna partita generata per questo torneo.</div>';
+    }
+
+    function renderStandings(data, selectedPool) {
+      const target = document.getElementById('standings-list');
+      const groups = selectedPool === 'all' ? data : [{ poolId: Number(selectedPool), poolName: tournamentPools.find(pool => pool.id === Number(selectedPool))?.name || 'Girone', standings: data }];
+      target.innerHTML = groups.length ? groups.map(group => `<section style="padding:12px 16px;border-bottom:1px solid var(--line)"><h3 style="margin:0 0 8px;font-size:1.15rem">${escapeHtml(group.poolName)}</h3><div class="table-wrap"><table style="min-width:620px"><thead><tr><th>#</th><th>Squadra</th><th>PG</th><th>V</th><th>P</th><th>PF</th><th>PS</th><th>Diff.</th></tr></thead><tbody>${group.standings.map(row => `<tr><td>${row.position}</td><td><strong>${escapeHtml(row.teamName)}</strong></td><td>${row.matchesPlayed}</td><td>${row.wins}</td><td>${row.losses}</td><td>${row.pointsFor}</td><td>${row.pointsAgainst}</td><td>${row.pointDifference > 0 ? '+' : ''}${row.pointDifference}</td></tr>`).join('') || '<tr><td colspan="8">Nessun risultato concluso.</td></tr>'}</tbody></table></div></section>`).join('') : '<div class="final-empty">Nessuna classifica disponibile.</div>';
+    }
+
+    async function loadStandings() {
+      const tournamentId = selectedCourtsTournamentId();
+      const select = document.getElementById('standings-pool');
+      const selectedPool = select.value || 'all';
+      if (!tournamentId) {
+        document.getElementById('standings-list').innerHTML = '<div class="final-empty">Seleziona un torneo.</div>';
+        return;
+      }
+      const path = selectedPool === 'all' ? `/api/admin/tournaments/${tournamentId}/standings` : `/api/admin/tournaments/${tournamentId}/pools/${selectedPool}/standings`;
+      renderStandings(await api(path), selectedPool);
+    }
+
+    async function loadTournamentCourtData() {
+      const tournamentId = selectedCourtsTournamentId();
+      if (!tournamentId) {
+        selectedTournamentCourtIds = []; tournamentPools = []; regularMatches = [];
+        document.getElementById('court-assignment-list').innerHTML = '<div class="final-empty">Seleziona un torneo.</div>';
+        document.getElementById('match-list').innerHTML = '<div class="final-empty">Seleziona un torneo.</div>';
+        document.getElementById('standings-list').innerHTML = '<div class="final-empty">Seleziona un torneo.</div>';
+        document.getElementById('standings-pool').innerHTML = '<option value="all">Tutti i gironi</option>';
+        return;
+      }
+      const [assignedCourts, pools, matches] = await Promise.all([api(`/api/admin/tournaments/${tournamentId}/courts`), api(`/api/admin/tournaments/${tournamentId}/pools`), api(`/api/admin/tournaments/${tournamentId}/matches`)]);
+      selectedTournamentCourtIds = assignedCourts.map(court => court.id);
+      tournamentPools = normalizeSavedPools(pools);
+      regularMatches = matches;
+      renderCourtAssignments();
+      renderRegularMatches();
+      const standingsPool = document.getElementById('standings-pool');
+      const previousPool = standingsPool.value;
+      standingsPool.innerHTML = '<option value="all">Tutti i gironi</option>' + tournamentPools.map(pool => `<option value="${pool.id}">${escapeHtml(pool.name)}</option>`).join('');
+      if (tournamentPools.some(pool => String(pool.id) === previousPool)) standingsPool.value = previousPool;
+      await loadStandings();
+    }
+
+    async function loadCourtWorkspace() {
+      const eventId = selectedCourtsEventId();
+      if (!eventId) {
+        eventCourts = [];
+        document.getElementById('court-list').innerHTML = '<div class="final-empty">Crea un evento prima di aggiungere campi.</div>';
+        return;
+      }
+      populateCourtTournamentOptions();
+      eventCourts = await api(`/api/admin/events/${eventId}/courts`);
+      const availability = await Promise.all(eventCourts.map(async court => [court.id, await api(`/api/admin/events/${eventId}/courts/${court.id}/availability`)]));
+      courtAvailabilities = Object.fromEntries(availability);
+      renderCourtList();
+      await loadTournamentCourtData();
+    }
+
+    function openCourtDialog(court = null) {
+      editingCourtId = court?.id || null;
+      document.getElementById('court-dialog-title').textContent = court ? 'Modifica campo' : 'Nuovo campo';
+      document.getElementById('court-name').value = court?.name || '';
+      document.getElementById('court-order').value = court?.sortOrder || eventCourts.length + 1;
+      document.getElementById('court-active').checked = court?.isActive ?? true;
+      document.getElementById('court-dialog').showModal();
+    }
+
+    function openAvailabilityDialog(courtId, availability = null) {
+      activeAvailabilityCourtId = courtId;
+      editingAvailability = availability;
+      document.getElementById('availability-dialog-title').textContent = availability ? 'Modifica disponibilità' : 'Nuova disponibilità';
+      document.getElementById('availability-start').value = formatTime(availability?.startTime);
+      document.getElementById('availability-end').value = formatTime(availability?.endTime);
+      document.getElementById('availability-dialog').showModal();
+    }
+
+    document.getElementById('courts-event').addEventListener('change', () => { populateCourtTournamentOptions(); loadCourtWorkspace().catch(error => showToast(error.message)); });
+    document.getElementById('courts-tournament').addEventListener('change', () => loadTournamentCourtData().catch(error => showToast(error.message)));
+    document.getElementById('standings-pool').addEventListener('change', () => loadStandings().catch(error => showToast(error.message)));
+    document.getElementById('add-court').addEventListener('click', () => openCourtDialog());
+    document.getElementById('court-list').addEventListener('click', async event => {
+      const editButton = event.target.closest('[data-edit-court]');
+      const disableButton = event.target.closest('[data-disable-court]');
+      const addAvailabilityButton = event.target.closest('[data-add-availability]');
+      const editAvailabilityButton = event.target.closest('[data-edit-availability]');
+      const deleteAvailabilityButton = event.target.closest('[data-delete-availability]');
+      try {
+        if (editButton) openCourtDialog(eventCourts.find(court => court.id === Number(editButton.dataset.editCourt)));
+        if (addAvailabilityButton) openAvailabilityDialog(Number(addAvailabilityButton.dataset.addAvailability));
+        if (editAvailabilityButton) {
+          const courtId = Number(editAvailabilityButton.dataset.courtId);
+          const availability = courtAvailabilities[courtId]?.find(item => item.id === Number(editAvailabilityButton.dataset.editAvailability));
+          if (availability) openAvailabilityDialog(courtId, availability);
+        }
+        if (disableButton) {
+          if (!confirm('Disattivare questo campo?')) return;
+          await api(`/api/admin/events/${selectedCourtsEventId()}/courts/${disableButton.dataset.disableCourt}`, { method: 'DELETE' });
+          await loadCourtWorkspace();
+          showToast('Campo disattivato');
+        }
+        if (deleteAvailabilityButton) {
+          const courtId = Number(deleteAvailabilityButton.dataset.courtId);
+          await api(`/api/admin/events/${selectedCourtsEventId()}/courts/${courtId}/availability/${deleteAvailabilityButton.dataset.deleteAvailability}`, { method: 'DELETE' });
+          await loadCourtWorkspace();
+          showToast('Disponibilità eliminata');
+        }
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('court-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const eventId = selectedCourtsEventId();
+      const body = { name: fieldValue('court-name'), sortOrder: Number(fieldValue('court-order')), isActive: document.getElementById('court-active').checked };
+      try {
+        await api(editingCourtId ? `/api/admin/events/${eventId}/courts/${editingCourtId}` : `/api/admin/events/${eventId}/courts`, { method: editingCourtId ? 'PUT' : 'POST', body });
+        document.getElementById('court-dialog').close();
+        await loadCourtWorkspace();
+        showToast(editingCourtId ? 'Campo aggiornato' : 'Campo creato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('availability-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const eventId = selectedCourtsEventId();
+      const startTime = fieldValue('availability-start');
+      const endTime = fieldValue('availability-end');
+      const body = { startTime: `${startTime}:00`, endTime: `${endTime}:00` };
+      try {
+        const basePath = `/api/admin/events/${eventId}/courts/${activeAvailabilityCourtId}/availability`;
+        await api(editingAvailability ? `${basePath}/${editingAvailability.id}` : basePath, { method: editingAvailability ? 'PUT' : 'POST', body });
+        document.getElementById('availability-dialog').close();
+        await loadCourtWorkspace();
+        showToast(editingAvailability ? 'Disponibilità aggiornata' : 'Disponibilità creata');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('save-tournament-courts').addEventListener('click', async () => {
+      const tournamentId = selectedCourtsTournamentId();
+      if (!tournamentId) return showToast('Seleziona un torneo.');
+      const courtIds = [...document.querySelectorAll('[data-court-assignment]:checked')].map(input => Number(input.value));
+      try {
+        await api(`/api/admin/tournaments/${tournamentId}/courts`, { method: 'PUT', body: { courtIds } });
+        await loadTournamentCourtData();
+        showToast('Campi assegnati al torneo');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('generate-matches').addEventListener('click', async () => {
+      const tournamentId = selectedCourtsTournamentId();
+      if (!tournamentId) return showToast('Seleziona un torneo.');
+      if (regularMatches.length && !confirm('Rigenerare il calendario? Le partite e i risultati attuali saranno sostituiti.')) return;
+      try {
+        await api(`/api/admin/tournaments/${tournamentId}/matches/generate`, { method: 'POST' });
+        await loadTournamentCourtData();
+        showToast('Calendario generato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('match-list').addEventListener('click', async event => {
+      const button = event.target.closest('[data-save-match-result]');
+      if (!button) return;
+      const row = button.closest('[data-regular-match]');
+      const scoreOne = row.querySelector('[data-match-score-one]').value;
+      const scoreTwo = row.querySelector('[data-match-score-two]').value;
+      if (scoreOne === '' || scoreTwo === '') return showToast('Inserisci entrambi i punteggi.');
+      try {
+        await api(`/api/admin/tournaments/${selectedCourtsTournamentId()}/matches/${button.dataset.saveMatchResult}/result`, { method: 'PUT', body: { team1Score: Number(scoreOne), team2Score: Number(scoreTwo) } });
+        await loadTournamentCourtData();
+        showToast('Risultato salvato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    async function loadRegistrations() {
+      registrations = (await Promise.all(tournaments.map(async tournament => {
+        const list = await api(`/api/admin/registrations/tournament/${tournament.id}`);
+        return list.map(r => ({ ...r, tournamentTitle: tournament.tabLabel || tournament.title, eventId: tournament.eventId }));
+      }))).flat();
+      renderRegistrations();
+      await loadParticipantPrices();
+    }
+
+    async function loadParticipantPrices() {
+      const eventIds = [...new Set(events.map(event => event.id))];
+      participantPrices = (await Promise.all(eventIds.map(async eventId => {
+        const prices = await api(`/api/admin/events/${eventId}/participants/prices`);
+        return prices.map(price => ({ ...price, eventId }));
+      }))).flat();
+      renderPaymentRows();
+    }
+
+    async function renderDashboard() {
+      const eventId = selectedEventId();
+      const event = dashboard.events.find(e => e.id === eventId);
+      const eventTournaments = event?.tournaments || [];
+      const confirmed = eventTournaments.reduce((sum, t) => sum + t.confirmedCount, 0);
+      const waiting = eventTournaments.reduce((sum, t) => sum + t.waitlistCount, 0);
+      const capacity = eventTournaments.reduce((sum, t) => sum + t.maxTeams, 0);
+      const slots = eventTournaments.reduce((sum, t) => sum + t.availableSlots, 0);
+      document.getElementById('dash-confirmed').textContent = confirmed;
+      document.getElementById('dash-confirmed-detail').textContent = `${eventTournaments.length} tornei attivi`;
+      document.getElementById('dash-slots').textContent = slots;
+      document.getElementById('dash-capacity').textContent = `Su ${capacity} posti complessivi`;
+      document.getElementById('dash-waitlist').textContent = waiting;
+      document.getElementById('dashboard-tournaments').innerHTML = eventTournaments.length ? eventTournaments.map(t => `<tr><td><div class="team"><span class="team-mark">${escapeHtml((t.title || '?').slice(0,2).toUpperCase())}</span>${escapeHtml(t.title)}</div></td><td>${t.confirmedCount} / ${t.maxTeams}</td><td>${t.waitlistCount}</td><td>${t.cancelledCount}</td><td><span class="status ${t.availableSlots ? 'status-wait' : 'status-ok'}">${t.availableSlots ? 'Disponibile' : 'Completo'}</span></td></tr>`).join('') : '<tr><td colspan="5">Nessun torneo per questo evento.</td></tr>';
+      try {
+        const summary = await api(`/api/admin/events/${eventId}/payments/summary`);
+        activePaymentSummary = summary;
+        document.getElementById('dash-paid').textContent = money(summary.totalAmount);
+        document.getElementById('dash-settlement').textContent = summary.settlement;
+        document.getElementById('dashboard-payment-summary').innerHTML = `<li><span class="activity-dot"></span><strong>Massimo</strong><span>${money(summary.massimoAmount)} ricevuti</span></li><li><span class="activity-dot" style="background:var(--yellow);box-shadow:0 0 0 1px var(--yellow)"></span><strong>Silvia</strong><span>${money(summary.silviaAmount)} ricevuti</span></li>`;
+      } catch (error) {
+        document.getElementById('dash-paid').textContent = '-';
+        document.getElementById('dash-settlement').textContent = error.message;
+      }
+    }
+
+    function renderRegistrations() {
+      const search = document.getElementById('registration-search').value.trim().toLowerCase();
+      const tournament = document.getElementById('registration-tournament').value;
+      const status = document.getElementById('registration-status').value;
+      const filtered = registrations.filter(r => (!tournament || tournament === 'all' || String(r.tournamentId) === tournament) && (status === 'all' || r.status === status) && `${r.teamName} ${r.email} ${r.player1FirstName} ${r.player1LastName} ${r.player2FirstName} ${r.player2LastName}`.toLowerCase().includes(search));
+      document.getElementById('registration-rows').innerHTML = filtered.length ? filtered.map(r => `<tr><td><div class="team"><span class="team-mark">${escapeHtml((r.teamName || '?').slice(0,2).toUpperCase())}</span>${escapeHtml(r.teamName)}</div><small>${escapeHtml(r.email)}</small></td><td>${escapeHtml(r.tournamentTitle)}</td><td>${escapeHtml(r.player1FirstName)} ${escapeHtml(r.player1LastName)}<br>${escapeHtml(r.player2FirstName)} ${escapeHtml(r.player2LastName)}</td><td>${dateTime(r.createdAt)}</td><td><select class="control registration-status-select" data-id="${r.id}"><option value="Confirmed" ${r.status === 'Confirmed' ? 'selected' : ''}>Confermata</option><option value="Waitlist" ${r.status === 'Waitlist' ? 'selected' : ''}>Attesa</option><option value="Cancelled" ${r.status === 'Cancelled' ? 'selected' : ''}>Annullata</option></select></td><td><button class="btn btn-ghost" data-action="edit-registration" data-registration="${r.id}">Modifica</button></td></tr>`).join('') : '<tr><td colspan="6">Nessuna iscrizione trovata.</td></tr>';
+      renderPaymentRows();
+    }
+
+    async function loadPayments() {
+      const eventId = selectedPaymentsEventId();
+      if (!eventId) return;
+      try {
+        const summary = await api(`/api/admin/events/${eventId}/payments/summary`);
+        activePaymentSummary = summary;
+        document.getElementById('payments-total').textContent = money(summary.totalAmount);
+        document.getElementById('payments-massimo').textContent = money(summary.massimoAmount);
+        document.getElementById('payments-silvia').textContent = money(summary.silviaAmount);
+        document.getElementById('payments-difference').textContent = money(summary.difference);
+        document.getElementById('payments-settlement').textContent = summary.settlement;
+      } catch (error) { showToast(error.message); }
+      renderPaymentRows();
+    }
+
+    function playerPrice(eventId, firstName, lastName) {
+      return participantPrices.find(price =>
+        price.eventId === eventId &&
+        price.firstName.toLowerCase() === String(firstName).trim().toLowerCase() &&
+        price.lastName.toLowerCase() === String(lastName).trim().toLowerCase());
+    }
+
+    function renderPaymentRows() {
+      const eventId = selectedPaymentsEventId();
+      const search = (document.getElementById('payment-search')?.value || '').trim().toLowerCase();
+      const players = participantPrices
+        .filter(price => price.eventId === eventId)
+        .map(price => {
+          const entries = registrations
+            .filter(registration => registration.eventId === eventId)
+            .flatMap(registration => [1, 2].map(playerNumber => ({ registration, playerNumber })))
+            .filter(entry =>
+              entry.registration[`player${entry.playerNumber}FirstName`].trim().toLowerCase() === price.firstName.trim().toLowerCase() &&
+              entry.registration[`player${entry.playerNumber}LastName`].trim().toLowerCase() === price.lastName.trim().toLowerCase());
+          const payments = entries.flatMap(entry => entry.registration.payments
+            .filter(payment => payment.playerNumber === entry.playerNumber)
+            .map(payment => ({ ...payment, registration: entry.registration })));
+          const teams = [...new Set(entries.map(entry => entry.registration.teamName))];
+          const tournamentNames = [...new Set(entries.map(entry => entry.registration.tournamentTitle))];
+          const email = entries[0]?.registration.email || '';
+          return { price, entries, payments, teams, tournamentNames, email };
+        })
+        .filter(player => `${player.price.firstName} ${player.price.lastName} ${player.teams.join(' ')} ${player.email}`.toLowerCase().includes(search));
+      document.getElementById('payments-rows').innerHTML = players.length ? players.map(player => {
+        const history = player.payments.length ? player.payments.map(payment => `${money(payment.amount)} | ${escapeHtml(payment.paymentMethod)} | ${escapeHtml(payment.receivedBy || 'Cassa')}`).join('<br>') : 'Nessun pagamento';
+        const primary = player.entries[0];
+        return `<tr><td><strong>${escapeHtml(player.teams.join(', '))}</strong><br><small>${escapeHtml(player.email)}</small></td><td>${escapeHtml(player.tournamentNames.join(', '))}</td><td>${escapeHtml(player.price.firstName)} ${escapeHtml(player.price.lastName)}</td><td>${money(player.price.amountDue)}</td><td>${money(player.price.amountPaid)}</td><td>${money(player.price.amountRemaining)}</td><td>${history}</td><td><button class="btn btn-primary" data-action="manage-player-payment" data-registration="${primary.registration.id}" data-player="${primary.playerNumber}" data-remaining="${player.price.amountRemaining}">Registra</button></td></tr>`;
+      }).join('') : '<tr><td colspan="8">Nessun giocatore per questo evento.</td></tr>';
+      refreshIcons();
+    }
+
+    function renderTournamentList(event, list) {
+      const rows = list.map(t => `
+        <tr>
+          <td><strong>${escapeHtml(t.tabLabel)}</strong><br><small style="color:var(--muted)">${escapeHtml(t.title)}</small></td>
+          <td>${escapeHtml(categoryName(t.categoryId))}</td>
+          <td>${formatTime(t.startTime)} - ${formatTime(t.endTime)}</td>
+          <td>&euro; ${escapeHtml(t.price)}</td>
+          <td>${escapeHtml(t.maxTeams)}</td>
+          <td><span class="status ${t.isActive ? 'status-ok' : 'status-off'}">${t.isActive ? 'Attivo' : 'Disattivo'}</span></td>
+          <td style="text-align:right;white-space:nowrap">
+            <button class="btn btn-ghost icon-btn" data-action="edit-tournament" data-id="${t.id}" title="Modifica" aria-label="Modifica"><i data-lucide="pencil" class="icon"></i></button>
+            <button class="btn btn-ghost icon-btn" data-action="toggle-tournament" data-id="${t.id}" title="${t.isActive ? 'Disattiva' : 'Attiva'}" aria-label="${t.isActive ? 'Disattiva' : 'Attiva'}"><i data-lucide="${t.isActive ? 'eye-off' : 'eye'}" class="icon"></i></button>
+          </td>
+        </tr>`).join('');
+
+      return `
+        <div class="panel tournament-panel">
+          <div class="panel-head"><div><h2>Tornei</h2><p>${escapeHtml(event.title)}</p></div><button class="btn btn-primary" data-action="new-tournament" data-id="${event.id}"><i data-lucide="plus" class="icon"></i> Nuovo torneo</button></div>
+          ${list.length
+            ? `<div class="table-wrap"><table><thead><tr><th>Torneo</th><th>Categoria</th><th>Orario</th><th>Quota</th><th>Squadre</th><th>Stato</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`
+            : '<div class="pool-empty">Nessun torneo configurato.</div>'}
+        </div>`;
+    }
+
+    function renderEventBlock(event) {
+      const date = new Date(event.date);
+      const eventTournaments = tournaments.filter(t => t.eventId === event.id);
+      const isOpen = expandedEvents.has(event.id);
+      return `
+        <div class="event-block">
+          <article class="event-row">
+            <div class="date-tile"><strong>${date.getDate()}</strong><small>${date.toLocaleDateString('it-IT', { month: 'short', year: 'numeric' })}</small></div>
+            <div class="event-title"><strong>${escapeHtml(event.title)}</strong><span>${escapeHtml(event.location)} &middot; ${escapeHtml(event.address)}</span></div>
+            <div class="event-meta">${eventTournaments.length} tornei</div>
+            <div><span class="status ${event.isActive ? 'status-ok' : 'status-wait'}">${event.isActive ? 'Pubblicato' : 'Bozza'}</span></div>
+            <div class="event-actions">
+              <button class="btn btn-ghost icon-btn" data-action="toggle-tournaments" data-id="${event.id}" title="Tornei" aria-label="Tornei"><i data-lucide="${isOpen ? 'chevron-up' : 'list'}" class="icon"></i></button>
+              <button class="btn btn-ghost icon-btn" data-action="edit-event" data-id="${event.id}" title="Modifica" aria-label="Modifica"><i data-lucide="pencil" class="icon"></i></button>
+              <button class="btn btn-ghost icon-btn" data-action="toggle-event" data-id="${event.id}" title="${event.isActive ? 'Nascondi' : 'Pubblica'}" aria-label="${event.isActive ? 'Nascondi' : 'Pubblica'}"><i data-lucide="${event.isActive ? 'eye-off' : 'eye'}" class="icon"></i></button>
+              <button class="btn btn-ghost icon-btn" data-action="duplicate-event" data-id="${event.id}" title="Duplica" aria-label="Duplica"><i data-lucide="copy" class="icon"></i></button>
+            </div>
+          </article>
+          ${isOpen ? renderTournamentList(event, eventTournaments) : ''}
+        </div>`;
+    }
+
+    function renderEvents() {
+      const search = fieldValue('event-search').toLowerCase();
+      const filter = document.getElementById('event-filter').value;
+      const list = events.filter(e =>
+        (filter === 'all' || String(e.isActive) === filter) &&
+        (e.title + ' ' + e.location).toLowerCase().includes(search));
+      document.getElementById('event-list').innerHTML = list.length
+        ? list.map(renderEventBlock).join('')
+        : '<div class="panel pool-empty">Nessun evento trovato.</div>';
+      refreshIcons();
+    }
+
+    function renderCategories() {
+      document.getElementById('category-list').innerHTML = categories.map(c => `
+        <div class="category-item"><span>${escapeHtml(c.name)}</span><button class="btn btn-ghost icon-btn" data-category-id="${c.id}" title="Rinomina" aria-label="Rinomina ${escapeHtml(c.name)}"><i data-lucide="pencil" class="icon"></i></button></div>`).join('');
+      refreshIcons();
+    }
+
+    const eventDialog = document.getElementById('event-dialog');
+    const eventForm = document.getElementById('event-form');
+    const tournamentDialog = document.getElementById('tournament-dialog');
+    const tournamentForm = document.getElementById('tournament-form');
+    let editingEventId = null;
+    let editingTournament = null;
+
+    function openEventDialog(item) {
+      editingEventId = item ? item.id : null;
+      eventForm.reset();
+      document.getElementById('event-dialog-title').textContent = item ? 'Modifica evento' : 'Nuovo evento';
+      if (item) {
+        document.getElementById('event-title').value = item.title;
+        document.getElementById('event-date').value = String(item.date).slice(0, 10);
+        document.getElementById('event-period').value = item.periodLabel;
+        document.getElementById('event-location').value = item.location;
+        document.getElementById('event-address').value = item.address;
+        document.getElementById('event-active').checked = item.isActive;
+      }
+      eventDialog.showModal();
+    }
+
+    function openTournamentDialog(item, eventId) {
+      editingTournament = { id: item ? item.id : null, eventId: item ? item.eventId : eventId };
+      tournamentForm.reset();
+      document.getElementById('tournament-category').innerHTML = categories
+        .map(c => `<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
+      document.getElementById('tournament-dialog-title').textContent = item ? 'Modifica torneo' : 'Nuovo torneo';
+      if (item) {
+        const values = {
+          'tournament-title': item.title, 'tournament-tab': item.tabLabel, 'tournament-category': item.categoryId,
+          'tournament-format': item.format, 'tournament-level': item.level,
+          'tournament-start': formatTime(item.startTime), 'tournament-end': formatTime(item.endTime),
+          'tournament-price': item.price, 'tournament-max': item.maxTeams, 'tournament-min-players': item.minPlayers,
+          'tournament-order': item.sortOrder, 'tournament-form-url': item.formUrl,
+          'tournament-waitlist-url': item.waitlistFormUrl, 'tournament-form-id': item.googleFormId
+        };
+        Object.entries(values).forEach(([id, value]) => { document.getElementById(id).value = value ?? ''; });
+        document.getElementById('tournament-active').checked = item.isActive;
+      } else {
+        document.getElementById('tournament-order').value = tournaments.filter(t => t.eventId === eventId).length + 1;
+      }
+      tournamentDialog.showModal();
+    }
+
+    document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
+    document.querySelectorAll('[data-open-event]').forEach(button => button.addEventListener('click', () => openEventDialog(null)));
+    document.getElementById('event-search').addEventListener('input', renderEvents);
+    document.getElementById('event-filter').addEventListener('change', renderEvents);
+
+    eventForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const body = {
+        title: fieldValue('event-title'),
+        date: fieldValue('event-date') + 'T00:00:00',
+        location: fieldValue('event-location'),
+        address: fieldValue('event-address'),
+        periodLabel: fieldValue('event-period'),
+        isActive: document.getElementById('event-active').checked
+      };
+      try {
+        await api(editingEventId ? `/api/admin/events/${editingEventId}` : '/api/admin/events', { method: editingEventId ? 'PUT' : 'POST', body });
+        eventDialog.close();
+        await loadAdminData();
+        showToast(editingEventId ? 'Evento aggiornato' : 'Evento creato');
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    tournamentForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const id = editingTournament.id;
+      const body = {
+        eventId: editingTournament.eventId,
+        categoryId: Number(fieldValue('tournament-category')),
+        sortOrder: Number(fieldValue('tournament-order')),
+        tabLabel: fieldValue('tournament-tab'),
+        title: fieldValue('tournament-title'),
+        format: fieldValue('tournament-format'),
+        startTime: fieldValue('tournament-start') + ':00',
+        endTime: fieldValue('tournament-end') + ':00',
+        price: Number(fieldValue('tournament-price')),
+        maxTeams: Number(fieldValue('tournament-max')),
+        level: fieldValue('tournament-level'),
+        minPlayers: Number(fieldValue('tournament-min-players')),
+        formUrl: fieldValue('tournament-form-url'),
+        waitlistFormUrl: fieldValue('tournament-waitlist-url'),
+        googleFormId: fieldValue('tournament-form-id'),
+        isActive: document.getElementById('tournament-active').checked
+      };
+      try {
+        await api(id ? `/api/admin/tournaments/${id}` : '/api/admin/tournaments', { method: id ? 'PUT' : 'POST', body });
+        tournamentDialog.close();
+        expandedEvents.add(body.eventId);
+        await loadAdminData();
+        showToast(id ? 'Torneo aggiornato' : 'Torneo creato');
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    document.getElementById('event-list').addEventListener('click', async event => {
+      const button = event.target.closest('[data-action]');
+      if (!button) return;
+      const id = Number(button.dataset.id);
+      try {
+        switch (button.dataset.action) {
+          case 'toggle-tournaments':
+            if (expandedEvents.has(id)) expandedEvents.delete(id); else expandedEvents.add(id);
+            renderEvents();
+            break;
+          case 'edit-event':
+            openEventDialog(events.find(e => e.id === id));
+            break;
+          case 'toggle-event': {
+            const item = events.find(e => e.id === id);
+            await api(`/api/admin/events/${id}/active`, { method: 'PATCH', body: !item.isActive });
+            item.isActive = !item.isActive;
+            renderEvents();
+            showToast(item.isActive ? 'Evento pubblicato' : 'Evento nascosto');
+            break;
+          }
+          case 'duplicate-event': {
+            const copy = await api(`/api/admin/events/${id}/duplicate`, { method: 'POST' });
+            await loadAdminData();
+            showToast('Creato "' + copy.title + '"');
+            break;
+          }
+          case 'new-tournament':
+            openTournamentDialog(null, id);
+            break;
+          case 'edit-tournament':
+            openTournamentDialog(tournaments.find(t => t.id === id));
+            break;
+          case 'toggle-tournament': {
+            const item = tournaments.find(t => t.id === id);
+            await api(`/api/admin/tournaments/${id}/active`, { method: 'PATCH', body: !item.isActive });
+            item.isActive = !item.isActive;
+            renderEvents();
+            break;
+          }
+        }
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    document.getElementById('category-form').addEventListener('submit', async event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      try {
+        await api('/api/admin/categories', { method: 'POST', body: { name: fieldValue('category-name') } });
+        form.reset();
+        await loadAdminData();
+        showToast('Categoria creata');
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    document.getElementById('category-list').addEventListener('click', async event => {
+      const button = event.target.closest('[data-category-id]');
+      if (!button) return;
+      const category = categories.find(c => c.id === Number(button.dataset.categoryId));
+      const name = (prompt('Nuovo nome categoria', category.name) || '').trim();
+      if (!name || name === category.name) return;
+      try {
+        await api(`/api/admin/categories/${category.id}`, { method: 'PUT', body: { name } });
+        await loadAdminData();
+        showToast('Categoria aggiornata');
+      } catch (error) {
+        showToast(error.message);
+      }
+    });
+
+    function readFinalConfig() {
+      return [...document.querySelectorAll('[data-phase-editor]')].map(editor => ({
+        name: editor.querySelector('[data-phase-name]').value.trim(),
+        eliminationType: editor.querySelector('[data-elimination-type]').value,
+        rules: [...editor.querySelectorAll('[data-rule-row]')].map(row => ({
+          ruleType: row.querySelector('[data-rule-type]').value,
+          poolPosition: Number(row.querySelector('[data-rule-position]').value),
+          count: row.querySelector('[data-rule-type]').value === 'Position' ? 1 : Number(row.querySelector('[data-rule-count]').value)
+        }))
+      }));
+    }
+
+    document.getElementById('final-tournament').addEventListener('change', () => loadFinals().catch(error => showToast(error.message)));
+    document.getElementById('final-phase-select').addEventListener('change', () => loadFinalPhaseDetails().catch(error => showToast(error.message)));
+    document.getElementById('refresh-finals').addEventListener('click', () => loadFinals().catch(error => showToast(error.message)));
+    document.getElementById('refresh-qualifiers').addEventListener('click', () => loadFinalPhaseDetails().catch(error => showToast(error.message)));
+    document.getElementById('refresh-final-matches').addEventListener('click', () => loadFinalPhaseDetails().catch(error => showToast(error.message)));
+
+    document.getElementById('add-final-phase').addEventListener('click', () => {
+      const phases = readFinalConfig();
+      phases.push({ name: `Fase ${phases.length + 1}`, eliminationType: 'SingleElimination', rules: [{ ruleType: 'Position', poolPosition: 1, count: 1 }] });
+      renderFinalConfig(phases);
+    });
+
+    document.getElementById('final-config-list').addEventListener('click', event => {
+      const removePhase = event.target.closest('[data-remove-phase]');
+      const addRule = event.target.closest('[data-add-rule]');
+      const removeRule = event.target.closest('[data-remove-rule]');
+      const phases = readFinalConfig();
+      if (removePhase) phases.splice(Number(removePhase.dataset.removePhase), 1);
+      if (addRule) {
+        const phase = phases[Number(addRule.dataset.addRule)];
+        if (phase) {
+          const usedPositions = new Set(phase.rules.map(rule => rule.poolPosition));
+          const nextPosition = Array.from({ length: maxFinalPosition() }, (_, index) => index + 1).find(position => !usedPositions.has(position)) || 1;
+          phase.rules.push({ ruleType: 'Position', poolPosition: nextPosition, count: 1 });
+        }
+      }
+      if (removeRule) {
+        const [phaseIndex, ruleIndex] = removeRule.dataset.removeRule.split(':').map(Number);
+        phases[phaseIndex]?.rules.splice(ruleIndex, 1);
+      }
+      if (removePhase || addRule || removeRule) renderFinalConfig(phases);
+    });
+
+    document.getElementById('final-config-list').addEventListener('change', event => {
+      const select = event.target.closest('[data-rule-type]');
+      if (select) select.closest('[data-rule-row]').querySelector('[data-rule-count]').disabled = select.value === 'Position';
+    });
+
+    document.getElementById('save-final-phases').addEventListener('click', async () => {
+      const phases = readFinalConfig();
+      try {
+        await api(finalBasePath(), { method: 'PUT', body: { phases } });
+        await loadFinals();
+        showToast('Configurazione fasi salvata');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('generate-final-bracket').addEventListener('click', async () => {
+      const phase = selectedFinalPhase();
+      if (!phase) return showToast('Seleziona una fase configurata.');
+      if (finalMatches.length && !confirm('Generare di nuovo il tabellone? Le partite e la programmazione attuali saranno sostituite.')) return;
+      try {
+        await api(`${finalBasePath()}/${phase.id}/generate`, { method: 'POST' });
+        await loadFinalPhaseDetails();
+        showToast('Tabellone generato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('schedule-finals').addEventListener('click', async () => {
+      const phase = selectedFinalPhase();
+      if (!phase) return showToast('Seleziona una fase configurata.');
+      try {
+        await api(`${finalBasePath()}/${phase.id}/schedule`, { method: 'POST' });
+        await loadFinalPhaseDetails();
+        showToast('Partite programmate');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('final-bracket').addEventListener('click', async event => {
+      const scheduleButton = event.target.closest('[data-save-schedule]');
+      const resultButton = event.target.closest('[data-save-result]');
+      const phase = selectedFinalPhase();
+      if ((!scheduleButton && !resultButton) || !phase) return;
+      const matchElement = event.target.closest('[data-match-id]');
+      const matchId = scheduleButton ? scheduleButton.dataset.saveSchedule : resultButton.dataset.saveResult;
+      try {
+        if (scheduleButton) {
+          const courtId = Number(matchElement.querySelector('[data-match-court]').value);
+          const startTime = matchElement.querySelector('[data-match-start]').value;
+          if (!courtId || !startTime) return showToast('Seleziona campo e data/ora di inizio.');
+          await api(`${finalBasePath()}/${phase.id}/matches/${matchId}/schedule`, { method: 'PUT', body: { courtId, startTime: `${startTime}:00` } });
+        } else {
+          const team1Score = Number(matchElement.querySelector('[data-score-one]').value);
+          const team2Score = Number(matchElement.querySelector('[data-score-two]').value);
+          if (matchElement.querySelector('[data-score-one]').value === '' || matchElement.querySelector('[data-score-two]').value === '') return showToast('Inserisci entrambi i punteggi.');
+          await api(`${finalBasePath()}/${phase.id}/matches/${matchId}/result`, { method: 'PUT', body: { team1Score, team2Score } });
+        }
+        await loadFinalPhaseDetails();
+        showToast(scheduleButton ? 'Orario aggiornato' : 'Risultato salvato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    const paymentDialog = document.getElementById('payment-dialog');
+    const paymentForm = document.getElementById('payment-form');
+    let paymentRegistration = null;
+    let editingPaymentId = null;
+
+    function renderRegistrationPayments(playerNumber) {
+      const target = document.getElementById('registration-payments');
+      const payments = paymentRegistration.payments.filter(payment => payment.playerNumber === playerNumber);
+      target.innerHTML = payments.length ? payments.map(p => `<tr><td>Giocatore ${p.playerNumber}</td><td>${escapeHtml(p.paymentMethod)}</td><td>${escapeHtml(p.receivedBy || '-')}</td><td>${money(p.amount)}</td><td><button class="btn btn-ghost icon-btn" data-edit-payment="${p.id}" title="Modifica"><i data-lucide="pencil" class="icon"></i></button></td></tr>`).join('') : '<tr><td colspan="5">Nessun pagamento registrato per questo giocatore.</td></tr>';
+      refreshIcons();
+    }
+
+    async function openPaymentDialog(registration, playerNumber = 1, playerRemaining = 0, payment = null) {
+      paymentRegistration = registration;
+      registration.payments = await api(`/api/admin/registrations/${registration.id}/payments`);
+      editingPaymentId = payment?.id || null;
+      const playerName = `${registration[`player${playerNumber}FirstName`]} ${registration[`player${playerNumber}LastName`]}`;
+      document.getElementById('payment-team-label').textContent = `${registration.teamName} | ${playerName} | residuo ${money(playerRemaining)}`;
+      document.getElementById('payment-dialog-title').textContent = payment ? 'Modifica pagamento' : 'Registra pagamento';
+      document.getElementById('payment-player').innerHTML = [1, 2].map(number => {
+        const name = `${registration[`player${number}FirstName`]} ${registration[`player${number}LastName`]}`;
+        return `<option value="${number}">${escapeHtml(name)}</option>`;
+      }).join('');
+      document.getElementById('payment-player').value = String(payment?.playerNumber || playerNumber);
+      document.getElementById('payment-player').disabled = true;
+      document.getElementById('payment-amount').value = payment?.amount ?? (playerRemaining > 0 ? playerRemaining : '');
+      document.getElementById('payment-method').value = payment?.paymentMethod || 'Satispay';
+      document.getElementById('payment-recipient').value = payment?.receivedBy || (document.getElementById('payment-method').value === 'Contanti' ? '' : 'Massimo');
+      document.getElementById('payment-delete').classList.toggle('hidden', !payment);
+      renderRegistrationPayments(playerNumber);
+      paymentDialog.showModal();
+      refreshIcons();
+    }
+
+    const registrationDialog = document.getElementById('registration-dialog');
+    const registrationForm = document.getElementById('registration-form');
+    let editingRegistration = null;
+    function openRegistrationDialog(registration) {
+      editingRegistration = registration;
+      const fields = { 'reg-team': 'teamName', 'reg-email': 'email', 'reg-p1-first': 'player1FirstName', 'reg-p1-last': 'player1LastName', 'reg-p1-phone': 'player1Phone', 'reg-p2-first': 'player2FirstName', 'reg-p2-last': 'player2LastName' };
+      Object.entries(fields).forEach(([id, key]) => { document.getElementById(id).value = registration[key] || ''; });
+      registrationDialog.showModal();
+    }
+    registrationForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!editingRegistration) return;
+      const body = { teamName: fieldValue('reg-team'), email: fieldValue('reg-email'), player1FirstName: fieldValue('reg-p1-first'), player1LastName: fieldValue('reg-p1-last'), player1Phone: fieldValue('reg-p1-phone'), player2FirstName: fieldValue('reg-p2-first'), player2LastName: fieldValue('reg-p2-last') };
+      try {
+        await api(`/api/admin/registrations/${editingRegistration.id}`, { method: 'PUT', body });
+        registrationDialog.close(); await loadAdminData(); showToast('Iscrizione aggiornata');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('registration-rows').addEventListener('click', event => {
+      const button = event.target.closest('[data-action]');
+      if (!button) return;
+      const registration = registrations.find(r => r.id === Number(button.dataset.registration));
+      if (button.dataset.action === 'edit-registration') openRegistrationDialog(registration);
+    });
+    document.getElementById('payments-rows').addEventListener('click', event => {
+      const button = event.target.closest('[data-action="manage-player-payment"]');
+      if (button) {
+        const registration = registrations.find(r => r.id === Number(button.dataset.registration));
+        openPaymentDialog(registration, Number(button.dataset.player), Number(button.dataset.remaining)).catch(error => showToast(error.message));
+      }
+    });
+    document.getElementById('registration-payments').addEventListener('click', event => {
+      const button = event.target.closest('[data-edit-payment]');
+      if (!button) return;
+      const payment = paymentRegistration.payments.find(p => p.id === Number(button.dataset.editPayment));
+      if (payment) openPaymentDialog(paymentRegistration, payment.playerNumber, 0, payment).catch(error => showToast(error.message));
+    });
+    document.getElementById('payment-method').addEventListener('change', event => {
+      if (event.target.value === 'Contanti') document.getElementById('payment-recipient').value = '';
+    });
+    document.getElementById('payment-delete').addEventListener('click', async () => {
+      if (!editingPaymentId || !paymentRegistration) return;
+      try {
+        await api(`/api/admin/registrations/${paymentRegistration.id}/payments/${editingPaymentId}`, { method: 'DELETE' });
+        paymentDialog.close(); await loadAdminData(); showToast('Pagamento eliminato');
+      } catch (error) { showToast(error.message); }
+    });
+    paymentForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (!paymentRegistration) return;
+      const body = { playerNumber: Number(fieldValue('payment-player')), paymentMethod: fieldValue('payment-method'), receivedBy: fieldValue('payment-recipient'), amount: Number(fieldValue('payment-amount')) };
+      try {
+        const path = `/api/admin/registrations/${paymentRegistration.id}/payments`;
+        await api(editingPaymentId ? `${path}/${editingPaymentId}` : path, { method: editingPaymentId ? 'PUT' : 'POST', body });
+        paymentDialog.close(); await loadAdminData(); showToast(editingPaymentId ? 'Pagamento aggiornato' : 'Pagamento registrato');
+      } catch (error) { showToast(error.message); }
+    });
+
+    document.getElementById('registration-rows').addEventListener('change', async event => {
+      const select = event.target.closest('.registration-status-select');
+      if (!select) return;
+      try {
+        await api(`/api/admin/registrations/${select.dataset.id}/status`, { method: 'PATCH', body: { status: select.value } });
+        await loadAdminData(); showToast('Stato iscrizione aggiornato');
+      } catch (error) { showToast(error.message); }
+    });
+    ['registration-search', 'registration-tournament', 'registration-status'].forEach(id => document.getElementById(id).addEventListener(id === 'registration-search' ? 'input' : 'change', renderRegistrations));
+    document.getElementById('payment-search').addEventListener('input', renderPaymentRows);
+    document.getElementById('dashboard-event').addEventListener('change', renderDashboard);
+    document.getElementById('payments-event').addEventListener('change', loadPayments);
+
+    function updateCapacity() {
+      const poolCount = Math.max(1, Number(document.getElementById('pool-count').value) || 1);
+      const teamsPerPool = Math.max(2, Number(document.getElementById('teams-per-pool').value) || 2);
+      const capacity = poolCount * teamsPerPool;
+      const difference = capacity - teamNames.length;
+      const detail = difference >= 0 ? difference + ' posti vuoti' : Math.abs(difference) + ' squadre escluse';
+      document.getElementById('capacity-message').innerHTML = '<strong>' + capacity + ' posti</strong><br>' + teamNames.length + ' squadre &middot; ' + detail;
+    }
+
+    function seededTeams(method) {
+      if (method !== 'random') return [...teamNames];
+      return [...teamNames].sort(() => Math.random() - .5);
+    }
+
+    function generatePools() {
+      const poolCount = Math.max(1, Math.min(8, Number(document.getElementById('pool-count').value) || 1));
+      const teamsPerPool = Math.max(2, Math.min(8, Number(document.getElementById('teams-per-pool').value) || 2));
+      const method = document.getElementById('pool-method').value;
+      const teams = seededTeams(method);
+      const pools = Array.from({ length: poolCount }, () => []);
+      teams.slice(0, poolCount * teamsPerPool).forEach((team, index) => pools[index % poolCount].push(team));
+
+      document.getElementById('pool-grid').innerHTML = pools.map((pool, poolIndex) => `
+        <article class="pool">
+          <div class="pool-head"><strong>Girone ${String.fromCharCode(65 + poolIndex)}</strong><span>${pool.length} / ${teamsPerPool}</span></div>
+          <div class="pool-teams">${pool.map((team, teamIndex) => `
+            <div class="pool-team"><span class="seed">${teamIndex + 1}</span><strong>${team}</strong><i data-lucide="grip-vertical" class="icon drag"></i></div>`).join('')}
+            ${pool.length < teamsPerPool ? '<div class="pool-team"><span class="seed">&ndash;</span><span style="color:var(--muted)">Posto libero</span></div>' : ''}
+          </div>
+        </article>`).join('');
+      document.getElementById('confirm-pools').disabled = false;
+      refreshIcons();
+      showToast('Anteprima gironi generata');
+    }
+
+    ['pool-count', 'teams-per-pool'].forEach(id => document.getElementById(id).addEventListener('input', updateCapacity));
+    document.getElementById('generate-pools').addEventListener('click', generatePools);
+    document.getElementById('clear-pools').addEventListener('click', () => {
+      document.getElementById('pool-grid').innerHTML = '<div class="panel pool-empty" style="grid-column:1/-1"><div><i data-lucide="network" style="width:34px;height:34px;margin-bottom:10px"></i><br>Imposta i parametri e genera l\'anteprima dei gironi.</div></div>';
+      document.getElementById('confirm-pools').disabled = true;
+      refreshIcons();
+    });
+    document.getElementById('confirm-pools').addEventListener('click', () => showToast('Composizione gironi confermata'));
+
+    const previewView = new URLSearchParams(window.location.search).get('preview');
+    if (previewView) {
+      openPrototype('admin@simax.local', previewView);
+    } else {
+      // Riprende una sessione gia attiva dopo un refresh.
+      loadAdminData().then(() => openPrototype('', 'dashboard')).catch(() => {});
+    }
+    refreshIcons();
+  </script>
+</body>
+</html>
+
