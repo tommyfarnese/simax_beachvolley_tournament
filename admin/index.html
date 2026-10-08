@@ -178,6 +178,10 @@
     table { width: 100%; border-collapse: collapse; min-width: 680px; }
     th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid #ebeee9; font-size: .84rem; }
     th { color: var(--muted); background: #fafbf9; font-size: .7rem; text-transform: uppercase; }
+    #payments-table th { vertical-align: top; }
+    .payment-column-filter { display: grid; gap: 7px; min-width: 150px; }
+    .payment-column-filter .control { min-height: 34px; padding: 6px 8px; font-size: .75rem; font-weight: 400; }
+    .payment-amount-filter { min-width: 100px; }
     tbody tr:hover { background: #fafbf9; }
     tbody tr:last-child td { border-bottom: 0; }
     .team { display: flex; align-items: center; gap: 9px; font-weight: 700; }
@@ -540,8 +544,17 @@
         <section class="page" data-page="payments">
           <div class="page-head"><div><div class="eyebrow">Contabilita</div><h1>PAGAMENTI</h1><p>Incassi e pagamenti associati alle iscrizioni.</p></div><select class="control" id="payments-event" style="width:auto;min-width:230px" aria-label="Evento selezionato"></select></div>
           <div class="stats payments-stats"><article class="stat"><div class="stat-top"><span>Totale registrato</span><i data-lucide="wallet" class="icon"></i></div><strong id="payments-total">-</strong><small>Incassi evento</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Massimo</span><i data-lucide="user" class="icon"></i></div><strong id="payments-massimo">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Silvia</span><i data-lucide="user" class="icon"></i></div><strong id="payments-silvia">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Conguaglio</span><i data-lucide="scale" class="icon"></i></div><strong id="payments-difference">-</strong><small id="payments-settlement">-</small></article><article class="stat"><div class="stat-top"><span>Totale dovuto</span><i data-lucide="receipt" class="icon"></i></div><strong id="payments-due">-</strong><small>Quote partecipanti evento</small></article></div>
-          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="payment-search" placeholder="Cerca squadra, giocatore o email"></div><button class="btn btn-ghost" id="payments-export-csv" type="button"><i data-lucide="file-down" class="icon"></i> CSV</button><button class="btn btn-ghost" id="payments-export-excel" type="button"><i data-lucide="file-spreadsheet" class="icon"></i> Excel</button></div>
-          <section class="panel"><div class="table-wrap"><table><thead><tr><th>Squadra</th><th>Torneo</th><th>Giocatore</th><th>Dovuto</th><th>Versato</th><th>Residuo</th><th>Pagamenti</th><th></th></tr></thead><tbody id="payments-rows"></tbody></table></div></section>
+          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="payment-search" placeholder="Cerca squadra, giocatore o email" aria-label="Cerca squadra, giocatore o email"></div><button class="btn btn-ghost" id="payments-export-csv" type="button"><i data-lucide="file-down" class="icon"></i> CSV</button><button class="btn btn-ghost" id="payments-export-excel" type="button"><i data-lucide="file-spreadsheet" class="icon"></i> Excel</button></div>
+          <section class="panel"><div class="table-wrap"><table id="payments-table"><thead><tr>
+            <th scope="col"><label class="payment-column-filter">Squadra<input class="control" data-payment-filter="team" type="search" placeholder="Squadra o email" aria-label="Filtra squadra o email"></label></th>
+            <th scope="col"><label class="payment-column-filter">Torneo<input class="control" data-payment-filter="tournament" type="search" placeholder="Cerca torneo" aria-label="Filtra torneo"></label></th>
+            <th scope="col"><label class="payment-column-filter">Giocatore<input class="control" data-payment-filter="player" type="search" placeholder="Cerca giocatore" aria-label="Filtra giocatore"></label></th>
+            <th scope="col"><div class="payment-column-filter payment-amount-filter">Dovuto<input class="control" data-payment-filter="dueMin" type="number" step="0.01" placeholder="Min" aria-label="Dovuto minimo"><input class="control" data-payment-filter="dueMax" type="number" step="0.01" placeholder="Max" aria-label="Dovuto massimo"></div></th>
+            <th scope="col"><div class="payment-column-filter payment-amount-filter">Versato<input class="control" data-payment-filter="paidMin" type="number" step="0.01" placeholder="Min" aria-label="Versato minimo"><input class="control" data-payment-filter="paidMax" type="number" step="0.01" placeholder="Max" aria-label="Versato massimo"></div></th>
+            <th scope="col"><div class="payment-column-filter payment-amount-filter">Residuo<input class="control" data-payment-filter="remainingMin" type="number" step="0.01" placeholder="Min" aria-label="Residuo minimo"><input class="control" data-payment-filter="remainingMax" type="number" step="0.01" placeholder="Max" aria-label="Residuo massimo"></div></th>
+            <th scope="col"><label class="payment-column-filter">Pagamenti<input class="control" data-payment-filter="history" type="search" placeholder="Metodo o destinatario" aria-label="Filtra pagamenti"></label></th>
+            <th scope="col"><button class="btn btn-ghost icon-btn" id="payments-reset-filters" type="button" title="Azzera filtri" aria-label="Azzera filtri"><i data-lucide="filter-x" class="icon"></i></button></th>
+          </tr></thead><tbody id="payments-rows"></tbody></table></div></section>
         </section>
 
         <section class="page" data-page="pools">
@@ -1364,7 +1377,12 @@
 
     function renderPaymentRows() {
       const eventId = selectedPaymentsEventId();
-      const search = (document.getElementById('payment-search')?.value || '').trim().toLowerCase();
+      const search = document.getElementById('payment-search').value.trim().toLowerCase();
+      const filters = Object.fromEntries([...document.querySelectorAll('[data-payment-filter]')]
+        .map(input => [input.dataset.paymentFilter, input.value.trim().toLowerCase()]));
+      const matchesAmount = (amount, minimum, maximum) =>
+        (filters[minimum] === '' || Number(amount) >= Number(filters[minimum])) &&
+        (filters[maximum] === '' || Number(amount) <= Number(filters[maximum]));
       const totalDue = participantPrices
         .filter(price => price.eventId === eventId)
         .reduce((total, price) => total + Number(price.amountDue || 0), 0);
@@ -1386,7 +1404,19 @@
           const email = entries[0]?.registration.email || '';
           return { price, entries, payments, teams, tournamentNames, email };
         })
-        .filter(player => `${player.price.firstName} ${player.price.lastName} ${player.teams.join(' ')} ${player.email}`.toLowerCase().includes(search));
+        .filter(player => {
+          const history = player.payments.length
+            ? player.payments.map(payment => `${money(payment.amount)} | ${payment.paymentMethod} | ${payment.receivedBy || 'Cassa'}`).join(' ')
+            : 'Nessun pagamento';
+          return `${player.price.firstName} ${player.price.lastName} ${player.teams.join(' ')} ${player.email}`.toLowerCase().includes(search) &&
+            `${player.teams.join(' ')} ${player.email}`.toLowerCase().includes(filters.team) &&
+            player.tournamentNames.join(' ').toLowerCase().includes(filters.tournament) &&
+            `${player.price.firstName} ${player.price.lastName}`.toLowerCase().includes(filters.player) &&
+            history.toLowerCase().includes(filters.history) &&
+            matchesAmount(player.price.amountDue, 'dueMin', 'dueMax') &&
+            matchesAmount(player.price.amountPaid, 'paidMin', 'paidMax') &&
+            matchesAmount(player.price.amountRemaining, 'remainingMin', 'remainingMax');
+        });
       currentPaymentExportRows = players.map(player => [
         player.teams.join(', '),
         player.email,
@@ -1401,7 +1431,7 @@
         const history = player.payments.length ? player.payments.map(payment => `${money(payment.amount)} | ${escapeHtml(payment.paymentMethod)} | ${escapeHtml(payment.receivedBy || 'Cassa')}`).join('<br>') : 'Nessun pagamento';
         const primary = player.entries[0];
         return `<tr><td><strong>${escapeHtml(player.teams.join(', '))}</strong><br><small>${escapeHtml(player.email)}</small></td><td>${escapeHtml(player.tournamentNames.join(', '))}</td><td>${escapeHtml(player.price.lastName)}</td><td>${money(player.price.amountDue)}</td><td>${money(player.price.amountPaid)}</td><td>${money(player.price.amountRemaining)}</td><td>${history}</td><td><button class="btn btn-primary" data-action="manage-player-payment" data-registration="${primary.registration.id}" data-player="${primary.playerNumber}" data-remaining="${player.price.amountRemaining}">Registra</button></td></tr>`;
-      }).join('') : '<tr><td colspan="8">Nessun giocatore per questo evento.</td></tr>';
+      }).join('') : '<tr><td colspan="8">Nessun giocatore corrisponde ai filtri per questo evento.</td></tr>';
       refreshIcons();
     }
 
@@ -1911,6 +1941,12 @@
     });
     ['registration-search', 'registration-tournament', 'registration-status'].forEach(id => document.getElementById(id).addEventListener(id === 'registration-search' ? 'input' : 'change', renderRegistrations));
     document.getElementById('payment-search').addEventListener('input', renderPaymentRows);
+    document.querySelectorAll('[data-payment-filter]').forEach(input => input.addEventListener('input', renderPaymentRows));
+    document.getElementById('payments-reset-filters').addEventListener('click', () => {
+      document.getElementById('payment-search').value = '';
+      document.querySelectorAll('[data-payment-filter]').forEach(input => { input.value = ''; });
+      renderPaymentRows();
+    });
     document.getElementById('payments-export-csv').addEventListener('click', exportPaymentsCsv);
     document.getElementById('payments-export-excel').addEventListener('click', exportPaymentsExcel);
     document.getElementById('dashboard-event').addEventListener('change', renderDashboard);
