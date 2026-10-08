@@ -540,7 +540,7 @@
         <section class="page" data-page="payments">
           <div class="page-head"><div><div class="eyebrow">Contabilita</div><h1>PAGAMENTI</h1><p>Incassi e pagamenti associati alle iscrizioni.</p></div><select class="control" id="payments-event" style="width:auto;min-width:230px" aria-label="Evento selezionato"></select></div>
           <div class="stats payments-stats"><article class="stat"><div class="stat-top"><span>Totale registrato</span><i data-lucide="wallet" class="icon"></i></div><strong id="payments-total">-</strong><small>Incassi evento</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Massimo</span><i data-lucide="user" class="icon"></i></div><strong id="payments-massimo">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Ricevuti da Silvia</span><i data-lucide="user" class="icon"></i></div><strong id="payments-silvia">-</strong><small>Pagamenti elettronici</small></article><article class="stat"><div class="stat-top"><span>Conguaglio</span><i data-lucide="scale" class="icon"></i></div><strong id="payments-difference">-</strong><small id="payments-settlement">-</small></article><article class="stat"><div class="stat-top"><span>Totale dovuto</span><i data-lucide="receipt" class="icon"></i></div><strong id="payments-due">-</strong><small>Quote partecipanti evento</small></article></div>
-          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="payment-search" placeholder="Cerca squadra, giocatore o email"></div></div>
+          <div class="toolbar"><div class="search"><i data-lucide="search" class="icon"></i><input class="control" id="payment-search" placeholder="Cerca squadra, giocatore o email"></div><button class="btn btn-ghost" id="payments-export-csv" type="button"><i data-lucide="file-down" class="icon"></i> CSV</button><button class="btn btn-ghost" id="payments-export-excel" type="button"><i data-lucide="file-spreadsheet" class="icon"></i> Excel</button></div>
           <section class="panel"><div class="table-wrap"><table><thead><tr><th>Squadra</th><th>Torneo</th><th>Giocatore</th><th>Dovuto</th><th>Versato</th><th>Residuo</th><th>Pagamenti</th><th></th></tr></thead><tbody id="payments-rows"></tbody></table></div></section>
         </section>
 
@@ -797,6 +797,8 @@
     let participantPrices = [];
     let dashboard = { events: [] };
     let activePaymentSummary = null;
+    let currentPaymentExportRows = [];
+    let spreadsheetLibraryPromise = null;
     let finalPhases = [];
     let finalPools = [];
     let finalCourts = [];
@@ -1385,12 +1387,81 @@
           return { price, entries, payments, teams, tournamentNames, email };
         })
         .filter(player => `${player.price.firstName} ${player.price.lastName} ${player.teams.join(' ')} ${player.email}`.toLowerCase().includes(search));
+      currentPaymentExportRows = players.map(player => [
+        player.teams.join(', '),
+        player.email,
+        player.tournamentNames.join(', '),
+        player.price.lastName,
+        player.price.amountDue,
+        player.price.amountPaid,
+        player.price.amountRemaining,
+        player.payments.map(payment => `${money(payment.amount)} | ${payment.paymentMethod} | ${payment.receivedBy || 'Cassa'}`).join(' ; ')
+      ]);
       document.getElementById('payments-rows').innerHTML = players.length ? players.map(player => {
         const history = player.payments.length ? player.payments.map(payment => `${money(payment.amount)} | ${escapeHtml(payment.paymentMethod)} | ${escapeHtml(payment.receivedBy || 'Cassa')}`).join('<br>') : 'Nessun pagamento';
         const primary = player.entries[0];
         return `<tr><td><strong>${escapeHtml(player.teams.join(', '))}</strong><br><small>${escapeHtml(player.email)}</small></td><td>${escapeHtml(player.tournamentNames.join(', '))}</td><td>${escapeHtml(player.price.lastName)}</td><td>${money(player.price.amountDue)}</td><td>${money(player.price.amountPaid)}</td><td>${money(player.price.amountRemaining)}</td><td>${history}</td><td><button class="btn btn-primary" data-action="manage-player-payment" data-registration="${primary.registration.id}" data-player="${primary.playerNumber}" data-remaining="${player.price.amountRemaining}">Registra</button></td></tr>`;
       }).join('') : '<tr><td colspan="8">Nessun giocatore per questo evento.</td></tr>';
       refreshIcons();
+    }
+
+    const paymentExportHeaders = ['Squadra', 'Email', 'Torneo', 'Cognome giocatore', 'Dovuto', 'Versato', 'Residuo', 'Pagamenti'];
+
+    function paymentExportFilename(extension) {
+      const eventName = events.find(event => event.id === selectedPaymentsEventId())?.title || 'evento';
+      const eventSlug = eventName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'evento';
+      return `pagamenti-${eventSlug}-${new Date().toISOString().slice(0, 10)}.${extension}`;
+    }
+
+    function downloadPaymentFile(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function exportPaymentsCsv() {
+      const rows = [paymentExportHeaders, ...currentPaymentExportRows];
+      const csv = '\uFEFF' + rows.map(row => row.map(value => {
+        let text = String(value ?? '');
+        if (typeof value === 'string' && /^[=+@\-\t\r]/.test(text)) text = `'${text}`;
+        return `"${text.replace(/"/g, '""')}"`;
+      }).join(';')).join('\r\n');
+      downloadPaymentFile(new Blob([csv], { type: 'text/csv;charset=utf-8' }), paymentExportFilename('csv'));
+    }
+
+    function loadSpreadsheetLibrary() {
+      if (window.XLSX) return Promise.resolve(window.XLSX);
+      if (!spreadsheetLibraryPromise) {
+        spreadsheetLibraryPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+          script.onload = () => window.XLSX ? resolve(window.XLSX) : reject(new Error('Libreria Excel non disponibile.'));
+          script.onerror = () => reject(new Error('Impossibile caricare la libreria Excel.'));
+          document.head.append(script);
+        }).catch(error => {
+          spreadsheetLibraryPromise = null;
+          throw error;
+        });
+      }
+      return spreadsheetLibraryPromise;
+    }
+
+    async function exportPaymentsExcel() {
+      try {
+        const XLSX = await loadSpreadsheetLibrary();
+        const worksheet = XLSX.utils.aoa_to_sheet([paymentExportHeaders, ...currentPaymentExportRows]);
+        worksheet['!cols'] = [{ wch: 26 }, { wch: 30 }, { wch: 24 }, { wch: 22 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 50 }];
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Pagamenti');
+        XLSX.writeFile(workbook, paymentExportFilename('xlsx'));
+      } catch (error) {
+        showToast('Esportazione Excel non riuscita. Verifica la connessione e riprova.');
+      }
     }
 
     function renderTournamentList(event, list) {
@@ -1840,6 +1911,8 @@
     });
     ['registration-search', 'registration-tournament', 'registration-status'].forEach(id => document.getElementById(id).addEventListener(id === 'registration-search' ? 'input' : 'change', renderRegistrations));
     document.getElementById('payment-search').addEventListener('input', renderPaymentRows);
+    document.getElementById('payments-export-csv').addEventListener('click', exportPaymentsCsv);
+    document.getElementById('payments-export-excel').addEventListener('click', exportPaymentsExcel);
     document.getElementById('dashboard-event').addEventListener('change', renderDashboard);
     document.getElementById('payments-event').addEventListener('change', loadPayments);
 
