@@ -7,7 +7,27 @@
       "Location": "PalaUno",
       "Address": "Largo Antonio Balestra 5, Milano",
       "PeriodLabel": "Mattina \u0026 Pomeriggio",
-      "Tournaments": []
+      "Tournaments": [
+        {
+          "Id": 1,
+          "SortOrder": 1,
+          "TabLabel": "2\u00D72 MM",
+          "Title": "Torneo di Fine Estate MM",
+          "Format": "2\u00D72",
+          "StartTime": "09:30:00",
+          "EndTime": "14:00:00",
+          "Price": 25.00,
+          "MaxTeams": 10,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSceRph3nNrHEA_c-SrICg_OuU23-RkOtSAd2ft9s7TXhpOqkQ/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 1,
+            "Name": "Maschile"
+          }
+        }
+      ]
     },
     {
       "Id": 3,
