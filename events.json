@@ -26,6 +26,25 @@
             "Id": 1,
             "Name": "Maschile"
           }
+        },
+        {
+          "Id": 2,
+          "SortOrder": 2,
+          "TabLabel": "2\u00D72 FF",
+          "Title": "Torneo di Fine Estate FF",
+          "Format": "2\u00D72",
+          "StartTime": "09:30:00",
+          "EndTime": "14:00:00",
+          "Price": 25.00,
+          "MaxTeams": 10,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdQvcEcQxF_3ouLmuEWYggWa9Otg2L8MD92jHy7DwKaU1clcA/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 2,
+            "Name": "Femminile"
+          }
         }
       ]
     },
