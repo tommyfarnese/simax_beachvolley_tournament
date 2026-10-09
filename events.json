@@ -45,6 +45,25 @@
             "Id": 2,
             "Name": "Femminile"
           }
+        },
+        {
+          "Id": 3,
+          "SortOrder": 3,
+          "TabLabel": "2\u00D72 MIX",
+          "Title": "Torneo di Fine Estate MIX",
+          "Format": "2\u00D72",
+          "StartTime": "14:00:00",
+          "EndTime": "18:30:00",
+          "Price": 25.00,
+          "MaxTeams": 16,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLScNsRCRIIgpqGM1kE3xl3ZjnHVu6-BF0fViXYKSO8scBSaGcQ/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 3,
+            "Name": "MIX"
+          }
         }
       ]
     },
