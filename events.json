@@ -66,6 +66,73 @@
           }
         }
       ]
+    },
+    {
+      "Id": 6,
+      "Title": "WINTER WARM-UP",
+      "Date": "2026-11-14T00:00:00",
+      "Location": "PalaUno",
+      "Address": "Largo Antonio Balestra 5, Milano",
+      "PeriodLabel": "Mattina \u0026 Pomeriggio",
+      "Tournaments": [
+        {
+          "Id": 8,
+          "SortOrder": 1,
+          "TabLabel": "2\u00D72 MM",
+          "Title": "WINTER WARM-UP",
+          "Format": "2\u00D72",
+          "StartTime": "09:30:00",
+          "EndTime": "14:00:00",
+          "Price": 25.00,
+          "MaxTeams": 8,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSffgCP9nfxxoUvD9Y3RH4dLb45LkK7TCVXb6gY720pFVYeVWA/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 1,
+            "Name": "Maschile"
+          }
+        },
+        {
+          "Id": 9,
+          "SortOrder": 2,
+          "TabLabel": "2\u00D72 FF",
+          "Title": "WINTER WARM-UP",
+          "Format": "2\u00D72",
+          "StartTime": "09:30:00",
+          "EndTime": "14:00:00",
+          "Price": 25.00,
+          "MaxTeams": 8,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSccaAnY7i7n8X71cIGj2LeC6XI0huh3_svnCxPWOgfSM_OpsQ/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 2,
+            "Name": "Femminile"
+          }
+        },
+        {
+          "Id": 10,
+          "SortOrder": 3,
+          "TabLabel": "2\u00D72 MIX",
+          "Title": "WINTER WARM-UP",
+          "Format": "2\u00D72",
+          "StartTime": "14:00:00",
+          "EndTime": "18:30:00",
+          "Price": 25.00,
+          "MaxTeams": 16,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLScRD8FxcoGKsSRE1d2q1fDT28_m5F0abBg4a2R537yiFDq6tw/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 3,
+            "Name": "MIX"
+          }
+        }
+      ]
     }
   ]
 }
