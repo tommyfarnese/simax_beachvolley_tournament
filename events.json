@@ -36,7 +36,7 @@
           "StartTime": "09:30:00",
           "EndTime": "14:00:00",
           "Price": 25.00,
-          "MaxTeams": 10,
+          "MaxTeams": 8,
           "Level": "Open",
           "MinPlayers": 2,
           "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSekqVgsbdJRr_5XPTpuXcRDUbl7BA6zP_1DpgJzeXYLnmSdQw/viewform?usp=header",
