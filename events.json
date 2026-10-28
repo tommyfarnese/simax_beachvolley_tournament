@@ -9,25 +9,6 @@
       "PeriodLabel": "Mattina \u0026 Pomeriggio",
       "Tournaments": [
         {
-          "Id": 5,
-          "SortOrder": 2,
-          "TabLabel": "2\u00D72 FF",
-          "Title": "Torneo di Halloween",
-          "Format": "2\u00D72",
-          "StartTime": "09:30:00",
-          "EndTime": "14:00:00",
-          "Price": 25.00,
-          "MaxTeams": 8,
-          "Level": "Open",
-          "MinPlayers": 2,
-          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSekqVgsbdJRr_5XPTpuXcRDUbl7BA6zP_1DpgJzeXYLnmSdQw/viewform?usp=header",
-          "WaitlistFormUrl": "",
-          "Category": {
-            "Id": 2,
-            "Name": "Femminile"
-          }
-        },
-        {
           "Id": 6,
           "SortOrder": 3,
           "TabLabel": "2\u00D72 MIX",
