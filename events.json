@@ -7,27 +7,7 @@
       "Location": "PalaUno",
       "Address": "Largo Antonio Balestra 5, Milano",
       "PeriodLabel": "Mattina \u0026 Pomeriggio",
-      "Tournaments": [
-        {
-          "Id": 6,
-          "SortOrder": 3,
-          "TabLabel": "2\u00D72 MIX",
-          "Title": "Torneo di Halloween",
-          "Format": "2\u00D72",
-          "StartTime": "14:00:00",
-          "EndTime": "18:30:00",
-          "Price": 25.00,
-          "MaxTeams": 16,
-          "Level": "Open",
-          "MinPlayers": 2,
-          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLScy1iT7f-YBl3Gex97UBcsZEJDWr_IzLQv9aNUOw6yMGNkTRQ/viewform?usp=header",
-          "WaitlistFormUrl": "",
-          "Category": {
-            "Id": 3,
-            "Name": "MIX"
-          }
-        }
-      ]
+      "Tournaments": []
     },
     {
       "Id": 6,
