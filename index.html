@@ -2569,8 +2569,8 @@ ${renderTournamentInfoGrid(tournament)}
           <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="${escapeHtml(tournament.id)}" data-default-max-spots="${escapeHtml(tournament.maxTeams || '')}" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
-          <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
-            <i class="fas fa-pen-to-square"></i> Iscriviti
+          <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione Squadra ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
+            <i class="fas fa-pen-to-square"></i> Iscrizione Squadra
           </button>
           ${tournament.singleRegistrationFormUrl ? `<button class="btn-primary btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
         </div>
@@ -2633,8 +2633,8 @@ ${renderTournamentInfoGrid(tournament)}
         </div>
       </div>
       <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
-          <i class="fas fa-pen-to-square"></i> Iscriviti
+        <button class="btn-register js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione Squadra ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
+          <i class="fas fa-pen-to-square"></i> Iscrizione Squadra
         </button>
         ${tournament.singleRegistrationFormUrl ? `<button class="btn-register btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
       </div>
@@ -2834,7 +2834,7 @@ ${renderTournamentInfoGrid(tournament)}
     button.disabled = false;
     button.classList.remove('disabled');
     button.setAttribute('aria-disabled', 'false');
-    button.innerHTML = '<i class="fas fa-pen-to-square"></i> Iscriviti';
+    button.innerHTML = '<i class="fas fa-pen-to-square"></i> Iscrizione Squadra';
     button.setAttribute('aria-label', title);
   }
 
