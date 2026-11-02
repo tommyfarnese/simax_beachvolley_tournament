@@ -642,6 +642,7 @@
         <div class="field"><label for="tournament-min-players">Min. giocatori</label><input class="control" id="tournament-min-players" type="number" min="1" value="2" required></div>
         <div class="field"><label for="tournament-order">Ordine</label><input class="control" id="tournament-order" type="number" min="0" value="1" required></div>
         <div class="field wide"><label for="tournament-form-url">Link Google Form</label><input class="control" id="tournament-form-url" type="url"></div>
+        <div class="field wide"><label for="tournament-single-registration-form-url">Link Google Form iscrizione singola</label><input class="control" id="tournament-single-registration-form-url" type="url"></div>
         <div class="field wide"><label for="tournament-waitlist-url">Link lista d'attesa</label><input class="control" id="tournament-waitlist-url" type="url"></div>
         <div class="field"><label for="tournament-form-id">Google Form ID</label><input class="control" id="tournament-form-id"></div>
         <label class="check-field"><input type="checkbox" id="tournament-active" checked> Torneo attivo</label>
@@ -1593,6 +1594,7 @@
           'tournament-start': formatTime(item.startTime), 'tournament-end': formatTime(item.endTime),
           'tournament-price': item.price, 'tournament-max': item.maxTeams, 'tournament-min-players': item.minPlayers,
           'tournament-order': item.sortOrder, 'tournament-form-url': item.formUrl,
+          'tournament-single-registration-form-url': item.singleRegistrationFormUrl,
           'tournament-waitlist-url': item.waitlistFormUrl, 'tournament-form-id': item.googleFormId
         };
         Object.entries(values).forEach(([id, value]) => { document.getElementById(id).value = value ?? ''; });
@@ -1645,6 +1647,7 @@
         level: fieldValue('tournament-level'),
         minPlayers: Number(fieldValue('tournament-min-players')),
         formUrl: fieldValue('tournament-form-url'),
+        singleRegistrationFormUrl: fieldValue('tournament-single-registration-form-url'),
         waitlistFormUrl: fieldValue('tournament-waitlist-url'),
         googleFormId: fieldValue('tournament-form-id'),
         isActive: document.getElementById('tournament-active').checked

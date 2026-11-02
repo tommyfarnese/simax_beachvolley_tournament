@@ -1164,6 +1164,19 @@
       box-shadow: none;
     }
 
+    .btn-single-register {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      box-shadow: none;
+    }
+
+    .btn-single-register:hover {
+      background: rgba(245,184,0,0.12);
+      color: var(--gold-light);
+      box-shadow: none;
+    }
+
     .btn-outline.disabled {
       border-color: rgba(255,255,255,0.18);
       color: var(--text-muted);
@@ -2493,6 +2506,7 @@
               ? 'Min. ' + Number(tournament.minPlayers)
               : String(tournament.playersLabel || '').trim(),
             formUrl: String(tournament.formUrl || '').trim(),
+            singleRegistrationFormUrl: String(tournament.singleRegistrationFormUrl || '').trim(),
             waitlistFormUrl: String(tournament.waitlistFormUrl || '').trim(),
             defaultStatus: tournament.defaultStatus ? String(tournament.defaultStatus) : 'OPEN',
             availableSpots: Number.isFinite(tournament.availableSpots) ? tournament.availableSpots : null,
@@ -2558,6 +2572,7 @@ ${renderTournamentInfoGrid(tournament)}
           <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
             <i class="fas fa-pen-to-square"></i> Iscriviti
           </button>
+          ${tournament.singleRegistrationFormUrl ? `<button class="btn-primary btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
         </div>
       </div>`;
   }
@@ -2621,6 +2636,7 @@ ${renderTournamentInfoGrid(tournament)}
         <button class="btn-register js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
           <i class="fas fa-pen-to-square"></i> Iscriviti
         </button>
+        ${tournament.singleRegistrationFormUrl ? `<button class="btn-register btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
       </div>
     </div>`;
   }
@@ -2895,6 +2911,12 @@ ${renderTournamentInfoGrid(tournament)}
     const title = button.dataset.title;
     if (!title || !formUrl) return;
     openModal(title, formUrl);
+  }
+
+  function handleSingleRegisterClick(button) {
+    const formUrl = String(button?.dataset?.singleFormUrl || '').trim();
+    if (!formUrl) return;
+    openModal(button.dataset.singleTitle || 'Iscrizione Singola', formUrl);
   }
 
   /* ---------- Modal (Google Form) ---------- */
