@@ -30,6 +30,7 @@
           "Level": "Open",
           "MinPlayers": 2,
           "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLScRD8FxcoGKsSRE1d2q1fDT28_m5F0abBg4a2R537yiFDq6tw/viewform?usp=header",
+          "SingleRegistrationFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSf-ml0tPCa0mYYxpEXha0SU3GAwqxB4IYfuI-uag8OZIfJhMA/viewform?usp=header",
           "WaitlistFormUrl": "",
           "Category": {
             "Id": 3,
