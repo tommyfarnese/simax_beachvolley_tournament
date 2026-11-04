@@ -38,36 +38,6 @@
           }
         }
       ]
-    },
-    {
-      "Id": 7,
-      "Title": "THANKSGIVING ON THE SAND",
-      "Date": "2026-11-28T00:00:00",
-      "Location": "PalaUno",
-      "Address": "Largo Antonio Balestra 5, Milano",
-      "PeriodLabel": "Pomeriggio",
-      "Tournaments": [
-        {
-          "Id": 13,
-          "SortOrder": 3,
-          "TabLabel": "2\u00D72 MIX",
-          "Title": "THANKSGIVING ON THE SAND",
-          "Format": "2\u00D72",
-          "StartTime": "14:00:00",
-          "EndTime": "18:00:00",
-          "Price": 25.00,
-          "MaxTeams": 16,
-          "Level": "Open",
-          "MinPlayers": 2,
-          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdq-3GtNNpPQ7RjT9lUqgeL8AeD3HjzV_IND5S5tXDH5Bo8xQ/viewform?usp=header",
-          "SingleRegistrationFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSdhAfpndfg5x0-krKpLXx2Y5qZxlbUexnGbquFKoreIq3R0SA/viewform?usp=header",
-          "WaitlistFormUrl": "",
-          "Category": {
-            "Id": 3,
-            "Name": "MIX"
-          }
-        }
-      ]
     }
   ]
 }
