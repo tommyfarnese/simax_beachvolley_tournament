@@ -48,26 +48,6 @@
       "PeriodLabel": "Pomeriggio",
       "Tournaments": [
         {
-          "Id": 12,
-          "SortOrder": 2,
-          "TabLabel": "2\u00D72 FF",
-          "Title": "WINTER WARM-UP",
-          "Format": "2\u00D72",
-          "StartTime": "09:30:00",
-          "EndTime": "14:00:00",
-          "Price": 25.00,
-          "MaxTeams": 8,
-          "Level": "Open",
-          "MinPlayers": 2,
-          "FormUrl": "",
-          "SingleRegistrationFormUrl": "",
-          "WaitlistFormUrl": "",
-          "Category": {
-            "Id": 2,
-            "Name": "Femminile"
-          }
-        },
-        {
           "Id": 13,
           "SortOrder": 3,
           "TabLabel": "2\u00D72 MIX",
