@@ -70,7 +70,17 @@
       rateLimitedSeconds: (s) => 'Hai inviato diverse richieste in poco tempo. Riprova tra ' + s + (s === 1 ? ' secondo.' : ' secondi.'),
       retry: 'Riprova',
       tooLong: (max) => 'Il messaggio è troppo lungo: massimo ' + max + ' caratteri.',
-      hint: 'Invio per inviare · Shift+Invio per andare a capo'
+      hint: 'Invio per inviare · Shift+Invio per andare a capo',
+      sectionLabels: {
+        '': 'home page',
+        tornei: 'Tornei',
+        'come-funziona': 'Come funziona',
+        iscrizioni: 'Iscrizioni',
+        regolamento: 'Regolamento',
+        faq: 'FAQ',
+        contatti: 'Contatti'
+      },
+      formLabel: 'modulo di iscrizione'
     },
     en: {
       launcherOpen: 'Ask SiMax AI',
@@ -105,7 +115,17 @@
       rateLimitedSeconds: (s) => 'You\'ve sent several messages in a short time. Please try again in ' + s + (s === 1 ? ' second.' : ' seconds.'),
       retry: 'Retry',
       tooLong: (max) => 'Your message is too long: maximum ' + max + ' characters.',
-      hint: 'Enter to send · Shift+Enter for a new line'
+      hint: 'Enter to send · Shift+Enter for a new line',
+      sectionLabels: {
+        '': 'home page',
+        tornei: 'Tournaments',
+        'come-funziona': 'How it works',
+        iscrizioni: 'Registrations',
+        regolamento: 'Rules',
+        faq: 'FAQ',
+        contatti: 'Contacts'
+      },
+      formLabel: 'registration form'
     }
   };
 
@@ -275,11 +295,18 @@
 
   function appendLink(container, label, rawUrl) {
     const target = resolveLink(rawUrl);
-    const cleanLabel = String(label || '').replace(/\*\*/g, '').trim() || rawUrl;
+    let cleanLabel = String(label || '').replace(/\*\*/g, '').trim() || rawUrl;
 
     if (!target) {
       container.appendChild(document.createTextNode(cleanLabel === rawUrl ? rawUrl : cleanLabel + ' (' + rawUrl + ')'));
       return;
+    }
+
+    // Replace bare URLs / #anchors with a readable label
+    if (cleanLabel === rawUrl || /^(https?:\/\/|#)/i.test(cleanLabel)) {
+      cleanLabel = target.type === 'internal'
+        ? t('sectionLabels')[target.section || '']
+        : t('formLabel');
     }
 
     if (target.type === 'internal') {
