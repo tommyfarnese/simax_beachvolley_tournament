@@ -1,0 +1,163 @@
+{
+  "tournaments": [
+    {
+      "title": "Torneo di Halloween",
+      "date": "2026-10-31",
+      "location": "PalaUno, Milano",
+      "albumUrl": "https://drive.google.com/drive/folders/1JBrJoTsRprI7zVtgNDhlFs6Vi9FqWikt?usp=sharing",
+      "photos": [
+        "https://drive.google.com/file/d/1GCuUUym7v8TC2j8IGul2VqsgfrqzgC3q/view?usp=sharing",
+        "https://drive.google.com/file/d/1yH7U-un1MSk_8nq1LWR36MJA1ibNzLGk/view?usp=sharing",
+        "https://drive.google.com/file/d/1fFaWHzzy3pkWP66IiV4KVmzLCJRRtoGr/view?usp=sharing"
+      ],
+      "results": [
+        {
+          "category": "Gold",
+          "podium": [
+            {
+              "position": 1,
+              "team": "I Micioni",
+              "players": ["Belotti", "Quarchioni"]
+            },
+            {
+              "position": 2,
+              "team": "Dolcini Molteni",
+              "players": ["Dolcini", "Molteni"]
+            },
+            {
+              "position": 3,
+              "team": "Double Trouble",
+              "players": ["Stevanella", "Bovinelli"]
+            }
+          ]
+        },
+        {
+          "category": "Silver",
+          "podium": [
+            {
+              "position": 1,
+              "team": "I Senza Braccia",
+              "players": ["Pavan", "Marinelli"]
+            },
+            {
+              "position": 2,
+              "team": "Risorti dalla sabbia",
+              "players": ["Alerock", "Grondona"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        }
+      ]
+    },
+	{
+      "title": "Torneo del 10 Ottobre",
+      "date": "2026-10-10",
+      "location": "PalaUno, Milano",
+      "albumUrl": "https://drive.google.com/drive/folders/1DvcydJFE75SnURnhOfm6DlIU2ypknzcd?usp=sharing",
+      "photos": [
+        "https://drive.google.com/file/d/1PUERnC6YfAxzhV6geR6MIx9IsWKI9SNA/view?usp=sharing",
+        "https://drive.google.com/file/d/1z45hAA0NeVUpoddcMOK6PlNPkqRz7YkU/view?usp=sharing",
+        "https://drive.google.com/file/d/1yYSS5KpANeEYxH38B_q8yn9hTCPQLkPD/view?usp=sharing"
+      ],
+      "results": [
+        {
+          "category": "Gold",
+          "podium": [
+            {
+              "position": 1,
+              "team": "Tim - chiappetto",
+              "players": ["Bajardi", "Ruggeri"]
+            },
+            {
+              "position": 2,
+              "team": "Beach Breakers",
+              "players": ["Api", "Rallo"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        },
+        {
+          "category": "Silver",
+          "podium": [
+            {
+              "position": 1,
+              "team": "Le Due Sicilie",
+              "players": ["Criscuolo", "Morabito"]
+            },
+            {
+              "position": 2,
+              "team": "Italia - Germania",
+              "players": ["Attia", "Salma"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        }
+      ]
+    },
+	{
+      "title": "Torneo del 20 Settembre",
+      "date": "2026-09-20",
+      "location": "PalaUno, Milano",
+      "albumUrl": "https://drive.google.com/drive/folders/1P1GS5H5QiP_BG0Y204NU8PlCXa6QChCv?usp=sharing",
+      "photos": [
+        "https://drive.google.com/file/d/1PaFgAssyxNF10bEmA2EtDsAJtGZ653n4/view?usp=sharing",
+        "https://drive.google.com/file/d/1wQC0eCbEG3m3cB0BXMLTF5fM0J4VZDm6/view?usp=sharing",
+        "https://drive.google.com/file/d/1Ro8GiS_iPGaVYZgZU2C5aZT5Im9Bx9af/view?usp=sharing"
+      ],
+      "results": [
+        {
+          "category": "Gold",
+          "podium": [
+            {
+              "position": 1,
+              "team": "Beach Breakers",
+              "players": ["Api", "Rallo"]
+            },
+            {
+              "position": 2,
+              "team": "Tim - chiappetto",
+              "players": ["Bajardi", "Ruggeri"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        },
+        {
+          "category": "Silver",
+          "podium": [
+            {
+              "position": 1,
+              "team": "Last Minute",
+              "players": ["Criscuolo", "Bonato"]
+            },
+            {
+              "position": 2,
+              "team": "Balabiott",
+              "players": ["Guastamacchia", "Ricci"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

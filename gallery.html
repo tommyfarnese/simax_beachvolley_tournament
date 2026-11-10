@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery &amp; Albo d'oro | SiMax Beach Volley Tournament</title>
+  <meta name="description" content="Foto, risultati e albo d'oro dei tornei SiMax Beach Volley Tournament." />
+  <link rel="icon" href="Tornei/logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="gallery.css" />
+</head>
+<body class="archive-page" data-gallery-archive="true">
+  <header class="archive-header">
+    <a class="archive-brand" href="index.html"><img src="Tornei/logo.png" alt="SiMax" width="44" height="44" /><span>SiMax Beach Volley Tournament</span></a>
+    <div class="archive-languages" role="group" aria-label="Lingua / Language">
+      <button type="button" data-lang-switch="it" lang="it" aria-label="Italiano">IT</button>
+      <button type="button" data-lang-switch="en" lang="en" aria-label="English">EN</button>
+    </div>
+  </header>
+  <main class="archive-main">
+    <a class="archive-back" href="index.html#gallery"><i class="fas fa-arrow-left" aria-hidden="true"></i> <span data-i18n="archive.back">Torna al sito</span></a>
+    <h1 data-i18n="archive.title">Gallery &amp; Albo d'oro</h1>
+    <nav class="archive-tabs" aria-label="Gallery">
+      <a href="#hall-of-fame"><i class="fas fa-trophy" aria-hidden="true"></i> <span data-i18n="archive.standings">Albo d'oro generale</span></a>
+      <a href="#gallery"><i class="fas fa-images" aria-hidden="true"></i> <span data-i18n="gallery.title">Tornei <span>passati</span></span></a>
+    </nav>
+
+    <section id="hall-of-fame" class="archive-section" aria-labelledby="standings-title">
+      <h2 id="standings-title" data-i18n="archive.standings">Albo d'oro generale</h2>
+      <p class="archive-description" id="standings-description" data-i18n="archive.order">Tutti gli anni. Ordine per primi, secondi e terzi posti Gold, poi Silver. Conteggi basati sui risultati inseriti.</p>
+      <div class="archive-toolbar">
+        <label for="team-search" data-i18n="archive.search">Cerca squadra</label>
+        <input type="search" id="team-search" autocomplete="off" />
+      </div>
+      <div class="standings-scroll" role="region" tabindex="0" aria-labelledby="standings-title">
+        <table class="standings-table" aria-describedby="standings-description">
+          <thead>
+            <tr><th scope="col" rowspan="2" data-i18n="archive.team">Squadra</th><th scope="colgroup" colspan="3" class="standings-gold">Gold</th><th scope="colgroup" colspan="3">Silver</th></tr>
+            <tr><th scope="col" data-i18n="gallery.place1">1°</th><th scope="col" data-i18n="gallery.place2">2°</th><th scope="col" data-i18n="gallery.place3">3°</th><th scope="col" data-i18n="gallery.place1">1°</th><th scope="col" data-i18n="gallery.place2">2°</th><th scope="col" data-i18n="gallery.place3">3°</th></tr>
+          </thead>
+          <tbody id="standings-body"></tbody>
+        </table>
+      </div>
+      <p id="standings-empty" data-i18n="archive.noTeams" role="status" hidden>Nessuna squadra trovata.</p>
+    </section>
+
+    <section id="gallery" class="archive-section" aria-labelledby="gallery-title">
+      <h2 id="gallery-title" data-i18n="gallery.title">Tornei <span>passati</span></h2>
+      <div class="archive-toolbar">
+        <label for="gallery-year" data-i18n="archive.year">Anno</label>
+        <select id="gallery-year"><option value="" data-i18n="archive.allYears">Tutti gli anni</option></select>
+        <span id="gallery-count" role="status" aria-live="polite"></span>
+      </div>
+      <p id="gallery-empty" data-i18n="archive.empty" role="status" hidden>Nessun torneo disponibile.</p>
+      <div class="gallery-list"></div>
+      <div class="gallery-archive-action">
+        <button type="button" class="event-action-btn" id="gallery-more" hidden><i class="fas fa-plus" aria-hidden="true"></i> <span data-i18n="archive.more">Mostra altri tornei</span></button>
+      </div>
+    </section>
+  </main>
+  <footer class="archive-footer"><a href="privacy.html">Privacy Policy</a><a href="cookie.html">Cookie Policy</a></footer>
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
+    <button type="button" class="lightbox-btn lightbox-close" aria-label="Chiudi" data-i18n-attr="aria-label:lightbox.close"><i class="fas fa-times" aria-hidden="true"></i></button>
+    <button type="button" class="lightbox-btn lightbox-prev" aria-label="Foto precedente" data-i18n-attr="aria-label:lightbox.prev"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+    <figure class="lightbox-figure"><img class="lightbox-img" alt="" referrerpolicy="no-referrer" /><figcaption class="lightbox-caption"></figcaption></figure>
+    <button type="button" class="lightbox-btn lightbox-next" aria-label="Foto successiva" data-i18n-attr="aria-label:lightbox.next"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="gallery.js"></script>
+</body>
+</html>

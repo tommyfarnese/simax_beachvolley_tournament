@@ -5,12 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SIMAX Beach Volley Tournament</title>
   <meta name="description" content="Iscriviti ai tornei di beach volley SiMax. Categorie Gold e Silver, format 3x3 e 2x2. Divertiti, vinci, fai squadra!" />
+  <link rel="canonical" href="https://tommyfarnese.github.io/simax_beachvolley_tournament/" />
+  <meta name="theme-color" content="#0b1740" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:site_name" content="SiMax Beach Volley Tournament" />
+  <meta property="og:title" content="SiMax Beach Volley Tournament – Tornei di beach volley a Milano" />
+  <meta property="og:description" content="Tornei 2x2 e 3x3 per tutti i livelli al PalaUno di Milano. Guarda il calendario e iscriviti online!" />
+  <meta property="og:url" content="https://tommyfarnese.github.io/simax_beachvolley_tournament/" />
+  <meta property="og:image" content="https://tommyfarnese.github.io/simax_beachvolley_tournament/Tornei/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Logo SiMax Beach Volley Tournament" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SiMax Beach Volley Tournament" />
+  <meta name="twitter:description" content="Tornei 2x2 e 3x3 per tutti i livelli al PalaUno di Milano. Iscriviti online!" />
+  <meta name="twitter:image" content="https://tommyfarnese.github.io/simax_beachvolley_tournament/Tornei/og-image.jpg" />
   <link rel="icon" href="Tornei/logo.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" href="chatbot.css" />
+  <link rel="stylesheet" href="gallery.css" />
 
   <style>
     /* ===========================
@@ -175,9 +192,10 @@
     #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* Full menu no longer fits on one line: switch to hamburger */
-    @media (max-width: 1060px) {
+    @media (max-width: 1000px) {
       .nav-links { display: none; }
       #hamburger { display: flex; }
+      #navbar .lang-switch { margin-left: auto; margin-right: 10px; }
     }
 
     /* Mobile nav */
@@ -230,13 +248,12 @@
        HERO
     =========================== */
     #hero {
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 100px 5% 60px;
+      padding: 104px 5% 40px;
       position: relative;
       overflow: hidden;
       background:
@@ -279,36 +296,36 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 28px;
+      margin-bottom: 18px;
       animation: fadeInDown 0.6s ease both;
     }
 
     .hero-badge i { font-size: 0.75rem; }
 
     .hero-logo {
-      height: 120px;
+      height: 84px;
       width: auto;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       filter: drop-shadow(0 0 30px rgba(245,184,0,0.5));
       animation: fadeInDown 0.7s ease 0.1s both;
     }
 
     #hero h1 {
-      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-size: clamp(2rem, 4.6vw, 3.5rem);
       font-weight: 900;
       line-height: 1.1;
       letter-spacing: -1px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       animation: fadeInUp 0.7s ease 0.2s both;
     }
 
     #hero h1 span { color: var(--gold); }
 
     .hero-sub {
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-size: clamp(0.98rem, 2vw, 1.15rem);
       color: var(--text-light);
       max-width: 600px;
-      margin: 0 auto 40px;
+      margin: 0 auto 26px;
       line-height: 1.6;
       animation: fadeInUp 0.7s ease 0.3s both;
     }
@@ -381,24 +398,25 @@
        COUNTDOWN
     =========================== */
     #countdown-section {
-      padding: 20px 5% 40px;
+      margin-top: 30px;
       text-align: center;
-      background: linear-gradient(180deg, #091530 0%, #0b1740 100%);
+      position: relative;
+      animation: fadeInUp 0.7s ease 0.5s both;
     }
 
     .countdown-label {
       font-family: 'Montserrat', sans-serif;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .countdown-grid {
       display: inline-flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
     }
@@ -410,15 +428,15 @@
       background: var(--card-bg);
       border: 1px solid rgba(245,184,0,0.2);
       border-radius: var(--radius);
-      padding: 16px 24px;
-      min-width: 80px;
+      padding: 10px 16px;
+      min-width: 70px;
       backdrop-filter: blur(8px);
     }
 
     .countdown-number {
       font-family: 'Montserrat', sans-serif;
       font-weight: 900;
-      font-size: 2.2rem;
+      font-size: 1.7rem;
       color: var(--gold);
       line-height: 1;
     }
@@ -440,7 +458,7 @@
 
     .section-header {
       text-align: center;
-      margin-bottom: 56px;
+      margin-bottom: 34px;
     }
 
     .section-tag {
@@ -455,27 +473,27 @@
       text-transform: uppercase;
       padding: 6px 18px;
       border-radius: 50px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
     .section-title {
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-size: clamp(1.7rem, 3.2vw, 2.3rem);
       font-weight: 900;
       line-height: 1.15;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .section-title span { color: var(--gold); }
 
     .section-desc {
       color: var(--text-light);
-      font-size: 1.05rem;
+      font-size: 1rem;
       max-width: 560px;
       margin: 0 auto;
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
-    .section-pad { padding: 90px 5%; }
+    .section-pad { padding: 60px 5%; }
 
     /* ===========================
        TORNEI – CALENDAR
@@ -484,15 +502,29 @@
 
     #tornei .section-header { margin-bottom: 20px; }
 
+    .tournament-notice-link {
+      display: block;
+      max-width: 640px;
+      margin: 0 auto 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .tournament-notice-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
     .tournament-notice {
       display: block;
       width: 100%;
-      max-width: 1280px;
       height: auto;
-      margin: 0 auto 40px;
     }
 
-    .events-list { display: flex; flex-direction: column; gap: 40px; max-width: 960px; margin: 0 auto; }
+    #iscrizioni { scroll-margin-top: 84px; }
+
+    .events-list { display: flex; flex-direction: column; gap: 28px; max-width: 960px; margin: 0 auto; }
 
     .tournament-loader {
       display: flex;
@@ -693,7 +725,7 @@
 
     .event-meta {
       display: flex;
-      gap: 18px;
+      gap: 6px 18px;
       flex-wrap: wrap;
     }
 
@@ -706,6 +738,45 @@
     }
 
     .event-meta span i { color: var(--gold); }
+
+    .event-meta .event-map-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-light);
+      font-size: 0.88rem;
+      text-decoration: underline dotted rgba(245,184,0,0.6);
+      text-underline-offset: 3px;
+      transition: color var(--transition);
+    }
+
+    .event-meta .event-map-link i { color: var(--gold); }
+    .event-meta .event-map-link:hover { color: var(--gold); }
+
+    .event-quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .event-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(245,184,0,0.35);
+      background: rgba(245,184,0,0.08);
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+
+    .event-action-btn:hover { background: rgba(245,184,0,0.18); transform: translateY(-1px); }
 
     .event-status {
       display: flex;
@@ -983,7 +1054,7 @@
     .steps-grid::before {
       content: '';
       position: absolute;
-      top: 44px;
+      top: 52px;
       left: calc(100% / 6);
       right: calc(100% / 6);
       height: 2px;
@@ -993,7 +1064,7 @@
 
     .step-card {
       text-align: center;
-      padding: 32px 24px;
+      padding: 26px 20px 20px;
       background: var(--card-bg);
       border: 1px solid rgba(245,184,0,0.12);
       border-radius: var(--radius);
@@ -1020,15 +1091,15 @@
     }
 
     .step-icon {
-      width: 64px;
-      height: 64px;
+      width: 52px;
+      height: 52px;
       background: rgba(245,184,0,0.12);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 1.6rem;
+      margin: 0 auto 14px;
+      font-size: 1.3rem;
       color: var(--gold);
     }
 
@@ -1047,23 +1118,21 @@
     /* ===========================
        ISCRIZIONI
     =========================== */
-    #iscrizioni { background: linear-gradient(180deg, #0b1740 0%, #091530 100%); }
-
     .reg-intro {
-      max-width: 860px;
-      margin: 0 auto 48px;
+      max-width: 960px;
+      margin: 0 auto 28px;
       background: rgba(245,184,0,0.06);
       border: 1px solid rgba(245,184,0,0.2);
       border-radius: var(--radius);
-      padding: 24px 32px;
+      padding: 16px 22px;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 16px;
     }
 
-    .reg-intro i { font-size: 1.8rem; color: var(--gold); flex-shrink: 0; }
+    .reg-intro i { font-size: 1.5rem; color: var(--gold); flex-shrink: 0; }
 
-    .reg-intro p { color: var(--text-light); font-size: 0.95rem; line-height: 1.6; }
+    .reg-intro p { color: var(--text-light); font-size: 0.9rem; line-height: 1.6; }
 
     .reg-intro p strong { color: var(--white); }
 
@@ -1643,26 +1712,120 @@
     }
 
     /* ===========================
+       LANGUAGE SWITCH
+    =========================== */
+    [hidden] { display: none !important; }
+
+    .lang-switch {
+      display: inline-flex;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+
+    .lang-switch button {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 7px 8px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .lang-switch button[aria-pressed="true"] { background: var(--gold); color: var(--navy); }
+    .lang-switch button:focus-visible { outline: 2px solid var(--white); outline-offset: -2px; }
+
+    .lang-flag {
+      width: 16px;
+      height: 11px;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.35);
+    }
+
+    /* ===========================
+       MOBILE CTA
+    =========================== */
+    .mobile-cta { display: none; }
+
+    /* ===========================
        RESPONSIVE
     =========================== */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       #hamburger { display: flex; }
 
-      .hero-logo { height: 90px; }
-      .event-header { padding: 20px; }
-      .tab-content { padding: 20px; }
-      .reg-intro { flex-direction: column; text-align: center; }
+      #hero { padding: 92px 5% 32px; }
+      .hero-logo { height: 64px; margin-bottom: 12px; }
+      .hero-badge { margin-bottom: 14px; }
+      .event-header { padding: 18px; }
+      .tab-content { padding: 18px; }
+      .reg-intro { padding: 14px 16px; gap: 12px; }
+      .reg-intro i { font-size: 1.2rem; }
       .tournament-grid { grid-template-columns: 1fr 1fr; }
       .steps-grid::before { display: none; }
+      .steps-grid { gap: 22px; }
 
-      .section-pad { padding: 70px 5%; }
+      .section-pad { padding: 44px 5%; }
+      .section-header { margin-bottom: 24px; }
+
+      .gallery-card-header { padding: 16px; gap: 14px; }
+      .carousel-track { padding: 0 16px; scroll-padding: 0 16px; }
+      .carousel-slide { width: 72vw; height: 54vw; max-height: 280px; }
+      .carousel-nav { display: none; }
+      .podium { padding: 4px 16px 18px; }
+      .lightbox { padding: 60px 8px; }
+      .lightbox-prev, .lightbox-next { top: auto; bottom: 14px; transform: none; }
+
+      .mobile-cta {
+        display: flex;
+        position: fixed;
+        left: 14px;
+        right: 82px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        height: 54px;
+        z-index: 1400;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        background: var(--gold);
+        color: var(--navy);
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border-radius: 14px;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+        opacity: 0;
+        transform: translateY(140%);
+        pointer-events: none;
+        transition: opacity var(--transition), transform var(--transition);
+      }
+
+      .mobile-cta.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      body:has(.cookie-banner.open) .mobile-cta { display: none; }
+
+      footer { padding-bottom: 96px; }
     }
 
     @media (max-width: 480px) {
       .tab-btn { font-size: 0.75rem; padding: 14px 12px; }
       .reg-detail-grid { grid-template-columns: 1fr 1fr; }
-      .hero-ctas { flex-direction: column; align-items: center; }
+      .hero-ctas { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; gap: 10px; }
+      .hero-ctas a { justify-content: center; padding-top: 13px; padding-bottom: 13px; }
+      .countdown-box { min-width: 64px; padding: 8px 12px; }
+      .countdown-number { font-size: 1.45rem; }
 
       .cookie-actions {
         flex-direction: column;
@@ -1695,15 +1858,24 @@
   </a>
 
   <ul class="nav-links">
-    <li><a href="#tornei">Tornei</a></li>
-    <li><a href="#come-funziona">Come Funziona</a></li>
-    <li><a href="#iscrizioni">Iscrizioni</a></li>
-    <li><a href="#regolamento">Regolamento</a></li>
+    <li><a href="#tornei" data-i18n="nav.tournaments">Tornei</a></li>
+    <li><a href="#come-funziona" data-i18n="nav.how">Come Funziona</a></li>
+    <li class="js-gallery-link" hidden><a href="#gallery">Gallery</a></li>
+    <li><a href="gallery.html#hall-of-fame" class="js-standings-link" data-i18n="nav.standings">Albo d'oro</a></li>
+    <li><a href="#regolamento" data-i18n="nav.rules">Regolamento</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contatti">Contatti</a></li>
-    <li><a href="#iscrizioni" class="btn-nav"><i class="fas fa-volleyball-ball"></i> Iscriviti</a></li>
-    <li><a href="https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/admin/index.html" class="btn-nav"><i class="fas fa-right-to-bracket"></i> Login</a></li>
+    <li><a href="#contatti" data-i18n="nav.contacts">Contatti</a></li>
+    <li><a href="#iscrizioni" class="btn-nav"><i class="fas fa-volleyball-ball"></i> <span data-i18n="nav.register">Iscriviti</span></a></li>
   </ul>
+
+  <div class="lang-switch" role="group" aria-label="Lingua / Language">
+    <button type="button" data-lang-switch="it" lang="it" aria-label="Italiano">
+      <svg class="lang-flag" viewBox="0 0 3 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>IT
+    </button>
+    <button type="button" data-lang-switch="en" lang="en" aria-label="English">
+      <svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#c8102e" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#c8102e" stroke-width="6"/></svg>EN
+    </button>
+  </div>
 
   <button id="hamburger" aria-label="Menu" onclick="toggleMobileNav()">
     <span></span><span></span><span></span>
@@ -1712,14 +1884,14 @@
 
 <!-- Mobile nav -->
 <nav id="mobile-nav">
-  <a href="#tornei" onclick="closeMobileNav()">Tornei</a>
-  <a href="#come-funziona" onclick="closeMobileNav()">Come Funziona</a>
-  <a href="#iscrizioni" onclick="closeMobileNav()">Iscrizioni</a>
-  <a href="#regolamento" onclick="closeMobileNav()">Regolamento</a>
+  <a href="#tornei" onclick="closeMobileNav()" data-i18n="nav.tournaments">Tornei</a>
+  <a href="#come-funziona" onclick="closeMobileNav()" data-i18n="nav.how">Come Funziona</a>
+  <a href="#gallery" onclick="closeMobileNav()" class="js-gallery-link" hidden>Gallery</a>
+  <a href="gallery.html#hall-of-fame" onclick="closeMobileNav()" class="js-standings-link" data-i18n="nav.standings">Albo d'oro</a>
+  <a href="#regolamento" onclick="closeMobileNav()" data-i18n="nav.rules">Regolamento</a>
   <a href="#faq" onclick="closeMobileNav()">FAQ</a>
-  <a href="#contatti" onclick="closeMobileNav()">Contatti</a>
-  <a href="#iscrizioni" class="btn-mobile" onclick="closeMobileNav()">🏐 Iscriviti ora</a>
-  <a href="https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/admin/index.html" class="btn-mobile" onclick="closeMobileNav()"><i class="fas fa-right-to-bracket"></i> Login</a>
+  <a href="#contatti" onclick="closeMobileNav()" data-i18n="nav.contacts">Contatti</a>
+  <a href="#iscrizioni" class="btn-mobile" onclick="closeMobileNav()" data-i18n="nav.registerNow">🏐 Iscriviti ora</a>
 </nav>
 
 <!-- ============================================================
@@ -1728,41 +1900,49 @@
 <section id="hero">
   <div class="hero-badge">
     <i class="fas fa-trophy"></i>
-    Stagione Tornei 2026
+    <span data-i18n="hero.badge">Stagione Tornei 2026</span>
   </div>
   <img class="hero-logo" src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
-  <h1>Unisciti al <span>Beach Volley</span><br>più bello in città</h1>
-  <p class="hero-sub">Tornei di beach volley per tutti i livelli. Categorie Gold e Silver, format 3×3 e 2×2. Sfida i migliori, goditi il sole, vinci con la tua squadra.</p>
+  <h1 data-i18n="hero.title">Unisciti al <span>Beach Volley</span><br>più bello in città</h1>
+  <p class="hero-sub" data-i18n="hero.sub">Tornei di beach volley per tutti i livelli. Categorie Gold e Silver, format 3×3 e 2×2. Sfida i migliori, goditi il sole, vinci con la tua squadra.</p>
   <div class="hero-ctas">
-    <a href="#iscrizioni" class="btn-primary"><i class="fas fa-clipboard-list"></i> Iscriviti ora</a>
-    <a href="#tornei" class="btn-outline"><i class="fas fa-calendar-alt"></i> Vedi i tornei</a>
+    <a href="#iscrizioni" class="btn-primary"><i class="fas fa-clipboard-list"></i> <span data-i18n="hero.cta">Iscriviti ora</span></a>
+    <a href="#tornei" class="btn-outline"><i class="fas fa-calendar-alt"></i> <span data-i18n="hero.cta2">Vedi i tornei</span></a>
+  </div>
+
+  <div id="countdown-section">
+    <p class="countdown-label"><i class="fas fa-clock"></i> &nbsp;<span data-i18n="cd.label">Prossimo torneo tra</span></p>
+    <div class="countdown-grid">
+      <div class="countdown-box"><span class="countdown-number" id="cd-giorni">--</span><span class="countdown-unit" data-i18n="cd.days">Giorni</span></div>
+      <div class="countdown-box"><span class="countdown-number" id="cd-ore">--</span><span class="countdown-unit" data-i18n="cd.hours">Ore</span></div>
+      <div class="countdown-box"><span class="countdown-number" id="cd-min">--</span><span class="countdown-unit" data-i18n="cd.minutes">Minuti</span></div>
+      <div class="countdown-box"><span class="countdown-number" id="cd-sec">--</span><span class="countdown-unit" data-i18n="cd.seconds">Secondi</span></div>
+    </div>
   </div>
 </section>
 
 <!-- ============================================================
-     COUNTDOWN
-============================================================ -->
-<div id="countdown-section">
-  <p class="countdown-label"><i class="fas fa-clock"></i> &nbsp;Prossimo torneo tra</p>
-  <div class="countdown-grid">
-    <div class="countdown-box"><span class="countdown-number" id="cd-giorni">--</span><span class="countdown-unit">Giorni</span></div>
-    <div class="countdown-box"><span class="countdown-number" id="cd-ore">--</span><span class="countdown-unit">Ore</span></div>
-    <div class="countdown-box"><span class="countdown-number" id="cd-min">--</span><span class="countdown-unit">Minuti</span></div>
-    <div class="countdown-box"><span class="countdown-number" id="cd-sec">--</span><span class="countdown-unit">Secondi</span></div>
-  </div>
-</div>
-
-<!-- ============================================================
-     TORNEI
+     TORNEI + ISCRIZIONI
 ============================================================ -->
 <section id="tornei" class="section-pad">
   <div class="section-header reveal">
-    <div class="section-tag"><i class="fas fa-calendar-days"></i> Calendario</div>
-    <h2 class="section-title">Prossimi <span>Tornei</span></h2>
-    <p class="section-desc">Ogni giornata ospita più tornei in contemporanea. Scegli il format e la categoria più adatta a te e al tuo team.</p>
+    <div class="section-tag"><i class="fas fa-calendar-days"></i> <span data-i18n="tournaments.tag">Calendario &amp; Iscrizioni</span></div>
+    <h2 class="section-title" data-i18n="tournaments.title">Prossimi <span>Tornei</span></h2>
+    <p class="section-desc" data-i18n="tournaments.desc">Scegli il torneo, il format e la categoria più adatta a te e iscriviti direttamente dalla card.</p>
   </div>
 
-  <img class="tournament-notice" src="Tornei/banner-rinunce.png" alt="Attenzione: in caso di rinuncia, avvisare almeno 48 ore prima del torneo." />
+  <a class="tournament-notice-link" href="Tornei/banner-rinunce.png" target="_blank" rel="noopener" title="Apri l'immagine a dimensione intera" data-i18n-attr="title:notice.open;href:notice.image">
+    <img class="tournament-notice" src="Tornei/banner-rinunce.png" alt="In caso di rinuncia, avvisare almeno 48 ore prima del torneo. Contatti: Massimo 327 352 1791, Silvia 340 394 6892 o Instagram simax_beachvolley_tournament. Non obbligateci a introdurre il pagamento anticipato obbligatorio." data-i18n-attr="alt:notice.alt;src:notice.image" />
+  </a>
+
+  <div id="iscrizioni" class="reg-intro reveal">
+    <i class="fas fa-circle-info"></i>
+    <p data-i18n="reg.intro">
+      <strong>Come iscriversi:</strong> clicca su "Iscrizione Squadra" o "Iscrizione Singola" e il modulo si apre direttamente qui.
+      Se il torneo è pieno, lo stesso pulsante apre la Lista d'Attesa (se disponibile).
+      Problemi? Scrivici su <a href="https://wa.me/393273521791" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a>.
+    </p>
+  </div>
 
   <div class="events-list">
 
@@ -1799,54 +1979,45 @@
 ============================================================ -->
 <section id="come-funziona" class="section-pad">
   <div class="section-header reveal">
-    <div class="section-tag"><i class="fas fa-list-check"></i> Processo</div>
-    <h2 class="section-title">Come ci si <span>Iscrive</span></h2>
-    <p class="section-desc">Bastano pochi passaggi per assicurarti il tuo posto. Veloce, semplice, da qualsiasi dispositivo.</p>
+    <div class="section-tag"><i class="fas fa-list-check"></i> <span data-i18n="how.tag">Processo</span></div>
+    <h2 class="section-title" data-i18n="how.title">Come ci si <span>Iscrive</span></h2>
+    <p class="section-desc" data-i18n="how.desc">Bastano pochi passaggi per assicurarti il tuo posto. Veloce, semplice, da qualsiasi dispositivo.</p>
   </div>
 
   <div class="steps-grid">
     <div class="step-card reveal">
       <div class="step-number">1</div>
       <div class="step-icon"><i class="fas fa-users"></i></div>
-      <h4>Forma la tua squadra</h4>
-      <p>Trova il tuo compagno/i di gioco e decidete insieme format (3×3 o 2×2).</p>
+      <h4 data-i18n="how.s1t">Forma la tua squadra</h4>
+      <p data-i18n="how.s1d">Trova il tuo compagno/i di gioco e decidete insieme format (3×3 o 2×2).</p>
     </div>
     <div class="step-card reveal">
       <div class="step-number">2</div>
       <div class="step-icon"><i class="fas fa-clipboard-list"></i></div>
-      <h4>Compila il modulo</h4>
-      <p>Clicca "Iscriviti" sulla card del torneo che ti interessa e compila il modulo Google con i dati della squadra.</p>
+      <h4 data-i18n="how.s2t">Compila il modulo</h4>
+      <p data-i18n="how.s2d">Clicca "Iscrizione Squadra" o "Iscrizione Singola" sul torneo che ti interessa e compila il modulo Google.</p>
     </div>
     <div class="step-card reveal">
       <div class="step-number">3</div>
       <div class="step-icon"><i class="fas fa-volleyball-ball"></i></div>
-      <h4>Gioca e vinci!</h4>
-      <p>Il giorno del torneo presentati al campo all'orario indicato. Porta entusiasmo, noi pensiamo al resto.</p>
+      <h4 data-i18n="how.s3t">Gioca e vinci!</h4>
+      <p data-i18n="how.s3d">Il giorno del torneo presentati al campo all'orario indicato. Porta entusiasmo, noi pensiamo al resto.</p>
     </div>
   </div>
 </section>
 
 <!-- ============================================================
-     ISCRIZIONI (Schede rapide)
+     GALLERY + ALBO D'ORO (contenuti da gallery.json)
 ============================================================ -->
-<section id="iscrizioni" class="section-pad">
+<section id="gallery" class="section-pad" hidden>
   <div class="section-header reveal">
-    <div class="section-tag"><i class="fas fa-pen-to-square"></i> Iscrizioni</div>
-    <h2 class="section-title">Scegli il tuo <span>Torneo</span></h2>
-    <p class="section-desc">Seleziona il torneo, compila il modulo e sei dentro. Le iscrizioni chiudono al raggiungimento del numero massimo di squadre.</p>
+    <div class="section-tag"><i class="fas fa-images"></i> <span data-i18n="gallery.tag">Gallery &amp; Albo d'oro</span></div>
+    <h2 class="section-title" data-i18n="gallery.title">Tornei <span>passati</span></h2>
+    <p class="section-desc" data-i18n="gallery.desc">Rivivi i momenti più belli e scopri chi ha conquistato il podio.</p>
   </div>
-
-  <div class="reg-intro reveal">
-    <i class="fas fa-circle-info"></i>
-    <p>
-      <strong>Come funziona:</strong> cliccando su "Iscriviti" si apre direttamente il modulo Google qui nella pagina.
-      Quando un torneo è pieno, lo stesso pulsante apre la Lista d'Attesa, se disponibile.
-      Per qualsiasi problema contattaci su <a href="https://wa.me/393273521791" style="color:var(--gold);" target="_blank" rel="noopener">WhatsApp</a> o via email.
-    </p>
-  </div>
-
-  <div class="reg-cards">
-
+  <div class="gallery-list"></div>
+  <div class="gallery-archive-action">
+    <a class="btn-outline" id="gallery-archive-link" href="gallery.html"><i class="fas fa-images" aria-hidden="true"></i> <span data-i18n="archive.viewAll">Vedi tutti i tornei passati e l'albo d'oro</span></a>
   </div>
 </section>
 
@@ -1855,19 +2026,19 @@
 ============================================================ -->
 <section id="regolamento" class="section-pad">
   <div class="section-header reveal">
-    <div class="section-tag"><i class="fas fa-book-open"></i> Regolamento</div>
-    <h2 class="section-title">Regole del <span>Gioco</span></h2>
-    <p class="section-desc">Tutto quello che devi sapere prima di scendere in campo.</p>
+    <div class="section-tag"><i class="fas fa-book-open"></i> <span data-i18n="rules.tag">Regolamento</span></div>
+    <h2 class="section-title" data-i18n="rules.title">Regole del <span>Gioco</span></h2>
+    <p class="section-desc" data-i18n="rules.desc">Tutto quello che devi sapere prima di scendere in campo.</p>
   </div>
 
   <div class="accordion-list">
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-users" style="color:var(--gold);margin-right:10px"></i>Formazione squadre</span>
+        <span><i class="fas fa-users" style="color:var(--gold);margin-right:10px"></i><span data-i18n="rules.1t">Formazione squadre</span></span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="rules.1b">
         <ul>
           <li>Ogni squadra deve registrare <strong>tutti i propri giocatori</strong> nel modulo di iscrizione.</li>
           <li>Format <strong>3×3 Mix</strong>: 3 giocatori titolari (almeno 1 donna), 2 riserve facoltative.</li>
@@ -1879,10 +2050,10 @@
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-sitemap" style="color:var(--gold);margin-right:10px"></i>Formula e gironi</span>
+        <span><i class="fas fa-sitemap" style="color:var(--gold);margin-right:10px"></i><span data-i18n="rules.2t">Formula e gironi</span></span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="rules.2b">
         <ul>
           <li>Fase a <strong>gironi</strong>: le squadre vengono divise in 3 gironi da 4 squadre, si gioca tutti contro tutti.</li>
           <li>Le prime, le seconde e le 2 migliori terze classificate accedono alle <strong>fasi ad eliminazione diretta del torneo GOLD</strong>.</li>
@@ -1894,10 +2065,10 @@
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-shuffle" style="color:var(--gold);margin-right:10px"></i>Categoria Mix</span>
+        <span><i class="fas fa-shuffle" style="color:var(--gold);margin-right:10px"></i><span data-i18n="rules.3t">Categoria Mix</span></span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="rules.3b">
         <p><strong>Mix:</strong> ogni squadra deve essere composta da giocatori di sesso diverso (uomini e donne insieme). La categoria è aperta a tutti i livelli.</p><br>
         <p>Obiettivo: divertirsi, giocare insieme e condividere il beach volley indipendentemente dal livello tecnico.</p>
       </div>
@@ -1905,10 +2076,10 @@
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-trophy" style="color:var(--gold);margin-right:10px"></i>Premi</span>
+        <span><i class="fas fa-trophy" style="color:var(--gold);margin-right:10px"></i><span data-i18n="rules.4t">Premi</span></span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="rules.4b">
         <ul>
           <li>Per ciascun torneo è previsto un trofeo per i primi e secondi classificati della categoria GOLD e SILVER.</li>
           <li>Durante i tornei sono messi in palio diversi gadget sulla base di giochi e challenge.</li>
@@ -1919,10 +2090,10 @@
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span><i class="fas fa-cloud-sun-rain" style="color:var(--gold);margin-right:10px"></i>Maltempo</span>
+        <span><i class="fas fa-cloud-sun-rain" style="color:var(--gold);margin-right:10px"></i><span data-i18n="rules.5t">Maltempo</span></span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="rules.5b">
         <p>In caso di maltempo, la decisione di rinviare o annullare il torneo sarà comunicata via WhatsApp/social almeno <strong>2 ore prima</strong> dell'orario di inizio.</p>
       </div>
     </div>
@@ -1936,67 +2107,67 @@
 <section id="faq" class="section-pad">
   <div class="section-header reveal">
     <div class="section-tag"><i class="fas fa-circle-question"></i> FAQ</div>
-    <h2 class="section-title">Domande <span>Frequenti</span></h2>
+    <h2 class="section-title" data-i18n="faq.title">Domande <span>Frequenti</span></h2>
   </div>
 
   <div class="accordion-list">
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Devo essere già esperto per partecipare?</span>
+        <span data-i18n="faq.1q">Devo essere già esperto per partecipare?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.1a">
         <p>No! Il torneo è aperto a chiunque abbia voglia di giocare e spirito di squadra.</p>
       </div>
     </div>
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Posso iscrivermi senza avere già la squadra completa?</span>
+        <span data-i18n="faq.2q">Posso iscrivermi senza avere già la squadra completa?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.2a">
         <p>Ti consigliamo di avere già il gruppo completo prima di iscriverti. Tuttavia, se stai cercando compagni di gioco, scrivici: proveremo a metterti in contatto con altri giocatori nella stessa situazione.</p>
       </div>
     </div>
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Come viene confermata la mia iscrizione?</span>
+        <span data-i18n="faq.3q">Come viene confermata la mia iscrizione?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.3a">
         <p>Dopo la compilazione del modulo, riceverai una <strong>email di conferma</strong>. Se non la ricevi entro 24 ore, contattaci sui canali social o su WhatsApp.</p>
       </div>
     </div>
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Posso iscrivermi a più tornei nella stessa giornata?</span>
+        <span data-i18n="faq.4q">Posso iscrivermi a più tornei nella stessa giornata?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.4a">
         <p>Sì. Controlla gli orari nelle card dei singoli tornei prima di procedere.</p>
       </div>
     </div>
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Cosa succede se un torneo è al completo?</span>
+        <span data-i18n="faq.5q">Cosa succede se un torneo è al completo?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.5a">
         <p>Quando i posti sono esauriti, l'iscrizione viene chiusa. Ti consigliamo di non aspettare! Puoi contattarci per essere inserito in una <strong>lista d'attesa</strong> poichè magari il numero di squadre potrebbe essere allargato in caso di molte squadre.</p>
       </div>
     </div>
 
     <div class="accordion-item reveal">
       <button class="accordion-trigger" onclick="toggleAccordion(this)">
-        <span>Cosa devo portare il giorno del torneo?</span>
+        <span data-i18n="faq.6q">Cosa devo portare il giorno del torneo?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="accordion-body">
+      <div class="accordion-body" data-i18n="faq.6a">
         <ul>
           <li>Abbigliamento da beach volley (consigliato)</li>
           <li>Acqua e snack</li>
@@ -2016,16 +2187,16 @@
 ============================================================ -->
 <section id="contatti" class="section-pad">
   <div class="section-header reveal">
-    <div class="section-tag"><i class="fas fa-envelope"></i> Contatti</div>
-    <h2 class="section-title">Resta in <span>Contatto</span></h2>
-    <p class="section-desc">Hai dubbi, domande o vuoi sapere tutto sulle prossime date? Scrivici, ti rispondiamo velocemente.</p>
+    <div class="section-tag"><i class="fas fa-envelope"></i> <span data-i18n="contact.tag">Contatti</span></div>
+    <h2 class="section-title" data-i18n="contact.title">Resta in <span>Contatto</span></h2>
+    <p class="section-desc" data-i18n="contact.desc">Hai dubbi, domande o vuoi sapere tutto sulle prossime date? Scrivici, ti rispondiamo velocemente.</p>
   </div>
 
   <div class="contact-grid">
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
       <h4>WhatsApp</h4>
-      <a href="https://wa.me/393273521791?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
+      <a href="https://wa.me/393273521791?text=Ciao!%20Vorrei%20informazioni%20sui%20tornei%20SIMAX%20🏐" target="_blank" rel="noopener" data-i18n="contact.wa">Scrivici su WhatsApp</a>
     </div>
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fas fa-envelope"></i></div>
@@ -2035,7 +2206,7 @@
     </div>
     <div class="contact-card reveal">
       <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-      <h4>Dove giochiamo</h4>
+      <h4 data-i18n="contact.where">Dove giochiamo</h4>
       <a href="https://www.google.com/maps/search/?api=1&query=PalaUno%20-%20Largo%20Antonio%20Balestra%205%2C%20Milano" target="_blank" rel="noopener">PalaUno - Largo Antonio Balestra 5, Milano</a>
     </div>
   </div>
@@ -2056,32 +2227,49 @@
     <img src="Tornei/logo.png" alt="SIMAX Logo" onerror="this.style.display='none'" />
     <span>SiMax Beach Volley Tournament</span>
   </div>
-  <p>Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
+  <p data-i18n="footer.tagline">Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
   <p style="margin-top:12px; font-size:0.8rem; display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
     <a href="privacy.html">Privacy Policy</a>
     <a href="cookie.html">Cookie Policy</a>
-    <a href="#" id="manage-cookies-link">Gestisci cookie</a>
+    <a href="#" id="manage-cookies-link" data-i18n="footer.manageCookies">Gestisci cookie</a>
+    <a href="https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/admin/index.html"><i class="fas fa-right-to-bracket"></i> <span data-i18n="footer.admin">Area organizzatori</span></a>
   </p>
   <br>
   <p style="font-size:0.75rem; margin-top:8px;">
-    &copy; <span id="year"></span> SiMax Beach Volley Tournament. Tutti i diritti riservati.
-    &nbsp;|&nbsp; Sito realizzato con ❤️ e sabbia tra i piedi.
+    &copy; <span id="year"></span> SiMax Beach Volley Tournament. <span data-i18n="footer.rights">Tutti i diritti riservati.</span>
+    &nbsp;|&nbsp; <span data-i18n="footer.made">Sito realizzato con ❤️ e sabbia tra i piedi.</span>
   </p>
 </footer>
+
+<!-- CTA iscrizione fissa (solo mobile) -->
+<a href="#iscrizioni" class="mobile-cta" id="mobile-cta" aria-hidden="true" tabindex="-1">
+  <i class="fas fa-volleyball-ball"></i> <span data-i18n="cta.mobile">Iscriviti al prossimo torneo</span>
+</a>
+
+<!-- Lightbox foto Gallery -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
+  <button type="button" class="lightbox-btn lightbox-close" aria-label="Chiudi" data-i18n-attr="aria-label:lightbox.close"><i class="fas fa-times"></i></button>
+  <button type="button" class="lightbox-btn lightbox-prev" aria-label="Foto precedente" data-i18n-attr="aria-label:lightbox.prev"><i class="fas fa-chevron-left"></i></button>
+  <figure class="lightbox-figure">
+    <img class="lightbox-img" alt="" referrerpolicy="no-referrer" />
+    <figcaption class="lightbox-caption"></figcaption>
+  </figure>
+  <button type="button" class="lightbox-btn lightbox-next" aria-label="Foto successiva" data-i18n-attr="aria-label:lightbox.next"><i class="fas fa-chevron-right"></i></button>
+</div>
 
 <!-- ============================================================
      COOKIE BANNER
 ============================================================ -->
-<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Preferenze cookie">
-  <h4>Cookie e statistiche</h4>
-  <p>
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-live="polite" aria-label="Preferenze cookie" data-i18n-attr="aria-label:cookie.aria">
+  <h4 data-i18n="cookie.title">Cookie e statistiche</h4>
+  <p data-i18n="cookie.text">
     Usiamo cookie tecnici necessari e, solo con il tuo consenso, Google Analytics per statistiche su visite e click ai pulsanti.
     Puoi accettare o rifiutare in qualunque momento.
   </p>
   <div class="cookie-actions">
-    <button class="btn-cookie accept" type="button" id="cookie-accept">Accetta</button>
-    <button class="btn-cookie reject" type="button" id="cookie-reject">Rifiuta</button>
-    <button class="btn-cookie manage" type="button" id="cookie-manage">Personalizza</button>
+    <button class="btn-cookie accept" type="button" id="cookie-accept" data-i18n="cookie.accept">Accetta</button>
+    <button class="btn-cookie reject" type="button" id="cookie-reject" data-i18n="cookie.reject">Rifiuta</button>
+    <button class="btn-cookie manage" type="button" id="cookie-manage" data-i18n="cookie.manage">Personalizza</button>
     <div class="cookie-links">
       <a href="privacy.html">Privacy</a>
       <a href="cookie.html">Cookie</a>
@@ -2090,19 +2278,19 @@
   <div class="cookie-customize" id="cookie-customize">
     <div class="cookie-pref-row">
       <div>
-        <div class="cookie-pref-title">Cookie tecnici necessari</div>
-        <div class="cookie-pref-help">Sempre attivi: servono al funzionamento essenziale del sito.</div>
+        <div class="cookie-pref-title" data-i18n="cookie.techTitle">Cookie tecnici necessari</div>
+        <div class="cookie-pref-help" data-i18n="cookie.techHelp">Sempre attivi: servono al funzionamento essenziale del sito.</div>
       </div>
-      <input class="cookie-switch" type="checkbox" checked disabled aria-label="Cookie tecnici necessari" />
+      <input class="cookie-switch" type="checkbox" checked disabled aria-label="Cookie tecnici necessari" data-i18n-attr="aria-label:cookie.techTitle" />
     </div>
     <div class="cookie-pref-row">
       <div>
-        <div class="cookie-pref-title">Cookie statistici (Google Analytics)</div>
-        <div class="cookie-pref-help">Se attivi, raccogliamo dati aggregati su visite e click ai pulsanti principali.</div>
+        <div class="cookie-pref-title" data-i18n="cookie.statsTitle">Cookie statistici (Google Analytics)</div>
+        <div class="cookie-pref-help" data-i18n="cookie.statsHelp">Se attivi, raccogliamo dati aggregati su visite e click ai pulsanti principali.</div>
       </div>
-      <input class="cookie-switch" type="checkbox" id="cookie-analytics-toggle" aria-label="Cookie statistici" />
+      <input class="cookie-switch" type="checkbox" id="cookie-analytics-toggle" aria-label="Cookie statistici" data-i18n-attr="aria-label:cookie.statsTitle" />
     </div>
-    <button class="btn-cookie accept" type="button" id="cookie-save-preferences">Salva preferenze</button>
+    <button class="btn-cookie accept" type="button" id="cookie-save-preferences" data-i18n="cookie.save">Salva preferenze</button>
   </div>
 </div>
 
@@ -2125,12 +2313,24 @@
      CHATBOT SiMax AI (markup generato da chatbot.js)
 ============================================================ -->
 <div id="simax-chat-root"></div>
+<script src="i18n.js"></script>
+<script src="gallery.js"></script>
 <script src="chatbot.js" defer></script>
 
 <!-- ============================================================
      JAVASCRIPT
 ============================================================ -->
 <script>
+  /* ---------- Lingua (vedi i18n.js) ---------- */
+  function T(key, italian, vars) {
+    if (window.SiteI18n) return window.SiteI18n.t(key, italian, vars);
+    return vars ? String(italian).replace(/\{(\w+)\}/g, (m, name) => (name in vars ? vars[name] : m)) : italian;
+  }
+
+  function currentLocale() {
+    return window.SiteI18n ? window.SiteI18n.locale : 'it-IT';
+  }
+
   /* ---------- Cookie + Analytics ---------- */
   const GA_MEASUREMENT_ID = 'G-0E0QKFFMEB';
   const CONSENT_STORAGE_KEY = 'simax_analytics_consent';
@@ -2287,7 +2487,8 @@
         target.classList.contains('btn-outline') ||
         target.classList.contains('btn-register') ||
         target.classList.contains('btn-nav') ||
-        target.classList.contains('btn-mobile')
+        target.classList.contains('btn-mobile') ||
+        target.classList.contains('mobile-cta')
       ) {
         trackEvent('click_cta', commonParams);
       }
@@ -2416,7 +2617,7 @@
   /* ---------- Configurazione API ---------- */
   const EVENTS_CONFIG_URL = new URL('./events.json', document.baseURI).toString();
   const EVENTS_CONFIG_REQUEST_TIMEOUT = 60000;
-  const WAITLIST_NOTE_TEXT = 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.';
+  const WAITLIST_NOTE_TEXT = () => T('tournaments.waitlistNote', 'Se si libera un posto o allarghiamo il torneo, ti contattiamo in ordine di Lista d\'Attesa.');
 
   /* ---------- Stato tornei letto dalla configurazione statica ---------- */
   const TOURNAMENT_STATUS_FALLBACK = {};
@@ -2431,13 +2632,6 @@
       .replace(/'/g, '&#39;');
   }
 
-  function getCategoryBadgeClass(category) {
-    const normalized = String(category || '').trim().toLowerCase();
-    if (normalized === 'gold') return 'badge-gold';
-    if (normalized === 'silver') return 'badge-silver';
-    return 'badge-mix';
-  }
-
   function normalizeEventDate(event) {
     const rawDate = String(event.date || '').trim();
     const dateMatch = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -2450,10 +2644,10 @@
     }
 
     const eventDate = new Date(Number(dateMatch[1]), Number(dateMatch[2]) - 1, Number(dateMatch[3]));
-    const month = new Intl.DateTimeFormat('it-IT', { month: 'short' })
+    const month = new Intl.DateTimeFormat(currentLocale(), { month: 'short' })
       .format(eventDate)
       .replace('.', '');
-    const dateLabel = new Intl.DateTimeFormat('it-IT', {
+    const dateLabel = new Intl.DateTimeFormat(currentLocale(), {
       day: 'numeric',
       month: 'long',
       year: 'numeric'
@@ -2462,7 +2656,8 @@
     return {
       day: String(eventDate.getDate()).padStart(2, '0'),
       month: month.charAt(0).toUpperCase() + month.slice(1),
-      dateLabel: dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)
+      dateLabel: dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1),
+      isoDate: dateMatch[1] + dateMatch[2] + dateMatch[3]
     };
   }
 
@@ -2480,6 +2675,12 @@
     const value = String(price ?? '').trim();
     if (!value || value.startsWith('€')) return value;
     return '€ ' + value;
+  }
+
+  function translatePeriod(label) {
+    const value = String(label || '');
+    if (!value || currentLocale() === 'it-IT') return value;
+    return value.replace(/Giornata intera|Mattina|Pomeriggio|Sera/g, (word) => T('period.' + word, word));
   }
 
   function normalizeJsonPropertyNames(value) {
@@ -2504,7 +2705,9 @@
           day: normalizedDate.day,
           month: normalizedDate.month,
           dateLabel: normalizedDate.dateLabel,
+          isoDate: normalizedDate.isoDate || '',
           location: String(event.location || '').trim(),
+          address: String(event.address || '').trim(),
           periodLabel: String(event.periodLabel || '').trim(),
           tournaments: Array.isArray(event.tournaments) ? event.tournaments : []
         };
@@ -2521,6 +2724,8 @@
             format: String(tournament.format || '').trim(),
             category: String(tournament.category?.name || tournament.category || '').trim(),
             time: formatTournamentTime(tournament.startTime, tournament.endTime, tournament.time),
+            startTime: String(tournament.startTime || '').slice(0, 5),
+            endTime: String(tournament.endTime || '').slice(0, 5),
             price: formatTournamentPrice(tournament.price),
             maxTeams: Number.isFinite(Number(tournament.maxTeams)) ? Number(tournament.maxTeams) : null,
             maxTeamsLabel: String(tournament.maxTeamsLabel || '').trim(),
@@ -2567,37 +2772,157 @@
   }
 
   function renderTournamentInfoGrid(tournament) {
+    const na = T('tournaments.na', 'n/d');
     return `
         <div class="tournament-grid">
-          <div class="info-cell"><span class="label">Orario</span><span class="value">${escapeHtml(tournament.time || 'n/d')}</span></div>
-          <div class="info-cell"><span class="label">Format</span><span class="value">${escapeHtml(tournament.format || 'n/d')}</span></div>
-          <div class="info-cell"><span class="label">Categoria</span><span class="value">${escapeHtml(tournament.category || 'Open')}</span></div>
-          <div class="info-cell"><span class="label">Quota a persona</span><span class="value gold">${escapeHtml(tournament.price || 'n/d')}</span></div>
-          <div class="info-cell"><span class="label">Max squadre</span><span class="value">${escapeHtml(tournament.maxTeamsLabel || tournament.maxTeams || 'n/d')}</span></div>
-          <div class="info-cell"><span class="label">Livello</span><span class="value">${escapeHtml(tournament.level || 'Open')}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.time', 'Orario')}</span><span class="value">${escapeHtml(tournament.time || na)}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.format', 'Format')}</span><span class="value">${escapeHtml(tournament.format || na)}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.category', 'Categoria')}</span><span class="value">${escapeHtml(tournament.category || 'Open')}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.price', 'Quota a persona')}</span><span class="value gold">${escapeHtml(tournament.price || na)}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.maxTeams', 'Max squadre')}</span><span class="value">${escapeHtml(tournament.maxTeamsLabel || tournament.maxTeams || na)}</span></div>
+          <div class="info-cell"><span class="label">${T('tournaments.level', 'Livello')}</span><span class="value">${escapeHtml(tournament.level || 'Open')}</span></div>
         </div>`;
   }
 
   function renderTournamentTabContent(tournament, isActive) {
+    const name = escapeHtml(tournament.tabLabel || tournament.title);
     return `
       <div id="${escapeHtml(tournament.id)}" class="tab-content${isActive ? ' active' : ''}">
 ${renderTournamentInfoGrid(tournament)}
         <div class="spots-bar-wrap">
           <div class="spots-bar-label">
-            <span class="js-spots-available" data-tournament-id="${escapeHtml(tournament.id)}" role="status" aria-label="Caricamento posti disponibili">Posti disponibili: <span class="spots-loading-spinner" aria-hidden="true"></span></span>
-            <span class="tournament-status-pill js-tournament-status" data-tournament-id="${escapeHtml(tournament.id)}">Iscrizioni aperte</span>
+            <span class="js-spots-available" data-tournament-id="${escapeHtml(tournament.id)}" role="status" aria-label="${T('tournaments.spotsLoading', 'Caricamento posti disponibili')}">${T('tournaments.spots', 'Posti disponibili:')} <span class="spots-loading-spinner" aria-hidden="true"></span></span>
+            <span class="tournament-status-pill js-tournament-status" data-tournament-id="${escapeHtml(tournament.id)}">${T('tournaments.open', 'Iscrizioni aperte')}</span>
           </div>
-          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="${escapeHtml(tournament.id)}">Lista d'Attesa: non attiva</span>
-          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="${escapeHtml(tournament.id)}">${escapeHtml(WAITLIST_NOTE_TEXT)}</span>
+          <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="${escapeHtml(tournament.id)}">${T('tournaments.waitlistInactive', 'Lista d\'Attesa: non attiva')}</span>
+          <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="${escapeHtml(tournament.id)}">${escapeHtml(WAITLIST_NOTE_TEXT())}</span>
           <div class="spots-bar"><div class="spots-bar-fill js-spots-bar-fill" data-tournament-id="${escapeHtml(tournament.id)}" data-default-max-spots="${escapeHtml(tournament.maxTeams || '')}" style="width: 0%"></div></div>
         </div>
         <div class="tab-actions">
-          <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione Squadra ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
-            <i class="fas fa-pen-to-square"></i> Iscrizione Squadra
+          <button class="btn-primary js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="${T('tournaments.teamRegistration', 'Iscrizione Squadra')} ${name}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="${T('tournaments.waitlist', 'Lista d\'Attesa')} ${name}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
+            <i class="fas fa-pen-to-square"></i> ${T('tournaments.teamRegistration', 'Iscrizione Squadra')}
           </button>
-          ${tournament.singleRegistrationFormUrl ? `<button class="btn-primary btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
+          ${tournament.singleRegistrationFormUrl ? `<button class="btn-primary btn-single-register" data-single-title="${T('tournaments.singleRegistration', 'Iscrizione Singola')} ${name}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> ${T('tournaments.singleRegistration', 'Iscrizione Singola')}</button>` : ''}
         </div>
       </div>`;
+  }
+
+  /* ---------- Mappa, calendario e condivisione ---------- */
+  const SITE_PUBLIC_URL = 'https://tommyfarnese.github.io/simax_beachvolley_tournament/';
+  let renderedEvents = new Map();
+
+  function getEventPlace(event) {
+    return [event.location, event.address].filter(Boolean).join(', ');
+  }
+
+  function renderEventLocation(event) {
+    const place = getEventPlace(event);
+    if (!place) return '';
+    const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(place);
+    return `<a class="event-map-link" href="${escapeHtml(mapsUrl)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(T('tournaments.openMaps', 'Apri in Google Maps'))}"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location || event.address)}</a>`;
+  }
+
+  function getEventTimeRange(event) {
+    const valid = (value) => /^\d{2}:\d{2}$/.test(value);
+    const starts = event.tournaments.map((t) => t.startTime).filter(valid).sort();
+    const ends = event.tournaments.map((t) => t.endTime).filter(valid).sort();
+    return { start: starts[0] || '', end: ends[ends.length - 1] || '' };
+  }
+
+  function getCalendarData(event) {
+    const { start, end } = getEventTimeRange(event);
+    const nextDay = new Date(Number(event.isoDate.slice(0, 4)), Number(event.isoDate.slice(4, 6)) - 1, Number(event.isoDate.slice(6, 8)) + 1);
+    const nextIso = String(nextDay.getFullYear()) + String(nextDay.getMonth() + 1).padStart(2, '0') + String(nextDay.getDate()).padStart(2, '0');
+    const details = event.tournaments
+      .map((t) => `${t.tabLabel || t.title}: ${t.time || T('tournaments.calendarTimeNa', 'orario n/d')}${t.price ? ' · ' + t.price + ' ' + T('tournaments.calendarPerPerson', 'a persona') : ''}`)
+      .join('\n') + '\n\n' + T('tournaments.calendarInfo', 'Info e iscrizioni') + ': ' + SITE_PUBLIC_URL + '#iscrizioni';
+
+    return {
+      title: 'SiMax Beach Volley – ' + event.title,
+      place: getEventPlace(event),
+      details,
+      timed: Boolean(start && end),
+      startStamp: start ? event.isoDate + 'T' + start.replace(':', '') + '00' : event.isoDate,
+      endStamp: end ? event.isoDate + 'T' + end.replace(':', '') + '00' : nextIso
+    };
+  }
+
+  function buildIcs(event, data) {
+    const esc = (value) => String(value).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+    const fold = (line) => line.match(/.{1,60}/g).join('\r\n ');
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const timezone = [
+      'BEGIN:VTIMEZONE', 'TZID:Europe/Rome',
+      'BEGIN:DAYLIGHT', 'TZOFFSETFROM:+0100', 'TZOFFSETTO:+0200', 'TZNAME:CEST', 'DTSTART:19700329T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'END:DAYLIGHT',
+      'BEGIN:STANDARD', 'TZOFFSETFROM:+0200', 'TZOFFSETTO:+0100', 'TZNAME:CET', 'DTSTART:19701025T030000', 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU', 'END:STANDARD',
+      'END:VTIMEZONE'
+    ];
+    const dates = data.timed
+      ? ['DTSTART;TZID=Europe/Rome:' + data.startStamp, 'DTEND;TZID=Europe/Rome:' + data.endStamp]
+      : ['DTSTART;VALUE=DATE:' + data.startStamp, 'DTEND;VALUE=DATE:' + data.endStamp];
+
+    return [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SiMax BVT//Tornei//IT', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      ...(data.timed ? timezone : []),
+      'BEGIN:VEVENT',
+      'UID:simax-event-' + event.id + '@tommyfarnese.github.io',
+      'DTSTAMP:' + stamp,
+      ...dates,
+      'SUMMARY:' + esc(data.title),
+      'LOCATION:' + esc(data.place),
+      'DESCRIPTION:' + esc(data.details),
+      'URL:' + SITE_PUBLIC_URL,
+      'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(data.title), 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'
+    ].map(fold).join('\r\n');
+  }
+
+  function addEventToCalendar(button) {
+    const event = renderedEvents.get(button.dataset.eventId);
+    if (!event || !event.isoDate) return;
+    const data = getCalendarData(event);
+    trackEvent('add_to_calendar', { event_id: event.id, event_title: event.title });
+
+    // Android has no native .ics handler: use Google Calendar instead
+    if (/Android/i.test(navigator.userAgent)) {
+      const params = new URLSearchParams({
+        action: 'TEMPLATE',
+        text: data.title,
+        dates: data.startStamp + '/' + data.endStamp,
+        details: data.details,
+        location: data.place,
+        ctz: 'Europe/Rome'
+      });
+      window.open('https://calendar.google.com/calendar/render?' + params.toString(), '_blank', 'noopener');
+      return;
+    }
+
+    const blob = new Blob([buildIcs(event, data)], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'simax-' + event.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.ics';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  async function shareEvent(button) {
+    const event = renderedEvents.get(button.dataset.eventId);
+    if (!event) return;
+    const { start } = getEventTimeRange(event);
+    const url = SITE_PUBLIC_URL + '#tornei';
+    const text = `🏐 ${event.title} – ${event.dateLabel}${start ? ' ' + T('tournaments.shareAt', 'ore') + ' ' + start : ''}${event.location ? ' @ ' + event.location : ''}. ${T('tournaments.shareCta', 'Iscriviti qui:')}`;
+    trackEvent('share_event', { event_id: event.id, event_title: event.title });
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: event.title, text, url });
+      } catch (_) { /* share sheet dismissed */ }
+      return;
+    }
+    window.open('https://wa.me/?text=' + encodeURIComponent(text + ' ' + url), '_blank', 'noopener');
   }
 
   function renderEventCard(event) {
@@ -2620,65 +2945,33 @@ ${renderTournamentInfoGrid(tournament)}
           ${halloweenRibbon}
           <h3>${escapeHtml(event.title)}</h3>
           <div class="event-meta">
-            <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</span>
-            <span><i class="fas fa-sun"></i> ${escapeHtml(event.periodLabel || event.dateLabel)}</span>
+            ${renderEventLocation(event)}
+            <span><i class="fas fa-sun"></i> ${escapeHtml(translatePeriod(event.periodLabel) || event.dateLabel)}</span>
+          </div>
+          <div class="event-quick-actions">
+            ${event.isoDate ? `<button type="button" class="event-action-btn" data-event-id="${escapeHtml(event.id)}" onclick="addEventToCalendar(this)"><i class="fas fa-calendar-plus"></i> ${T('tournaments.addToCalendar', 'Aggiungi al calendario')}</button>` : ''}
+            <button type="button" class="event-action-btn" data-event-id="${escapeHtml(event.id)}" onclick="shareEvent(this)"><i class="fas fa-share-nodes"></i> ${T('tournaments.share', 'Condividi')}</button>
           </div>
         </div>
-        <div class="event-status status-soon status-blink js-event-status" data-event-id="${escapeHtml(event.id)}">Iscrizioni aperte</div>
+        <div class="event-status status-soon status-blink js-event-status" data-event-id="${escapeHtml(event.id)}">${T('tournaments.open', 'Iscrizioni aperte')}</div>
       </div>
       <div class="tournament-tabs">${tabs}
       </div>${tabContents}
     </div>`;
   }
 
-  function renderRegistrationCard(event, tournament) {
-    const halloweenClass = isHalloweenEvent(event) ? ' halloween-event' : '';
-    const halloweenRibbon = isHalloweenEvent(event)
-      ? '<span class="halloween-ribbon"><i class="fas fa-ghost"></i> Halloween Edition</span><span class="halloween-web top-right" aria-hidden="true"></span><span class="halloween-web bottom-left" aria-hidden="true"></span>'
-      : '';
-    return `
-    <div class="reg-card${halloweenClass}">
-      <div class="reg-card-top">
-        ${halloweenRibbon}
-        <div class="category-badge ${escapeHtml(getCategoryBadgeClass(tournament.category))}"><i class="fas fa-shuffle"></i> ${escapeHtml(tournament.category || 'Open')}</div>
-        <h3>${escapeHtml(tournament.title)}</h3>
-        <p class="event-date-small"><i class="fas fa-calendar"></i> ${escapeHtml(event.dateLabel)} · ore ${escapeHtml(tournament.time || 'n/d')}</p>
-        <span class="tournament-status-pill js-tournament-status" data-tournament-id="${escapeHtml(tournament.id)}" style="margin-top:10px;">Iscrizioni aperte</span>
-        <span class="waitlist-count js-waitlist-count hidden" data-tournament-id="${escapeHtml(tournament.id)}">Lista d'Attesa: non attiva</span>
-        <span class="waitlist-note js-waitlist-note hidden" data-tournament-id="${escapeHtml(tournament.id)}">${escapeHtml(WAITLIST_NOTE_TEXT)}</span>
-      </div>
-      <div class="reg-card-body">
-        <div class="reg-detail-grid">
-          <div class="reg-detail"><span class="lbl">Giocatori</span><span class="val">${escapeHtml(tournament.playersLabel || 'n/d')}</span></div>
-          <div class="reg-detail"><span class="lbl">Categoria</span><span class="val">${escapeHtml(tournament.category || 'Open')}</span></div>
-          <div class="reg-detail"><span class="lbl">Max squadre</span><span class="val">${escapeHtml(tournament.maxTeams || 'n/d')}</span></div>
-          <div class="reg-detail"><span class="lbl">Quota</span><span class="val gold">${escapeHtml(tournament.price || 'n/d')}</span></div>
-        </div>
-      </div>
-      <div class="reg-card-actions">
-        <button class="btn-register js-register-btn" data-tournament-id="${escapeHtml(tournament.id)}" data-title="Iscrizione Squadra ${escapeHtml(tournament.tabLabel || tournament.title)}" data-form-url="${escapeHtml(tournament.formUrl)}" data-waitlist-title="Lista d'Attesa ${escapeHtml(tournament.tabLabel || tournament.title)}" data-waitlist-form-url="${escapeHtml(tournament.waitlistFormUrl)}" onclick="handleRegisterClick(this)">
-          <i class="fas fa-pen-to-square"></i> Iscrizione Squadra
-        </button>
-        ${tournament.singleRegistrationFormUrl ? `<button class="btn-register btn-single-register" data-single-title="Iscrizione Singola ${escapeHtml(tournament.tabLabel || tournament.title)}" data-single-form-url="${escapeHtml(tournament.singleRegistrationFormUrl)}" onclick="handleSingleRegisterClick(this)"><i class="fas fa-user-plus"></i> Iscrizione Singola</button>` : ''}
-      </div>
-    </div>`;
-  }
-
   function renderTournamentConfig(events) {
     const eventsList = document.querySelector('.events-list');
-    const registrationCards = document.querySelector('.reg-cards');
-    if (!eventsList || !registrationCards) return;
+    if (!eventsList) return;
+
+    renderedEvents = new Map(events.map((event) => [event.id, event]));
 
     if (events.length === 0) {
-      eventsList.innerHTML = '<div class="tournament-loader" role="status">Al momento non ci sono tornei in programma.</div>';
-      registrationCards.innerHTML = '<div class="tournament-loader" role="status">Non ci sono tornei disponibili per l\'iscrizione.</div>';
+      eventsList.innerHTML = `<div class="tournament-loader" role="status">${escapeHtml(T('tournaments.empty', 'Al momento non ci sono tornei in programma.'))}</div>`;
       return;
     }
 
     eventsList.innerHTML = events.map(renderEventCard).join('');
-    registrationCards.innerHTML = events
-      .flatMap((event) => event.tournaments.map((tournament) => renderRegistrationCard(event, tournament)))
-      .join('');
   }
 
   function applyTournamentEvents(events) {
@@ -2690,26 +2983,23 @@ ${renderTournamentInfoGrid(tournament)}
 
   function setTournamentLoadingState(isLoading, message) {
     const eventsList = document.querySelector('.events-list');
-    const registrationCards = document.querySelector('.reg-cards');
-    if (!eventsList || !registrationCards) return;
+    if (!eventsList) return;
 
     if (isLoading) {
-      const loader = `
+      eventsList.innerHTML = `
         <div class="tournament-loader" role="status" aria-live="polite">
           <span class="tournament-loader-spinner" aria-hidden="true"></span>
-          <span>Caricamento tornei...</span>
+          <span>${escapeHtml(T('tournaments.loading', 'Caricamento tornei...'))}</span>
         </div>`;
-      eventsList.innerHTML = loader;
-      registrationCards.innerHTML = loader;
       return;
     }
 
     if (message) {
-      const errorMessage = `<div class="tournament-loader" role="alert"><span>${escapeHtml(message)}</span></div>`;
-      eventsList.innerHTML = errorMessage;
-      registrationCards.innerHTML = errorMessage;
+      eventsList.innerHTML = `<div class="tournament-loader" role="alert"><span>${escapeHtml(message)}</span></div>`;
     }
   }
+
+  let lastEventData = null;
 
   async function loadTournamentConfig() {
     const controller = new AbortController();
@@ -2723,7 +3013,8 @@ ${renderTournamentInfoGrid(tournament)}
 
       const payload = await response.json();
       const eventData = Array.isArray(payload) ? payload : payload.events;
-      const events = normalizeTournamentConfig(normalizeJsonPropertyNames(eventData));
+      lastEventData = normalizeJsonPropertyNames(eventData);
+      const events = normalizeTournamentConfig(lastEventData);
 
       applyTournamentEvents(events);
       applyTournamentStatuses();
@@ -2740,7 +3031,7 @@ ${renderTournamentInfoGrid(tournament)}
       await loadTournamentConfig();
     } catch (error) {
       console.error('Errore caricamento tornei:', error.message || error);
-      setTournamentLoadingState(false, 'Impossibile caricare il calendario dei tornei. Riprova più tardi.');
+      setTournamentLoadingState(false, T('tournaments.error', 'Impossibile caricare il calendario dei tornei. Riprova più tardi.'));
       document.getElementById('countdown-section').style.display = 'none';
     }
   }
@@ -2767,16 +3058,17 @@ ${renderTournamentInfoGrid(tournament)}
       const isSoldOut = isTournamentSoldOut(tournamentId);
 
       if (!isSoldOut || !hasWaitlistForm(tournamentId)) {
-        label.textContent = 'Lista d\'Attesa: non attiva';
+        label.textContent = T('tournaments.waitlistInactive', 'Lista d\'Attesa: non attiva');
         label.classList.add('hidden');
         return;
       }
 
       if (waitlistCount > 0) {
-        const suffix = waitlistCount === 1 ? 'squadra' : 'squadre';
-        label.textContent = waitlistCount + ' ' + suffix + ' in Lista d\'Attesa';
+        label.textContent = waitlistCount === 1
+          ? T('tournaments.waitlistOne', '{count} squadra in Lista d\'Attesa', { count: waitlistCount })
+          : T('tournaments.waitlistMany', '{count} squadre in Lista d\'Attesa', { count: waitlistCount });
       } else {
-        label.textContent = 'Lista d\'Attesa attiva';
+        label.textContent = T('tournaments.waitlistActive', 'Lista d\'Attesa attiva');
       }
 
       label.classList.remove('hidden');
@@ -2803,13 +3095,13 @@ ${renderTournamentInfoGrid(tournament)}
       const maxSpots = Number.isFinite(tournamentData.maxSpots) ? tournamentData.maxSpots : null;
 
       if (Number.isFinite(availableSpots) && Number.isFinite(maxSpots)) {
-        label.textContent = 'Posti disponibili: ' + availableSpots + ' / ' + maxSpots;
-        label.setAttribute('aria-label', 'Posti disponibili: ' + availableSpots + ' su ' + maxSpots);
+        label.textContent = T('tournaments.spotsValue', 'Posti disponibili: {available} / {max}', { available: availableSpots, max: maxSpots });
+        label.setAttribute('aria-label', T('tournaments.spotsAria', 'Posti disponibili: {available} su {max}', { available: availableSpots, max: maxSpots }));
       } else {
         label.textContent = Number.isFinite(maxSpots)
-          ? 'Posti disponibili: n/d / ' + maxSpots
-          : 'Posti disponibili: n/d';
-        label.setAttribute('aria-label', 'Disponibilità posti non disponibile');
+          ? T('tournaments.spotsUnknownMax', 'Posti disponibili: n/d / {max}', { max: maxSpots })
+          : T('tournaments.spotsUnknown', 'Posti disponibili: n/d');
+        label.setAttribute('aria-label', T('tournaments.spotsUnknownAria', 'Disponibilità posti non disponibile'));
       }
     });
 
@@ -2836,13 +3128,13 @@ ${renderTournamentInfoGrid(tournament)}
 
   function setButtonSoldOut(button) {
     const waitlistUrl = String(button.dataset.waitlistFormUrl || '').trim();
-    const waitlistLabel = button.dataset.waitlistTitle || 'Lista d\'Attesa';
+    const waitlistLabel = button.dataset.waitlistTitle || T('tournaments.waitlist', 'Lista d\'Attesa');
 
     if (waitlistUrl) {
       button.disabled = false;
       button.classList.remove('disabled');
       button.setAttribute('aria-disabled', 'false');
-      button.innerHTML = '<i class="fas fa-user-clock"></i> Iscriviti in Lista d\'Attesa';
+      button.innerHTML = '<i class="fas fa-user-clock"></i> ' + escapeHtml(T('tournaments.joinWaitlist', 'Iscriviti in Lista d\'Attesa'));
       return;
     }
 
@@ -2853,11 +3145,11 @@ ${renderTournamentInfoGrid(tournament)}
   }
 
   function setButtonOpen(button) {
-    const title = button.dataset.title || 'Iscrizione torneo';
+    const title = button.dataset.title || T('tournaments.registrationFallback', 'Iscrizione torneo');
     button.disabled = false;
     button.classList.remove('disabled');
     button.setAttribute('aria-disabled', 'false');
-    button.innerHTML = '<i class="fas fa-pen-to-square"></i> Iscrizione Squadra';
+    button.innerHTML = '<i class="fas fa-pen-to-square"></i> ' + escapeHtml(T('tournaments.teamRegistration', 'Iscrizione Squadra'));
     button.setAttribute('aria-label', title);
   }
 
@@ -2882,7 +3174,7 @@ ${renderTournamentInfoGrid(tournament)}
         return;
       }
 
-      badge.textContent = 'Iscrizioni aperte';
+      badge.textContent = T('tournaments.open', 'Iscrizioni aperte');
       badge.classList.remove('status-full', 'status-soon');
       badge.classList.add('status-open', 'status-blink');
     });
@@ -2905,7 +3197,7 @@ ${renderTournamentInfoGrid(tournament)}
         statusTag.classList.remove('open');
         statusTag.classList.add('sold-out');
       } else {
-        statusTag.textContent = 'Iscrizioni aperte';
+        statusTag.textContent = T('tournaments.open', 'Iscrizioni aperte');
         statusTag.classList.remove('sold-out');
         statusTag.classList.add('open');
       }
@@ -2925,7 +3217,8 @@ ${renderTournamentInfoGrid(tournament)}
 
     if (isTournamentSoldOut(tournamentId)) {
       if (waitlistUrl) {
-        const title = button.dataset.waitlistTitle || (button.dataset.title ? 'Lista d\'Attesa – ' + button.dataset.title : 'Lista d\'Attesa');
+        const waitlistName = T('tournaments.waitlist', 'Lista d\'Attesa');
+        const title = button.dataset.waitlistTitle || (button.dataset.title ? waitlistName + ' – ' + button.dataset.title : waitlistName);
         openModal(title, waitlistUrl);
       }
       return;
@@ -2939,7 +3232,7 @@ ${renderTournamentInfoGrid(tournament)}
   function handleSingleRegisterClick(button) {
     const formUrl = String(button?.dataset?.singleFormUrl || '').trim();
     if (!formUrl) return;
-    openModal(button.dataset.singleTitle || 'Iscrizione Singola', formUrl);
+    openModal(button.dataset.singleTitle || T('tournaments.singleRegistration', 'Iscrizione Singola'), formUrl);
   }
 
   /* ---------- Modal (Google Form) ---------- */
@@ -2956,20 +3249,19 @@ ${renderTournamentInfoGrid(tournament)}
         ? formUrl.replace('viewform', 'viewform').replace('?', '?embedded=true&')
         : formUrl + '?embedded=true';
 
-      body.innerHTML = `<iframe class="modal-iframe" src="${embedUrl}" title="${title}">
-        Caricamento del modulo...
+      body.innerHTML = `<iframe class="modal-iframe" src="${escapeHtml(embedUrl)}" title="${escapeHtml(title)}">
+        ${escapeHtml(T('modal.loadingForm', 'Caricamento del modulo...'))}
       </iframe>`;
     } else {
       // Fallback: pulsante che apre Google Forms in nuova tab
       body.innerHTML = `
         <div class="modal-fallback">
-          <p>Il modulo di iscrizione per <strong>${title}</strong> aprirà su Google Forms.<br>
-          Clicca il pulsante qui sotto per procedere.</p>
-          <a href="${formUrl}" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex;gap:9px;">
-            <i class="fas fa-external-link-alt"></i> Apri modulo Google
+          <p>${T('modal.fallbackText', 'Il modulo di iscrizione per <strong>{title}</strong> aprirà su Google Forms.<br>Clicca il pulsante qui sotto per procedere.', { title: escapeHtml(title) })}</p>
+          <a href="${escapeHtml(formUrl)}" target="_blank" rel="noopener" class="btn-primary" style="display:inline-flex;gap:9px;">
+            <i class="fas fa-external-link-alt"></i> ${escapeHtml(T('modal.fallbackButton', 'Apri modulo Google'))}
           </a>
           <p style="margin-top:20px; font-size:0.82rem;">
-            ⚙️ L'organizzatore non ha ancora configurato il link. Contattaci se hai urgenza.
+            ${escapeHtml(T('modal.fallbackNote', '⚙️ L\'organizzatore non ha ancora configurato il link. Contattaci se hai urgenza.'))}
           </p>
         </div>`;
     }
@@ -3031,9 +3323,40 @@ ${renderTournamentInfoGrid(tournament)}
     document.fonts.ready.then(updateNavTitle);
   }
 
+  /* ---------- Cambio lingua: ridisegna i contenuti generati via JS ---------- */
+  document.addEventListener('simax:languagechange', () => {
+    if (lastEventData) {
+      applyTournamentEvents(normalizeTournamentConfig(lastEventData));
+      applyTournamentStatuses();
+    }
+    renderGallery();
+  });
+
+  /* ---------- Mobile sticky CTA ---------- */
+  function setupMobileCta() {
+    const cta = document.getElementById('mobile-cta');
+    const watched = ['hero', 'tornei'].map((id) => document.getElementById(id)).filter(Boolean);
+    if (!cta || !watched.length || !('IntersectionObserver' in window)) return;
+
+    const visible = new Set();
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visible.add(entry.target.id);
+        else visible.delete(entry.target.id);
+      });
+      const show = visible.size === 0;
+      cta.classList.toggle('show', show);
+      cta.setAttribute('aria-hidden', show ? 'false' : 'true');
+      cta.tabIndex = show ? 0 : -1;
+    });
+    watched.forEach((el) => ctaObserver.observe(el));
+  }
+
   setupCookieControls();
   setupClickTracking();
+  setupMobileCta();
   initializeTournamentData();
+  initializeGallery();
 </script>
 
 </body>

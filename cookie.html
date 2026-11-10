@@ -76,42 +76,122 @@
       color: var(--navy);
       font-weight: 700;
     }
+
+    [hidden] { display: none !important; }
+
+    .lang-switch {
+      float: right;
+      display: inline-flex;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-left: 12px;
+    }
+
+    .lang-switch button {
+      border: none;
+      background: transparent;
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .lang-switch button[aria-pressed="true"] { background: var(--gold); color: var(--navy); }
   </style>
 </head>
 <body>
   <main class="container">
-    <h1>Cookie Policy</h1>
-    <p class="meta"><strong>Ultimo aggiornamento:</strong> 05/08/2026</p>
+    <div class="lang-switch" role="group" aria-label="Lingua / Language">
+      <button type="button" data-lang-switch="it" lang="it">IT</button>
+      <button type="button" data-lang-switch="en" lang="en">EN</button>
+    </div>
 
-    <p>Questo sito utilizza:</p>
-    <ul>
-      <li><strong>cookie tecnici necessari</strong> per il funzionamento essenziale della pagina;</li>
-      <li><strong>cookie statistici</strong> (Google Analytics 4) solo dopo consenso esplicito dell utente.</li>
-    </ul>
+    <div data-lang-block="it" lang="it">
+      <h1>Cookie Policy</h1>
+      <p class="meta"><strong>Ultimo aggiornamento:</strong> 10/11/2026</p>
 
-    <h2>Cookie statistici (previo consenso)</h2>
-    <p>
-      Se l utente accetta i cookie statistici, viene attivato Google Analytics 4 per raccogliere
-      dati aggregati sull utilizzo del sito, come pagine visualizzate, click sui pulsanti principali,
-      provenienza geografica aggregata e trend giornalieri.
-    </p>
+      <p>Questo sito utilizza:</p>
+      <ul>
+        <li><strong>cookie tecnici necessari</strong> per il funzionamento essenziale della pagina;</li>
+        <li><strong>memorizzazione locale tecnica</strong> (localStorage) per ricordare la tua scelta sui cookie e la lingua del sito;</li>
+        <li><strong>cookie statistici</strong> (Google Analytics 4) solo dopo consenso esplicito dell'utente.</li>
+      </ul>
 
-    <h2>Rifiuto e revoca</h2>
-    <p>
-      L utente puo rifiutare i cookie statistici dal banner iniziale oppure modificare in qualsiasi
-      momento la scelta tramite il link Gestisci cookie nel footer.
-    </p>
+      <h2>Cookie statistici (previo consenso)</h2>
+      <p>
+        Se l'utente accetta i cookie statistici, viene attivato Google Analytics 4 per raccogliere
+        dati aggregati sull'utilizzo del sito, come pagine visualizzate, click sui pulsanti principali,
+        provenienza geografica aggregata e trend giornalieri.
+      </p>
 
-    <h2>Base giuridica</h2>
-    <p>La base giuridica per i cookie statistici e il consenso dell utente.</p>
+      <h2>Contenuti di terze parti</h2>
+      <p>
+        Le foto della sezione Gallery sono caricate da Google Drive e i moduli di iscrizione da Google Forms.
+        Questi servizi possono utilizzare cookie propri secondo le policy di Google.
+      </p>
 
-    <h2>Titolare del trattamento</h2>
-    <p>
-      SiMax Beach Volley Tournament<br />
-      Contatto: <a href="mailto:tommy.farnese@gmail.com">tommy.farnese@gmail.com</a>
-    </p>
+      <h2>Rifiuto e revoca</h2>
+      <p>
+        L'utente può rifiutare i cookie statistici dal banner iniziale oppure modificare in qualsiasi
+        momento la scelta tramite il link Gestisci cookie nel footer.
+      </p>
 
-    <a class="back" href="index.html">Torna al sito</a>
+      <h2>Base giuridica</h2>
+      <p>La base giuridica per i cookie statistici è il consenso dell'utente.</p>
+
+      <h2>Titolare del trattamento</h2>
+      <p>
+        SiMax Beach Volley Tournament<br />
+        Contatto: <a href="mailto:tommy.farnese@gmail.com">tommy.farnese@gmail.com</a>
+      </p>
+
+      <a class="back" href="index.html">Torna al sito</a>
+    </div>
+
+    <div data-lang-block="en" lang="en" hidden>
+      <h1>Cookie Policy</h1>
+      <p class="meta"><strong>Last updated:</strong> 10/11/2026</p>
+
+      <p>This website uses:</p>
+      <ul>
+        <li><strong>necessary technical cookies</strong> for the essential operation of the page;</li>
+        <li><strong>technical local storage</strong> (localStorage) to remember your cookie choice and the website language;</li>
+        <li><strong>statistics cookies</strong> (Google Analytics 4) only after the user's explicit consent.</li>
+      </ul>
+
+      <h2>Statistics cookies (subject to consent)</h2>
+      <p>
+        If the user accepts statistics cookies, Google Analytics 4 is enabled to collect
+        aggregated data on website usage, such as pages viewed, clicks on the main buttons,
+        aggregated geographic origin and daily trends.
+      </p>
+
+      <h2>Third-party content</h2>
+      <p>
+        Gallery photos are loaded from Google Drive and registration forms from Google Forms.
+        These services may use their own cookies under Google's policies.
+      </p>
+
+      <h2>Declining and withdrawing consent</h2>
+      <p>
+        Users can decline statistics cookies from the initial banner or change their choice at any
+        time via the Manage cookies link in the footer.
+      </p>
+
+      <h2>Legal basis</h2>
+      <p>The legal basis for statistics cookies is the user's consent.</p>
+
+      <h2>Data controller</h2>
+      <p>
+        SiMax Beach Volley Tournament<br />
+        Contact: <a href="mailto:tommy.farnese@gmail.com">tommy.farnese@gmail.com</a>
+      </p>
+
+      <a class="back" href="index.html">Back to the website</a>
+    </div>
   </main>
+  <script src="i18n.js"></script>
 </body>
 </html>

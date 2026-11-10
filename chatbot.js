@@ -29,7 +29,7 @@
 
   const CONFIG = Object.freeze(Object.assign({}, DEFAULT_CONFIG, window.SIMAX_CHAT_CONFIG || {}));
 
-  const SECTIONS = ['tornei', 'come-funziona', 'iscrizioni', 'regolamento', 'faq', 'contatti'];
+  const SECTIONS = ['tornei', 'come-funziona', 'iscrizioni', 'gallery', 'regolamento', 'faq', 'contatti'];
   const LANGUAGES = ['it', 'en'];
 
   const DEBUG = CONFIG.debug !== null
@@ -78,7 +78,8 @@
         iscrizioni: 'Iscrizioni',
         regolamento: 'Regolamento',
         faq: 'FAQ',
-        contatti: 'Contatti'
+        contatti: 'Contatti',
+        gallery: 'Gallery'
       },
       formLabel: 'modulo di iscrizione'
     },
@@ -123,14 +124,17 @@
         iscrizioni: 'Registrations',
         regolamento: 'Rules',
         faq: 'FAQ',
-        contatti: 'Contacts'
+        contatti: 'Contacts',
+        gallery: 'Gallery'
       },
       formLabel: 'registration form'
     }
   };
 
   const state = {
-    lang: LANGUAGES.includes(CONFIG.defaultLanguage) ? CONFIG.defaultLanguage : 'it',
+    lang: window.SiteI18n && LANGUAGES.includes(window.SiteI18n.lang)
+      ? window.SiteI18n.lang
+      : (LANGUAGES.includes(CONFIG.defaultLanguage) ? CONFIG.defaultLanguage : 'it'),
     isOpen: false,
     busy: false,
     history: [],
@@ -291,7 +295,7 @@
   }
 
   /* ---------- Rich text rendering (no innerHTML) ---------- */
-  const TOKEN_RE = /\[([^\]\n]{1,300})\]\(\s*([^)\s]{1,2048})\s*\)|\*\*([^*\n]{1,300})\*\*|(https?:\/\/[^\s<>"'`]+)|(^|[\s(])#(tornei|come-funziona|iscrizioni|regolamento|faq|contatti)(?![\w-])/gi;
+  const TOKEN_RE = /\[([^\]\n]{1,300})\]\(\s*([^)\s]{1,2048})\s*\)|\*\*([^*\n]{1,300})\*\*|(https?:\/\/[^\s<>"'`]+)|(^|[\s(])#(tornei|come-funziona|iscrizioni|gallery|regolamento|faq|contatti)(?![\w-])/gi;
 
   function appendLink(container, label, rawUrl) {
     const target = resolveLink(rawUrl);
@@ -922,6 +926,9 @@
     }
 
     window.addEventListener('pagehide', () => abortPending('unload'));
+
+    // Follow the site-wide IT/EN switcher (i18n.js)
+    document.addEventListener('simax:languagechange', (event) => setLanguage(event.detail && event.detail.lang));
   }
 
   function init() {
