@@ -79,7 +79,8 @@
         regolamento: 'Regolamento',
         faq: 'FAQ',
         contatti: 'Contatti',
-        gallery: 'Gallery'
+        gallery: 'Gallery',
+        'hall-of-fame': 'Albo d\'oro'
       },
       formLabel: 'modulo di iscrizione'
     },
@@ -125,7 +126,8 @@
         regolamento: 'Rules',
         faq: 'FAQ',
         contatti: 'Contacts',
-        gallery: 'Gallery'
+        gallery: 'Gallery',
+        'hall-of-fame': 'Hall of fame'
       },
       formLabel: 'registration form'
     }
@@ -267,6 +269,7 @@
 
     if (value.startsWith('#')) {
       const section = value.slice(1).toLowerCase();
+      if (section === 'hall-of-fame') return resolveLink('gallery.html#hall-of-fame');
       return SECTIONS.includes(section) ? { type: 'internal', section } : null;
     }
 
@@ -279,6 +282,18 @@
 
     if (url.username || url.password) return null;
     if (url.protocol !== 'https:' && url.protocol !== 'http:') return null;
+
+    const archive = new URL('gallery.html', CONFIG.siteUrl);
+    if (url.protocol === 'https:' && url.origin === archive.origin && url.pathname === archive.pathname) {
+      let section;
+      try { section = decodeURIComponent(url.hash.slice(1)).toLowerCase(); } catch (_) { return null; }
+      if (!['', 'gallery', 'hall-of-fame'].includes(section)) return null;
+      const destination = new URL('./gallery.html', window.location.href);
+      const language = url.searchParams.get('lang');
+      destination.searchParams.set('lang', LANGUAGES.includes(language) ? language : state.lang);
+      destination.hash = section;
+      return { type: 'page', href: destination.href, section: section || 'gallery' };
+    }
 
     if (isCurrentSitePage(url)) {
       let section = '';
@@ -295,7 +310,7 @@
   }
 
   /* ---------- Rich text rendering (no innerHTML) ---------- */
-  const TOKEN_RE = /\[([^\]\n]{1,300})\]\(\s*([^)\s]{1,2048})\s*\)|\*\*([^*\n]{1,300})\*\*|(https?:\/\/[^\s<>"'`]+)|(^|[\s(])#(tornei|come-funziona|iscrizioni|gallery|regolamento|faq|contatti)(?![\w-])/gi;
+  const TOKEN_RE = /\[([^\]\n]{1,300})\]\(\s*([^)\s]{1,2048})\s*\)|\*\*([^*\n]{1,300})\*\*|(https?:\/\/[^\s<>"'`]+)|(^|[\s(])#(tornei|come-funziona|iscrizioni|gallery|hall-of-fame|regolamento|faq|contatti)(?![\w-])/gi;
 
   function appendLink(container, label, rawUrl) {
     const target = resolveLink(rawUrl);
@@ -308,9 +323,16 @@
 
     // Replace bare URLs / #anchors with a readable label
     if (cleanLabel === rawUrl || /^(https?:\/\/|#)/i.test(cleanLabel)) {
-      cleanLabel = target.type === 'internal'
+      cleanLabel = target.type === 'internal' || target.type === 'page'
         ? t('sectionLabels')[target.section || '']
         : t('formLabel');
+    }
+
+    if (target.type === 'page') {
+      const link = el('a', { href: target.href, text: cleanLabel });
+      link.addEventListener('click', () => closeChat({ abort: false, restoreFocus: false }));
+      container.appendChild(link);
+      return;
     }
 
     if (target.type === 'internal') {
