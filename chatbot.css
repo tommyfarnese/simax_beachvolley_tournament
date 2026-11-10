@@ -215,6 +215,17 @@ body:has(.cookie-banner.open) .sxc-root:not(.is-open) .sxc-launcher { display: n
   padding: 6px 7px;
   cursor: pointer;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sxc-flag {
+  width: 16px;
+  height: 11px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
 }
 
 .sxc-lang button[aria-pressed="true"] {

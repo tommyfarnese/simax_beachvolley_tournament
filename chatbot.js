@@ -157,6 +157,45 @@
     return el('i', { className: 'fas ' + name, 'aria-hidden': 'true' });
   }
 
+  // Inline SVG flags: Windows does not render flag emoji
+  const FLAGS = {
+    it: {
+      viewBox: '0 0 3 2',
+      shapes: [
+        ['rect', { width: '1', height: '2', fill: '#009246' }],
+        ['rect', { x: '1', width: '1', height: '2', fill: '#ffffff' }],
+        ['rect', { x: '2', width: '1', height: '2', fill: '#ce2b37' }]
+      ]
+    },
+    en: {
+      viewBox: '0 0 60 30',
+      shapes: [
+        ['rect', { width: '60', height: '30', fill: '#012169' }],
+        ['path', { d: 'M0,0 L60,30 M60,0 L0,30', stroke: '#ffffff', 'stroke-width': '6' }],
+        ['path', { d: 'M0,0 L60,30 M60,0 L0,30', stroke: '#c8102e', 'stroke-width': '2' }],
+        ['path', { d: 'M30,0 V30 M0,15 H60', stroke: '#ffffff', 'stroke-width': '10' }],
+        ['path', { d: 'M30,0 V30 M0,15 H60', stroke: '#c8102e', 'stroke-width': '6' }]
+      ]
+    }
+  };
+
+  function flagIcon(lang) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const spec = FLAGS[lang];
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('class', 'sxc-flag');
+    svg.setAttribute('viewBox', spec.viewBox);
+    svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    spec.shapes.forEach(([tag, attrs]) => {
+      const shape = document.createElementNS(ns, tag);
+      Object.entries(attrs).forEach(([name, value]) => shape.setAttribute(name, value));
+      svg.appendChild(shape);
+    });
+    return svg;
+  }
+
   function isCoarsePointer() {
     return window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
   }
@@ -771,7 +810,7 @@
       type: 'button',
       'data-lang': lang,
       lang: lang
-    }, [lang === 'it' ? '🇮🇹 IT' : '🇬🇧 EN']));
+    }, [flagIcon(lang), lang.toUpperCase()]));
     ui.langGroup = el('div', { className: 'sxc-lang', role: 'group' }, ui.langButtons);
     ui.newChat = el('button', { type: 'button', className: 'sxc-icon-btn' }, [icon('fa-rotate-right')]);
     ui.close = el('button', { type: 'button', className: 'sxc-icon-btn' }, [icon('fa-times')]);
