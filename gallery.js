@@ -67,8 +67,14 @@
   function renderStandings() {
     const body = document.getElementById('standings-body');
     if (!body) return;
-    const query = teamNameKey(document.getElementById('team-search').value);
-    const teams = aggregateStandings(galleryItems).filter((team) => teamNameKey(team.name).includes(query));
+    const search = document.getElementById('team-search');
+    const allTeams = aggregateStandings(galleryItems);
+    document.getElementById('team-options').innerHTML = allTeams
+      .map((team) => `<option value="${galleryEscape(team.name)}"></option>`).join('');
+    document.getElementById('standings-toolbar').hidden = allTeams.length === 0;
+    document.getElementById('standings-scroll').hidden = allTeams.length === 0;
+    const query = teamNameKey(search.value);
+    const teams = allTeams.filter((team) => teamNameKey(team.name).includes(query));
     const columns = ['gold1', 'gold2', 'gold3', 'silver1', 'silver2', 'silver3'];
     body.innerHTML = teams.map((team) => `<tr><th scope="row">${galleryEscape(team.name)}</th>${columns.map((column) => `<td>${team[column]}</td>`).join('')}</tr>`).join('');
     document.getElementById('standings-empty').hidden = teams.length > 0;
@@ -343,11 +349,6 @@
     } catch (error) {
       console.warn('Gallery non disponibile:', error.message || error);
       galleryItems = [];
-      const message = document.getElementById('gallery-empty');
-      if (message) {
-        message.dataset.i18n = 'archive.error';
-        message.textContent = galleryText('archive.error', 'Impossibile caricare la Gallery. Ricarica la pagina per riprovare.');
-      }
     }
     renderGallery();
   }
@@ -366,4 +367,7 @@
     document.addEventListener('simax:languagechange', renderGallery);
     initializeGallery();
   }
+
+  const archiveYear = document.getElementById('year');
+  if (archiveYear) archiveYear.textContent = String(new Date().getFullYear());
 

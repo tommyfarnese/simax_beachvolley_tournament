@@ -15,13 +15,15 @@
 <body class="archive-page" data-gallery-archive="true">
   <header class="archive-header">
     <a class="archive-brand" href="index.html"><img src="Tornei/logo.png" alt="SiMax" width="44" height="44" /><span>SiMax Beach Volley Tournament</span></a>
+    <nav class="archive-menu" aria-label="Navigazione principale">
+      <a href="index.html#gallery"><i class="fas fa-arrow-left" aria-hidden="true"></i> <span data-i18n="archive.back">Torna al sito</span></a>
+    </nav>
     <div class="archive-languages" role="group" aria-label="Lingua / Language">
-      <button type="button" data-lang-switch="it" lang="it" aria-label="Italiano">IT</button>
-      <button type="button" data-lang-switch="en" lang="en" aria-label="English">EN</button>
+      <button type="button" data-lang-switch="it" lang="it" aria-label="Italiano"><svg class="lang-flag" viewBox="0 0 3 2" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>IT</button>
+      <button type="button" data-lang-switch="en" lang="en" aria-label="English"><svg class="lang-flag" viewBox="0 0 60 30" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#c8102e" stroke-width="2"/><path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/><path d="M30,0 V30 M0,15 H60" stroke="#c8102e" stroke-width="6"/></svg>EN</button>
     </div>
   </header>
   <main class="archive-main">
-    <a class="archive-back" href="index.html#gallery"><i class="fas fa-arrow-left" aria-hidden="true"></i> <span data-i18n="archive.back">Torna al sito</span></a>
     <h1 data-i18n="archive.title">Gallery &amp; Albo d'oro</h1>
     <nav class="archive-tabs" aria-label="Gallery">
       <a href="#hall-of-fame"><i class="fas fa-trophy" aria-hidden="true"></i> <span data-i18n="archive.standings">Albo d'oro generale</span></a>
@@ -31,11 +33,12 @@
     <section id="hall-of-fame" class="archive-section" aria-labelledby="standings-title">
       <h2 id="standings-title" data-i18n="archive.standings">Albo d'oro generale</h2>
       <p class="archive-description" id="standings-description" data-i18n="archive.order">Tutti gli anni. Ordine per primi, secondi e terzi posti Gold, poi Silver. Conteggi basati sui risultati inseriti.</p>
-      <div class="archive-toolbar">
+      <div class="archive-toolbar" id="standings-toolbar">
         <label for="team-search" data-i18n="archive.search">Cerca squadra</label>
-        <input type="search" id="team-search" autocomplete="off" />
+        <input type="search" id="team-search" list="team-options" autocomplete="off" />
+        <datalist id="team-options"></datalist>
       </div>
-      <div class="standings-scroll" role="region" tabindex="0" aria-labelledby="standings-title">
+      <div class="standings-scroll" id="standings-scroll" role="region" tabindex="0" aria-labelledby="standings-title">
         <table class="standings-table" aria-describedby="standings-description">
           <thead>
             <tr><th scope="col" rowspan="2" data-i18n="archive.team">Squadra</th><th scope="colgroup" colspan="3" class="standings-gold">Gold</th><th scope="colgroup" colspan="3">Silver</th></tr>
@@ -61,7 +64,22 @@
       </div>
     </section>
   </main>
-  <footer class="archive-footer"><a href="privacy.html">Privacy Policy</a><a href="cookie.html">Cookie Policy</a></footer>
+  <footer class="archive-footer">
+    <div class="archive-footer-logo">
+      <img src="Tornei/logo.png" alt="SiMax" width="40" height="40" />
+      <span>SiMax Beach Volley Tournament</span>
+    </div>
+    <p data-i18n="footer.tagline">Tornei di beach volley &nbsp;·&nbsp; More than a tournament</p>
+    <p class="archive-footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="cookie.html">Cookie Policy</a>
+      <a href="https://simax-api-bedpb4drgrhygbey.westeurope-01.azurewebsites.net/admin/index.html"><i class="fas fa-right-to-bracket" aria-hidden="true"></i> <span data-i18n="footer.admin">Area organizzatori</span></a>
+    </p>
+    <p class="archive-footer-copyright">
+      &copy; <span id="year"></span> SiMax Beach Volley Tournament. <span data-i18n="footer.rights">Tutti i diritti riservati.</span>
+      &nbsp;|&nbsp; <span data-i18n="footer.made">Sito realizzato con ❤️ e sabbia tra i piedi.</span>
+    </p>
+  </footer>
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
     <button type="button" class="lightbox-btn lightbox-close" aria-label="Chiudi" data-i18n-attr="aria-label:lightbox.close"><i class="fas fa-times" aria-hidden="true"></i></button>
     <button type="button" class="lightbox-btn lightbox-prev" aria-label="Foto precedente" data-i18n-attr="aria-label:lightbox.prev"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
