@@ -262,7 +262,7 @@
     .standings-table tbody td { color: var(--text-light); }
     .standings-table tbody tr:last-child th, .standings-table tbody tr:last-child td { border-bottom: 0; }
     .standings-table tbody tr:hover { background: rgba(255,255,255,.05); }
-    .standings-table thead th { position: sticky; top: 0; z-index: 1; background: #0b1740; color: var(--text-light); font-size: 0.82rem; }
+    .standings-table thead th { background: #0b1740; color: var(--text-light); font-size: 0.82rem; }
     .standings-table thead tr:first-child th { padding-top: 14px; padding-bottom: 8px; border-bottom: 0; }
     .standings-table thead tr:nth-child(2) th { padding-top: 6px; color: var(--text-muted); font-size: 0.76rem; }
     .standings-table .standings-gold { color: var(--gold); }
@@ -285,8 +285,8 @@
     .archive-page .gallery-card-header { gap: 18px; padding: 22px 24px; border-bottom: 1px solid rgba(245,184,0,.14); }
     .archive-page .gallery-card-info h3 { margin: 0 0 5px; color: var(--white); font-size: 1.3rem; }
     .archive-page .gallery-card-info p { margin: 0; color: var(--text-muted); }
-    .archive-page .gallery-card .event-date-badge { border-radius: 5px; background: var(--navy); color: #fff; }
-    .archive-page .gallery-card .event-date-badge .month { color: var(--gold); }
+    .archive-page .gallery-card .event-date-badge { border-radius: 5px; background: var(--gold); color: var(--navy); }
+    .archive-page .gallery-card .event-date-badge .month { color: var(--navy); }
     .archive-page .carousel { padding: 18px 0 8px; }
     .archive-page .carousel-track { gap: 12px; padding: 0 24px 10px; scroll-padding: 0 24px; }
     .archive-page .carousel-slide { width: 320px; height: 230px; border-radius: 4px; background: rgba(255,255,255,.08); }
