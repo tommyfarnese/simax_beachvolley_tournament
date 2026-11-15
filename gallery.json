@@ -1,5 +1,59 @@
 {
   "tournaments": [
+	{
+      "title": "Torneo Winter Warm-Up",
+      "date": "2026-11-14",
+      "location": "PalaUno, Milano",
+      "albumUrl": "https://drive.google.com/drive/folders/1INr_ff9BHWdJ2UQLyhcy1sHWJdyQMnW6?usp=sharing",
+      "photos": [
+        "https://drive.google.com/file/d/1GNs3E3ntmCVJz7lklqxiqaw4hIe3lfbT/view?usp=sharing",
+        "https://drive.google.com/file/d/1ggU8LZh4rb2W7XNvQP9grZkvRF9vHDFx/view?usp=sharing",
+        "https://drive.google.com/file/d/1OWziOt6koJPYipMnQe0HNfyws5q-yX9P/view?usp=sharing",
+        "https://drive.google.com/file/d/1KrAffdcya3-_S8t1c_7bqSsYiklehFxL/view?usp=sharing"
+      ],
+      "results": [
+        {
+          "category": "Gold",
+          "podium": [
+            {
+              "position": 1,
+              "team": "The Balls-Breaking penguins",
+              "players": ["Api", "Motta"]
+            },
+            {
+              "position": 2,
+              "team": "Alzatori di gomito",
+              "players": ["Oriani", "Bianchini"]
+            },
+            {
+              "position": 3,
+              "team": "Double Trouble",
+              "players": ["Stevanella", "Bovinelli"]
+            }
+          ]
+        },
+        {
+          "category": "Silver",
+          "podium": [
+            {
+              "position": 1,
+              "team": "Quelli dello spritz",
+              "players": ["Lugli", "Scicchitano"]
+            },
+            {
+              "position": 2,
+              "team": "Biscotti",
+              "players": ["Kocsis", "Travaglino"]
+            },
+            {
+              "position": 3,
+              "team": "",
+              "players": []
+            }
+          ]
+        }
+      ]
+    },
     {
       "title": "Torneo di Halloween",
       "date": "2026-10-31",
