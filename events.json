@@ -38,6 +38,36 @@
           }
         }
       ]
+    },
+    {
+      "Id": 8,
+      "Title": "Christmas Edition",
+      "Date": "2026-12-11T00:00:00",
+      "Location": "Pero Sporting Club",
+      "Address": "Via Papa Giovanni XXIII,6, Pero",
+      "PeriodLabel": "Pomeriggio",
+      "Tournaments": [
+        {
+          "Id": 16,
+          "SortOrder": 3,
+          "TabLabel": "2\u00D72 MIX",
+          "Title": "CHRISTMAS EDITION",
+          "Format": "2\u00D72",
+          "StartTime": "20:00:00",
+          "EndTime": "23:30:00",
+          "Price": 20.00,
+          "MaxTeams": 16,
+          "Level": "Open",
+          "MinPlayers": 2,
+          "FormUrl": "https://docs.google.com/forms/d/e/1FAIpQLScL0jK0jPWtioCCMrLTe5c3Jfkk11DH1CIgFDnqsO5jBjq9Qg/viewform?usp=header",
+          "SingleRegistrationFormUrl": "https://docs.google.com/forms/d/e/1FAIpQLSfKjKIhjOLHn_3VRaXnwxydEHrtk1OTAMNFj5T_UwVVOpnheQ/viewform?usp=header",
+          "WaitlistFormUrl": "",
+          "Category": {
+            "Id": 3,
+            "Name": "MIX"
+          }
+        }
+      ]
     }
   ]
 }
