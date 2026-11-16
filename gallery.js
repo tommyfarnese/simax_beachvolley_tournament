@@ -1,9 +1,11 @@
   /* ---------- Gallery + Albo d'oro (gallery.json) ---------- */
   const GALLERY_CONFIG_URL = new URL('./gallery.json', document.baseURI).toString();
   const GALLERY_ALBUM_HOSTS = ['drive.google.com', 'photos.google.com', 'photos.app.goo.gl'];
+  const STANDINGS_PAGE_SIZE = 10;
   let galleryItems = [];
   let galleryVisibleCount = 6;
   let galleryYear = '';
+  let standingsPage = 1;
   const isGalleryArchive = document.body.dataset.galleryArchive === 'true';
   const lightboxState = { photos: [], index: 0, title: '', returnFocus: null };
 
@@ -78,9 +80,21 @@
     document.getElementById('standings-scroll').hidden = allPlayers.length === 0;
     const query = playerNameKey(search.value);
     const players = allPlayers.filter((player) => playerNameKey(player.name).includes(query));
+    const pageCount = Math.ceil(players.length / STANDINGS_PAGE_SIZE);
+    standingsPage = Math.min(standingsPage, pageCount || 1);
+    const start = (standingsPage - 1) * STANDINGS_PAGE_SIZE;
+    const pagePlayers = players.slice(start, start + STANDINGS_PAGE_SIZE);
     const columns = ['gold1', 'gold2', 'gold3', 'silver1', 'silver2', 'silver3'];
-    body.innerHTML = players.map((player) => `<tr><th scope="row">${galleryEscape(player.name)}</th>${columns.map((column) => `<td>${player[column]}</td>`).join('')}</tr>`).join('');
+    body.innerHTML = pagePlayers.map((player) => `<tr><th scope="row">${galleryEscape(player.name)}</th>${columns.map((column) => `<td>${player[column]}</td>`).join('')}</tr>`).join('');
     document.getElementById('standings-empty').hidden = players.length > 0;
+    const pagination = document.getElementById('standings-pagination');
+    pagination.hidden = pageCount <= 1;
+    document.getElementById('standings-prev').disabled = standingsPage <= 1;
+    document.getElementById('standings-next').disabled = standingsPage >= pageCount;
+    document.getElementById('standings-page-label').textContent = galleryText('archive.page', 'Pagina {current} di {total}', {
+      current: standingsPage,
+      total: pageCount || 1
+    });
   }
 
   function resolvePhotoUrl(raw, width) {
@@ -366,7 +380,18 @@
       galleryVisibleCount += 6;
       renderGallery();
     });
-    document.getElementById('player-search').addEventListener('input', renderStandings);
+    document.getElementById('player-search').addEventListener('input', () => {
+      standingsPage = 1;
+      renderStandings();
+    });
+    document.getElementById('standings-prev').addEventListener('click', () => {
+      standingsPage -= 1;
+      renderStandings();
+    });
+    document.getElementById('standings-next').addEventListener('click', () => {
+      standingsPage += 1;
+      renderStandings();
+    });
     document.addEventListener('simax:languagechange', renderGallery);
     initializeGallery();
   }

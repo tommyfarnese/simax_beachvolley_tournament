@@ -48,6 +48,11 @@
         </table>
       </div>
       <p id="standings-empty" data-i18n="archive.noPlayers" role="status" hidden>Nessun giocatore trovato.</p>
+      <nav class="standings-pagination" id="standings-pagination" aria-label="Paginazione albo d'oro" data-i18n-attr="aria-label:archive.pagination" hidden>
+        <button type="button" class="event-action-btn" id="standings-prev" data-i18n-attr="aria-label:archive.previousPage" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i> <span data-i18n="archive.previousPage">Precedente</span></button>
+        <span id="standings-page-label" aria-live="polite">Pagina 1 di 1</span>
+        <button type="button" class="event-action-btn" id="standings-next" data-i18n-attr="aria-label:archive.nextPage" disabled><span data-i18n="archive.nextPage">Successiva</span> <i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+      </nav>
     </section>
 
     <section id="gallery" class="archive-section" aria-labelledby="gallery-title">
