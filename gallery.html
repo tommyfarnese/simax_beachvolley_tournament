@@ -32,22 +32,22 @@
 
     <section id="hall-of-fame" class="archive-section" aria-labelledby="standings-title">
       <h2 id="standings-title" data-i18n="archive.standings">Albo d'oro generale</h2>
-      <p class="archive-description" id="standings-description" data-i18n="archive.order">Tutti gli anni. Ordine per primi, secondi e terzi posti Gold, poi Silver. Conteggi basati sui risultati inseriti.</p>
+      <p class="archive-description" id="standings-description" data-i18n="archive.order">Tutti gli anni. Ordine per primi, secondi e terzi posti Gold, poi Silver. Conteggi per giocatore basati sui risultati inseriti.</p>
       <div class="archive-toolbar" id="standings-toolbar">
-        <label for="team-search" data-i18n="archive.search">Cerca squadra</label>
-        <input type="search" id="team-search" list="team-options" autocomplete="off" />
-        <datalist id="team-options"></datalist>
+        <label for="player-search" data-i18n="archive.searchPlayer">Cerca giocatore</label>
+        <input type="search" id="player-search" list="player-options" autocomplete="off" />
+        <datalist id="player-options"></datalist>
       </div>
       <div class="standings-scroll" id="standings-scroll" role="region" tabindex="0" aria-labelledby="standings-title">
         <table class="standings-table" aria-describedby="standings-description">
           <thead>
-            <tr><th scope="col" rowspan="2" data-i18n="archive.team">Squadra</th><th scope="colgroup" colspan="3" class="standings-gold">Gold</th><th scope="colgroup" colspan="3">Silver</th></tr>
+            <tr><th scope="col" rowspan="2" data-i18n="archive.player">Giocatore</th><th scope="colgroup" colspan="3" class="standings-gold">Gold</th><th scope="colgroup" colspan="3">Silver</th></tr>
             <tr><th scope="col" data-i18n="gallery.place1">1°</th><th scope="col" data-i18n="gallery.place2">2°</th><th scope="col" data-i18n="gallery.place3">3°</th><th scope="col" data-i18n="gallery.place1">1°</th><th scope="col" data-i18n="gallery.place2">2°</th><th scope="col" data-i18n="gallery.place3">3°</th></tr>
           </thead>
           <tbody id="standings-body"></tbody>
         </table>
       </div>
-      <p id="standings-empty" data-i18n="archive.noTeams" role="status" hidden>Nessuna squadra trovata.</p>
+      <p id="standings-empty" data-i18n="archive.noPlayers" role="status" hidden>Nessun giocatore trovato.</p>
     </section>
 
     <section id="gallery" class="archive-section" aria-labelledby="gallery-title">

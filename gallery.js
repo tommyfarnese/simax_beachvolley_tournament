@@ -29,34 +29,37 @@
     ]));
   }
 
-  function teamNameKey(name) {
+  function playerNameKey(name) {
     return String(name).normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase('it-IT');
   }
 
   function aggregateStandings(items) {
-    const teams = new Map();
+    const players = new Map();
     items.forEach((item) => {
       const seen = new Set();
       item.results.forEach((result) => {
         const category = result.category.trim().toLowerCase();
         if (!['gold', 'silver'].includes(category)) return;
         result.podium.forEach((entry) => {
-          if (!entry.team || ![1, 2, 3].includes(entry.position)) return;
-          const key = teamNameKey(entry.team);
+          if (![1, 2, 3].includes(entry.position)) return;
           const placement = category + entry.position;
-          const unique = JSON.stringify([key, placement]);
-          if (seen.has(unique)) return;
-          seen.add(unique);
-          if (!teams.has(key)) teams.set(key, {
-            name: entry.team.trim().replace(/\s+/g, ' '),
-            gold1: 0, gold2: 0, gold3: 0, silver1: 0, silver2: 0, silver3: 0
+          entry.players.forEach((name) => {
+            if (!name) return;
+            const key = playerNameKey(name);
+            const unique = JSON.stringify([key, placement]);
+            if (seen.has(unique)) return;
+            seen.add(unique);
+            if (!players.has(key)) players.set(key, {
+              name: name.trim().replace(/\s+/g, ' '),
+              gold1: 0, gold2: 0, gold3: 0, silver1: 0, silver2: 0, silver3: 0
+            });
+            players.get(key)[placement] += 1;
           });
-          teams.get(key)[placement] += 1;
         });
       });
     });
     const columns = ['gold1', 'gold2', 'gold3', 'silver1', 'silver2', 'silver3'];
-    return [...teams.values()].sort((first, second) => {
+    return [...players.values()].sort((first, second) => {
       for (const column of columns) {
         if (first[column] !== second[column]) return second[column] - first[column];
       }
@@ -67,17 +70,17 @@
   function renderStandings() {
     const body = document.getElementById('standings-body');
     if (!body) return;
-    const search = document.getElementById('team-search');
-    const allTeams = aggregateStandings(galleryItems);
-    document.getElementById('team-options').innerHTML = allTeams
-      .map((team) => `<option value="${galleryEscape(team.name)}"></option>`).join('');
-    document.getElementById('standings-toolbar').hidden = allTeams.length === 0;
-    document.getElementById('standings-scroll').hidden = allTeams.length === 0;
-    const query = teamNameKey(search.value);
-    const teams = allTeams.filter((team) => teamNameKey(team.name).includes(query));
+    const search = document.getElementById('player-search');
+    const allPlayers = aggregateStandings(galleryItems);
+    document.getElementById('player-options').innerHTML = allPlayers
+      .map((player) => `<option value="${galleryEscape(player.name)}"></option>`).join('');
+    document.getElementById('standings-toolbar').hidden = allPlayers.length === 0;
+    document.getElementById('standings-scroll').hidden = allPlayers.length === 0;
+    const query = playerNameKey(search.value);
+    const players = allPlayers.filter((player) => playerNameKey(player.name).includes(query));
     const columns = ['gold1', 'gold2', 'gold3', 'silver1', 'silver2', 'silver3'];
-    body.innerHTML = teams.map((team) => `<tr><th scope="row">${galleryEscape(team.name)}</th>${columns.map((column) => `<td>${team[column]}</td>`).join('')}</tr>`).join('');
-    document.getElementById('standings-empty').hidden = teams.length > 0;
+    body.innerHTML = players.map((player) => `<tr><th scope="row">${galleryEscape(player.name)}</th>${columns.map((column) => `<td>${player[column]}</td>`).join('')}</tr>`).join('');
+    document.getElementById('standings-empty').hidden = players.length > 0;
   }
 
   function resolvePhotoUrl(raw, width) {
@@ -363,7 +366,7 @@
       galleryVisibleCount += 6;
       renderGallery();
     });
-    document.getElementById('team-search').addEventListener('input', renderStandings);
+    document.getElementById('player-search').addEventListener('input', renderStandings);
     document.addEventListener('simax:languagechange', renderGallery);
     initializeGallery();
   }
