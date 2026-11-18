@@ -98,12 +98,12 @@
       "enabled": true,
       "status": "open",
       "type": "prediction",
-      "tournament": "Torneo da configurare",
-      "tournamentEn": "Tournament to be configured",
+      "tournament": "Torneo di Natale",
+      "tournamentEn": "Christmas Tournament",
       "title": "Chi andra' in finale Gold?",
       "titleEn": "Who will reach the Gold final?",
-      "description": "Scegli due squadre: se almeno una raggiunge la finale Gold, partecipi automaticamente all'estrazione finale.",
-      "descriptionEn": "Pick two teams: if at least one reaches the Gold final, you automatically qualify for the final prize draw.",
+      "description": "Scegli due squadre: se almeno una raggiunge la finale Gold, partecipi automaticamente all'estrazione finale. In palio un panettone!",
+      "descriptionEn": "Pick two teams: if at least one reaches the Gold final, you automatically qualify for the final prize draw. Win a panettone!",
       "participation": "team",
       "image": "",
       "formUrl": "https://forms.gle/bU2Der8ZB8JS1fCZ9",
@@ -115,7 +115,17 @@
         { "id": "squadra-3", "name": "Squadra 3", "nameEn": "Team 3" },
         { "id": "squadra-4", "name": "Squadra 4", "nameEn": "Team 4" }
       ],
-      "prizes": []
+      "prizes": [
+        {
+          "id": "premio-panettone",
+          "quantity": 1,
+          "name": "Panettone",
+          "nameEn": "Panettone",
+          "description": "Un panettone per la squadra vincitrice dell'estrazione finale.",
+          "descriptionEn": "A panettone for the winning team of the final prize draw.",
+          "image": ""
+        }
+      ]
     }
   ]
 }
