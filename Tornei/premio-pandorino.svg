@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title description">
+  <title id="title">SiMax - Pandorino / Mini pandoro</title>
+  <desc id="description">Premio pandorino, illustrato con un piccolo pandoro a stella e zucchero a velo. Mini pandoro prize, illustrated with a golden star-shaped cake dusted with icing sugar.</desc>
+  <defs>
+    <linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#fffef7"/><stop offset="1" stop-color="#fff1c8"/></linearGradient>
+    <linearGradient id="gold" x2=".7" y2="1"><stop stop-color="#ffe277"/><stop offset="1" stop-color="#f5b800"/></linearGradient>
+    <linearGradient id="cake" x2="1" y2="0"><stop stop-color="#ac641c"/><stop offset=".3" stop-color="#e5a645"/><stop offset=".55" stop-color="#f7cf72"/><stop offset="1" stop-color="#ac641c"/></linearGradient>
+    <clipPath id="ticket"><path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#ticket)">
+    <path fill="url(#paper)" d="M0 0H600V360H0Z"/>
+    <path fill="#102247" d="M0 0H438V82H0Z"/>
+    <path fill="url(#gold)" d="M438 0H600V360H438Z"/>
+    <path fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2" d="M468-30 650 152M444-6 650 200M444 44 650 250"/>
+    <path fill="none" stroke="#102247" stroke-opacity=".28" stroke-width="2" stroke-dasharray="6 7" d="M438 20V340"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="34" y="58" fill="#fff" font-size="46" font-weight="900" font-style="italic" letter-spacing="-2">Si<tspan fill="#ffce39">Max</tspan></text>
+      <text x="216" y="39" fill="#fff" font-size="12" font-weight="700" letter-spacing="2">BEACH VOLLEY</text>
+      <text x="216" y="58" fill="#ffce39" font-size="12" font-weight="700" letter-spacing="2">TOURNAMENT</text>
+      <text x="219" y="310" text-anchor="middle" fill="#102247" font-size="28" font-weight="900" letter-spacing="1">PANDORINO</text>
+      <text x="219" y="335" text-anchor="middle" fill="#394a69" font-size="14" font-weight="700" letter-spacing="3">MINI PANDORO</text>
+      <text x="519" y="274" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">PLAY.</text>
+      <text x="519" y="299" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">REPEAT.</text>
+    </g>
+    <ellipse cx="219" cy="275" rx="113" ry="10" fill="#102247" opacity=".1"/>
+    <g stroke-linejoin="round" stroke-linecap="round">
+      <path d="m164 148-27 103 34 3 19 18 29-8 29 8 19-18 34-3-27-103Z" fill="url(#cake)" stroke="#a36a24" stroke-width="4"/>
+      <path d="m181 153-10 101m34-97-15 115m43-115 15 115m9-119 10 101" fill="none" stroke="#a36a24" stroke-width="4"/>
+      <path d="m219 104 17 16 26-4 3 20 24 11-22 13-5 23-26-5-17 17-17-17-26 5-5-23-22-13 24-11 3-20 26 4Z" fill="#f3cf86" stroke="#a36a24" stroke-width="4"/>
+      <path d="m219 113 14 15 22-4 2 17 17 7-16 9-4 17-21-5-14 15-14-15-21 5-4-17-16-9 17-7 2-17 22 4Z" fill="#fffaf0"/>
+      <path d="M164 151q10 9 10 25m13-5-2 17m65-18 3 17m16-34 7 19" fill="none" stroke="#fffaf0" stroke-width="5"/>
+      <g fill="#fffaf0">
+        <circle cx="185" cy="212" r="3"/><circle cx="212" cy="199" r="3"/>
+        <circle cx="245" cy="223" r="3"/><circle cx="266" cy="206" r="3"/>
+        <circle cx="201" cy="247" r="2"/><circle cx="233" cy="241" r="2"/>
+      </g>
+      <path d="m124 128-9-8m193 6 10-8m-9 94 13 3M123 219l-11 5" fill="none" stroke="#e9b61c" stroke-width="5"/>
+    </g>
+    <g transform="translate(519 158)" fill="none" stroke="#102247" stroke-width="4" stroke-linecap="round">
+      <circle r="49" fill="#fff8d5"/>
+      <path d="M-25-42Q-7-13 12 0T44 22M-49-2Q-22-12-7-32M-36 32Q-9 17 12 0M-5 49Q-13 23-5 11M32-37Q8-29-7-32M47-12Q27-13 12 0"/>
+    </g>
+    <path fill="#102247" d="m519 63 3 8 9 .5-7 5.5 2 9-7-5-7 5 2-9-7-5.5 9-.5Z"/>
+  </g>
+  <path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z" fill="none" stroke="#ffce39" stroke-width="5"/>
+</svg>

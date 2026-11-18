@@ -1,0 +1,121 @@
+{
+  "accessPassword": "NATALE",
+  "games": [
+    {
+      "id": "estrazione-esempio",
+      "enabled": true,
+      "status": "upcoming",
+      "type": "draw",
+      "tournament": "Torneo di Natale",
+      "tournamentEn": "Christmas Tournament",
+      "title": "Estrazione premi",
+      "titleEn": "Prize draw",
+      "description": "Scopri se il tuo codice personale e' vincente!",
+      "descriptionEn": "Find out if your personal code is a winner!",
+      "participation": "team",
+      "image": "",
+      "prizes": [
+        {
+          "id": "premio-spritz",
+          "quantity": 10,
+          "name": "Bevanda gratuita",
+          "nameEn": "Free drink",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-spritz.svg"
+        },
+        {
+          "id": "premio-cioccolatino",
+          "quantity": 5,
+          "name": "Cioccolatino gratuito",
+          "nameEn": "Free chocolate",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-cioccolatino.svg"
+        },
+        {
+          "id": "premio-gadget",
+          "quantity": 2,
+          "name": "Gadget gratuito",
+          "nameEn": "Free gadget",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-gadget.svg"
+        },
+        {
+          "id": "premio-panettoncino",
+          "quantity": 1,
+          "name": "Panettoncino gratuito",
+          "nameEn": "Free panettone",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-panettoncino.svg"
+        },
+        {
+          "id": "premio-pandorino",
+          "quantity": 1,
+          "name": "Pandorino gratuito",
+          "nameEn": "Free pandoro",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-pandorino.svg"
+        },
+        {
+          "id": "premio-torroncino",
+          "quantity": 1,
+          "name": "Torroncino gratuito",
+          "nameEn": "Free nougat",
+          "description": "",
+          "descriptionEn": "",
+          "image": "Tornei/premio-torroncino.svg"
+        }
+      ],
+      "codes": [
+        { "code": "XVW7A", "prizeId": "premio-spritz" },
+        { "code": "7N2YV", "prizeId": "premio-cioccolatino" },
+        { "code": "WSQ97", "prizeId": "premio-spritz" },
+        { "code": "FJ4HC", "prizeId": "premio-panettoncino" },
+        { "code": "5Y3PG", "prizeId": "premio-spritz" },
+        { "code": "NAXV4", "prizeId": "premio-cioccolatino" },
+        { "code": "RV9RU", "prizeId": "premio-gadget" },
+        { "code": "3JW7D", "prizeId": "premio-panettoncino" },
+        { "code": "M3XKP", "prizeId": "premio-spritz" },
+        { "code": "8BVUW", "prizeId": "premio-pandorino" },
+        { "code": "E9HLG", "prizeId": "premio-spritz" },
+        { "code": "2KNGE", "prizeId": "premio-spritz" },
+        { "code": "EMA3Y", "prizeId": "premio-cioccolatino" },
+        { "code": "HBS6K", "prizeId": "premio-spritz" },
+        { "code": "WLU4F", "prizeId": "premio-spritz" },
+        { "code": "2DN2V", "prizeId": "premio-cioccolatino" },
+        { "code": "3WDD2", "prizeId": "premio-gadget" },
+        { "code": "67BRH", "prizeId": "premio-spritz" },
+        { "code": "3LPEN", "prizeId": "premio-cioccolatino" },
+        { "code": "A8LYV", "prizeId": "premio-spritz" }
+      ]
+    },
+    {
+      "id": "pronostico-esempio",
+      "enabled": true,
+      "status": "upcoming",
+      "type": "prediction",
+      "tournament": "Torneo da configurare",
+      "tournamentEn": "Tournament to be configured",
+      "title": "Chi andra' in finale Gold?",
+      "titleEn": "Who will reach the Gold final?",
+      "description": "Scegli due squadre: se almeno una raggiunge la finale Gold, partecipi automaticamente all'estrazione finale.",
+      "descriptionEn": "Pick two teams: if at least one reaches the Gold final, you automatically qualify for the final prize draw.",
+      "participation": "team",
+      "image": "",
+      "formUrl": "https://forms.gle/bU2Der8ZB8JS1fCZ9",
+      "submissionUrl": "https://script.google.com/macros/s/AKfycbz-6CFMmjaDlcVA-s1SDMn0jd5Z1t3MIOP_5dj-WIO1roZrdYBZ-vFQuoiuXBbxfX8MtA/exec",
+      "codeSourceGameId": "estrazione-esempio",
+      "teams": [
+        { "id": "squadra-1", "name": "Squadra 1", "nameEn": "Team 1" },
+        { "id": "squadra-2", "name": "Squadra 2", "nameEn": "Team 2" },
+        { "id": "squadra-3", "name": "Squadra 3", "nameEn": "Team 3" },
+        { "id": "squadra-4", "name": "Squadra 4", "nameEn": "Team 4" }
+      ],
+      "prizes": []
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title description">
+  <title id="title">SiMax - Dolcetto / Sweet treat</title>
+  <desc id="description">Premio dolcetto, illustrato con un cupcake. Sweet treat prize, illustrated with a cupcake.</desc>
+  <defs>
+    <linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#fffef7"/><stop offset="1" stop-color="#fff1c8"/></linearGradient>
+    <linearGradient id="gold" x2=".7" y2="1"><stop stop-color="#ffe277"/><stop offset="1" stop-color="#f5b800"/></linearGradient>
+    <linearGradient id="icing" x2=".6" y2="1"><stop stop-color="#ffe6e6"/><stop offset=".55" stop-color="#f4a1ac"/><stop offset="1" stop-color="#d8718c"/></linearGradient>
+    <clipPath id="ticket"><path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#ticket)">
+    <path fill="url(#paper)" d="M0 0H600V360H0Z"/>
+    <path fill="#102247" d="M0 0H438V82H0Z"/>
+    <path fill="url(#gold)" d="M438 0H600V360H438Z"/>
+    <path fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2" d="M468-30 650 152M444-6 650 200M444 44 650 250"/>
+    <path fill="none" stroke="#102247" stroke-opacity=".28" stroke-width="2" stroke-dasharray="6 7" d="M438 20V340"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="34" y="58" fill="#fff" font-size="46" font-weight="900" font-style="italic" letter-spacing="-2">Si<tspan fill="#ffce39">Max</tspan></text>
+      <text x="216" y="39" fill="#fff" font-size="12" font-weight="700" letter-spacing="2">BEACH VOLLEY</text>
+      <text x="216" y="58" fill="#ffce39" font-size="12" font-weight="700" letter-spacing="2">TOURNAMENT</text>
+      <text x="219" y="310" text-anchor="middle" fill="#102247" font-size="28" font-weight="900" letter-spacing="2">DOLCETTO</text>
+      <text x="219" y="335" text-anchor="middle" fill="#394a69" font-size="14" font-weight="700" letter-spacing="3">SWEET TREAT</text>
+      <text x="519" y="274" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">PLAY.</text>
+      <text x="519" y="299" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">REPEAT.</text>
+    </g>
+    <ellipse cx="219" cy="274" rx="103" ry="10" fill="#102247" opacity=".1"/>
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <path d="m147 193 21 66q3 10 17 10h68q14 0 17-10l21-66Z" fill="url(#gold)" stroke="#be8513" stroke-width="4"/>
+      <path d="m174 207 12 48m19-48 4 48m24-48-4 48m33-48-12 48" fill="none" stroke="#fff2b0" stroke-width="6"/>
+      <path d="M144 200q-17-26 13-43-8-25 29-34 2-22 35-30-10 21 17 28 32 7 32 28 35 12 26 37 15 18-8 24-19 6-33-4-20 13-36 0-19 12-36 0-24 13-39-6Z" fill="url(#icing)" stroke="#b8627e" stroke-width="4"/>
+      <path d="M160 169q32 16 57 3t61-6M185 140q29 9 53-3" fill="none" stroke="#fff1e9" stroke-opacity=".8" stroke-width="6"/>
+      <path d="m174 179 8 4m68 1 4-8m-43-30 7 4m-53 6 5-6m69 9 7 4" fill="none" stroke="#102247" stroke-width="5"/>
+      <circle cx="221" cy="103" r="12" fill="#ce4c65" stroke="#a63552" stroke-width="3"/>
+      <path d="M221 91q1-9 11-12" fill="none" stroke="#35584a" stroke-width="4"/>
+      <path d="m125 131-9-7m190 28 11-4m-6 79 11 7M118 214l-10 3" fill="none" stroke="#e9b61c" stroke-width="5"/>
+    </g>
+    <g transform="translate(519 158)" fill="none" stroke="#102247" stroke-width="4" stroke-linecap="round">
+      <circle r="49" fill="#fff8d5"/>
+      <path d="M-25-42Q-7-13 12 0T44 22M-49-2Q-22-12-7-32M-36 32Q-9 17 12 0M-5 49Q-13 23-5 11M32-37Q8-29-7-32M47-12Q27-13 12 0"/>
+    </g>
+    <path fill="#102247" d="m519 63 3 8 9 .5-7 5.5 2 9-7-5-7 5 2-9-7-5.5 9-.5Z"/>
+  </g>
+  <path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z" fill="none" stroke="#ffce39" stroke-width="5"/>
+</svg>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giochi | SiMax Beach Volley Tournament</title>
+  <meta name="description" content="Giochi, pronostici e premi dei tornei SiMax Beach Volley Tournament." />
+  <link rel="icon" href="Tornei/logo.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="games.css" />
+</head>
+<body>
+  <header class="games-header">
+    <a class="brand" href="index.html"><img src="Tornei/logo.png" alt="SiMax" width="44" height="44" /><span>SiMax Beach Volley Tournament</span></a>
+    <nav aria-label="Navigazione principale">
+      <a href="index.html" data-i18n="archive.back">Torna al sito</a>
+      <div class="languages" role="group" aria-label="Lingua / Language">
+        <button type="button" data-lang-switch="it" lang="it" aria-label="Italiano">IT</button>
+        <button type="button" data-lang-switch="en" lang="en" aria-label="English">EN</button>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div class="intro">
+      <p class="eyebrow">SiMax Play / Beach Volley</p>
+      <h1 data-i18n="games.heading">Fuori dal campo. <span>Dentro il gioco.</span></h1>
+      <p data-i18n="games.intro">Scopri i giochi del tuo torneo, partecipa e scopri i premi in palio.</p>
+    </div>
+    <p id="games-status" role="status" aria-live="polite"></p>
+    <button id="games-retry" type="button" hidden data-i18n="games.retry">Riprova</button>
+    <div class="games-grid" id="games-list"></div>
+    <noscript>Abilita JavaScript per visualizzare i giochi. / Enable JavaScript to view games.</noscript>
+  </main>
+  <dialog id="game-dialog" aria-labelledby="game-title">
+    <div class="dialog-top">
+      <div><p class="eyebrow" id="game-tournament"></p><h2 id="game-title"></h2></div>
+      <button id="game-close" type="button" data-i18n="games.close">Chiudi</button>
+    </div>
+    <p id="game-description"></p>
+    <form id="game-access" class="game-access" novalidate hidden>
+      <p id="access-help" data-i18n="games.accessHelp">Inserisci la password comunicata dagli organizzatori durante il torneo.</p>
+      <label for="game-password" data-i18n="games.accessLabel">Password del torneo</label>
+      <input id="game-password" name="password" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="128" aria-describedby="access-help access-error" required />
+      <p id="access-error" class="error" role="alert"></p>
+      <button type="submit" class="primary" data-i18n="games.accessButton">Accedi al gioco</button>
+    </form>
+    <a id="game-prediction" class="primary play-link" target="_blank" rel="noopener noreferrer" hidden></a>
+    <section id="prediction-panel" hidden>
+      <form id="prediction-form" novalidate>
+        <label id="prediction-code-label" for="prediction-code"></label>
+        <input id="prediction-code" name="code" type="text" maxlength="80" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="prediction-error" required />
+        <fieldset aria-describedby="prediction-count prediction-error">
+          <legend id="prediction-help"></legend>
+          <p id="prediction-count" role="status" aria-live="polite"></p>
+          <div id="prediction-teams" class="prediction-teams"></div>
+        </fieldset>
+        <p id="prediction-error" class="error" role="alert"></p>
+        <button id="prediction-submit" class="primary" type="submit"></button>
+      </form>
+      <p id="prediction-status" role="status" aria-live="polite" tabindex="-1"></p>
+    </section>
+    <div id="game-workspace" hidden>
+    <ol class="draw-steps" aria-label="Come giocare / How to play">
+      <li data-step="code"><span>1</span> <span data-i18n="games.stepCode">Inserisci il codice</span></li>
+      <li data-step="mix"><span>2</span> <span data-i18n="games.stepMix">Mescola</span></li>
+      <li data-step="pick"><span>3</span> <span data-i18n="games.stepPick">Scegli una pallina</span></li>
+    </ol>
+    <div class="draw-layout">
+      <div class="draw-stage">
+        <div id="draw-animation" class="draw-animation" aria-hidden="true">
+          <div class="machine-glow"></div>
+          <div class="lottery-machine">
+            <div class="machine-cap"></div>
+            <div class="machine-globe">
+              <span class="lottery-ball">1</span><span class="lottery-ball">54</span>
+              <span class="lottery-ball">21</span><span class="lottery-ball">83</span>
+              <span class="lottery-ball">23</span><span class="lottery-ball">35</span>
+              <span class="lottery-ball">67</span><span class="lottery-ball">69</span>
+              <span class="lottery-ball">7</span><span class="lottery-ball">18</span>
+            </div>
+            <div class="machine-base"><span>SIMAX PLAY</span><div class="machine-slot"></div></div>
+          </div>
+        </div>
+        <p id="draw-progress" role="status" aria-live="polite"></p>
+        <div id="draw-choices" class="draw-choices" hidden>
+          <button type="button" class="choice-ball" data-ball="1"><span aria-hidden="true">?</span></button>
+          <button type="button" class="choice-ball" data-ball="2"><span aria-hidden="true">?</span></button>
+          <button type="button" class="choice-ball" data-ball="3"><span aria-hidden="true">?</span></button>
+        </div>
+        <section id="game-result" class="result" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></section>
+      </div>
+      <div class="draw-controls">
+        <div class="prize-preview">
+          <h3 data-i18n="games.prizes">Premi in palio</h3>
+          <div class="prizes" id="game-prizes"></div>
+        </div>
+        <form id="game-form" novalidate>
+          <label id="code-label" for="game-code"></label>
+          <input id="game-code" name="code" type="text" maxlength="80" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="code-error" required />
+          <p id="code-error" class="error" role="alert"></p>
+          <button id="game-submit" class="primary" type="submit" data-i18n="games.reveal">Mescola le palline</button>
+        </form>
+      </div>
+    </div>
+    </div>
+  </dialog>
+  <footer>
+    <p>SiMax Beach Volley Tournament</p>
+    <a href="privacy.html">Privacy Policy</a> &middot; <a href="cookie.html">Cookie Policy</a>
+  </footer>
+  <script src="i18n.js"></script>
+  <script src="games.js"></script>
+</body>
+</html>

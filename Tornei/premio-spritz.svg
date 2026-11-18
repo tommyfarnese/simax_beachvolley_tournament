@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" role="img" aria-labelledby="title description">
+  <title id="title">SiMax - Spritz</title>
+  <desc id="description">Premio spritz, illustrato con un calice arancione, ghiaccio e fetta d'arancia. Spritz prize, illustrated with an orange cocktail, ice and an orange slice.</desc>
+  <defs>
+    <linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#fffef7"/><stop offset="1" stop-color="#fff1c8"/></linearGradient>
+    <linearGradient id="gold" x2=".7" y2="1"><stop stop-color="#ffe277"/><stop offset="1" stop-color="#f5b800"/></linearGradient>
+    <linearGradient id="spritz" x2=".7" y2="1"><stop stop-color="#ffbf52"/><stop offset=".5" stop-color="#ff862e"/><stop offset="1" stop-color="#ed5727"/></linearGradient>
+    <clipPath id="ticket"><path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z"/></clipPath>
+    <clipPath id="glass"><path d="M160 111H278L286 154Q294 207 219 221Q144 207 152 154Z"/></clipPath>
+  </defs>
+  <g clip-path="url(#ticket)">
+    <path fill="url(#paper)" d="M0 0H600V360H0Z"/>
+    <path fill="#102247" d="M0 0H438V82H0Z"/>
+    <path fill="url(#gold)" d="M438 0H600V360H438Z"/>
+    <path fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2" d="M468-30 650 152M444-6 650 200M444 44 650 250"/>
+    <path fill="none" stroke="#102247" stroke-opacity=".28" stroke-width="2" stroke-dasharray="6 7" d="M438 20V340"/>
+    <g font-family="Arial, Helvetica, sans-serif">
+      <text x="34" y="58" fill="#fff" font-size="46" font-weight="900" font-style="italic" letter-spacing="-2">Si<tspan fill="#ffce39">Max</tspan></text>
+      <text x="216" y="39" fill="#fff" font-size="12" font-weight="700" letter-spacing="2">BEACH VOLLEY</text>
+      <text x="216" y="58" fill="#ffce39" font-size="12" font-weight="700" letter-spacing="2">TOURNAMENT</text>
+      <text x="219" y="310" text-anchor="middle" fill="#102247" font-size="28" font-weight="900" letter-spacing="2">SPRITZ</text>
+      <text x="219" y="335" text-anchor="middle" fill="#394a69" font-size="14" font-weight="700" letter-spacing="3">COCKTAIL</text>
+      <text x="519" y="274" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">PLAY.</text>
+      <text x="519" y="299" text-anchor="middle" fill="#102247" font-size="19" font-weight="900" letter-spacing="3">REPEAT.</text>
+    </g>
+    <ellipse cx="219" cy="275" rx="90" ry="9" fill="#102247" opacity=".1"/>
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <path d="M219 218V265M180 269Q219 257 258 269Z" fill="#e1ecf3" stroke="#536b88" stroke-width="5"/>
+      <path d="M160 111H278L286 154Q294 207 219 221Q144 207 152 154Z" fill="#e5f1f5" stroke="#536b88" stroke-width="4"/>
+      <g clip-path="url(#glass)">
+        <path d="M146 144Q182 135 219 144T292 144V229H146Z" fill="url(#spritz)"/>
+        <rect x="174" y="132" width="31" height="31" rx="6" transform="rotate(-16 189 147)" fill="#fff" fill-opacity=".72" stroke="#fff6d8" stroke-width="2"/>
+        <rect x="222" y="147" width="32" height="32" rx="6" transform="rotate(18 238 163)" fill="#fff" fill-opacity=".65" stroke="#fff6d8" stroke-width="2"/>
+        <circle cx="191" cy="184" r="4" fill="#fff2b0"/>
+        <circle cx="216" cy="199" r="3" fill="#fff2b0"/>
+        <circle cx="261" cy="169" r="3" fill="#fff2b0"/>
+        <path d="M165 124Q155 173 180 190" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="7"/>
+      </g>
+      <path d="M160 111H278L286 154Q294 207 219 221Q144 207 152 154Z" fill="none" stroke="#536b88" stroke-width="4"/>
+      <circle cx="278" cy="127" r="31" fill="#ffb332" stroke="#ee7624" stroke-width="4"/>
+      <circle cx="278" cy="127" r="24" fill="#ff972b" stroke="#fff0b0" stroke-width="3"/>
+      <path d="M278 105V149M256 127H300M262 111 294 143M262 143 294 111" fill="none" stroke="#fff0b0" stroke-width="3"/>
+      <path d="m125 143-11-6m17 48-12 6m190 13 12 7m-5-49 13-3" fill="none" stroke="#e9b61c" stroke-width="5"/>
+    </g>
+    <g transform="translate(519 158)" fill="none" stroke="#102247" stroke-width="4" stroke-linecap="round">
+      <circle r="49" fill="#fff8d5"/>
+      <path d="M-25-42Q-7-13 12 0T44 22M-49-2Q-22-12-7-32M-36 32Q-9 17 12 0M-5 49Q-13 23-5 11M32-37Q8-29-7-32M47-12Q27-13 12 0"/>
+    </g>
+    <path fill="#102247" d="m519 63 3 8 9 .5-7 5.5 2 9-7-5-7 5 2-9-7-5.5 9-.5Z"/>
+  </g>
+  <path d="M28 5H572Q595 5 595 28V148A32 32 0 0 0 595 212V332Q595 355 572 355H28Q5 355 5 332V212A32 32 0 0 0 5 148V28Q5 5 28 5Z" fill="none" stroke="#ffce39" stroke-width="5"/>
+</svg>
