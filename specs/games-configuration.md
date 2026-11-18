@@ -36,7 +36,8 @@ Valori di soli spazi non sono validi.
 
 La home rimane visibile. Premendo "Gioca" si chiede la password prima di mostrare
 il gioco o il collegamento al pronostico. Dopo lo sblocco si inserisce il proprio
-codice partecipante. Chiudendo la finestra o ricaricando la pagina si deve inserire
+codice per l'estrazione immediata, oppure il nome squadra per il pronostico.
+Chiudendo la finestra o ricaricando la pagina si deve inserire
 di nuovo la password: non viene salvata nel browser.
 
 E' un filtro informale solo frontend: la password, i codici e i vincitori sono
@@ -57,7 +58,7 @@ pronostici e' invece una componente server ospitata su Google.
 | `tournamentEn` | Nome del torneo in inglese (facoltativo) |
 | `title`, `description` | Testi mostrati nella scheda e nel gioco |
 | `titleEn`, `descriptionEn` | Titolo e descrizione in inglese (facoltativi) |
-| `participation` | `team`: codice squadra; `individual`: codice personale |
+| `participation` | Tipo di partecipazione; nell'estrazione distingue codice squadra/personale, nel pronostico si inserisce il nome squadra |
 | `image` | Immagine facoltativa, percorso relativo o URL HTTPS |
 | `prizes` | Elenco dei premi, anche vuoto se non ci sono premi |
 
@@ -155,7 +156,6 @@ condivisa dell'estrazione. Inserire le squadre manualmente nel JSON:
     { "id": "squadra-2", "name": "Nome squadra 2", "nameEn": "Team 2 name" },
     { "id": "squadra-3", "name": "Nome squadra 3" }
   ],
-  "codeSourceGameId": "estrazione-esempio",
   "submissionUrl": ""
 }
 ```
@@ -164,22 +164,28 @@ Occorrono almeno due squadre. Gli ID sono univoci, massimo 80 caratteri,
 lettere minuscole, numeri e trattini; mantenerli invariati una volta aperte
 le iscrizioni. I nomi hanno massimo 100 caratteri; `nameEn` e' facoltativo e,
 se assente o vuoto, EN mostra il nome italiano.
-`codeSourceGameId` riutilizza i codici di un'estrazione esistente, senza
-modificarne premi, quantita' o assegnazioni.
+Questo elenco definisce le squadre da scegliere come possibili finaliste, non
+le identita' di chi invia il pronostico. Non occorrono codici, associazioni
+codice/squadra o un gioco di estrazione immediata.
 
-Il partecipante inserisce il codice e seleziona esattamente due squadre distinte.
+Il partecipante scrive liberamente il nome della propria squadra (1-100
+caratteri dopo normalizzazione) e seleziona esattamente due squadre distinte.
+Il nome non deve necessariamente coincidere con una voce del JSON.
+Si preserva la scrittura del nome, normalizzando Unicode NFKC e spazi ripetuti;
+per riconoscere i duplicati si ignorano anche maiuscole/minuscole.
+Una nota prima dell'invio informa che i nomi qualificati saranno pubblici.
 La conferma appare solo dopo una risposta `saved` del ricevitore. In caso di
-errore di rete o timeout l'esito e' incerto: riprovare con lo stesso codice.
-Il ricevitore controlla codice, squadre e apertura del gioco leggendo il JSON
-pubblicato, e salva solo il primo invio per coppia gioco/codice, anche in caso
+errore di rete o timeout l'esito e' incerto: riprovare con lo stesso nome squadra.
+Il ricevitore controlla nome, scelte e apertura del gioco leggendo il JSON
+pubblicato, e salva solo il primo invio per coppia gioco/nome normalizzato, anche in caso
 di richieste contemporanee allo stesso progetto Apps Script. Una risposta
 `duplicate` non conferma le scelte correnti: quelle precedenti restano immutate.
 Chiudere durante un invio non garantisce di annullare una scrittura gia' iniziata.
 
-Il JSON contiene squadre dimostrative e lascia il pronostico `upcoming` finche'
-non si configura l'invio; sostituire i nomi e attivarlo dopo i passi seguenti.
-Non viene effettuata alcuna estrazione o qualificazione automatica: confrontare
-nel foglio i due ID scelti con i finalisti reali e gestire i qualificati.
+Sostituire le squadre dimostrative e configurare l'invio prima di aprire il
+pronostico. L'estrazione finale pubblica e' facoltativa e si abilita con
+`finalDraw: true`, come descritto sotto; altrimenti i qualificati si gestiscono
+manualmente nel foglio.
 
 #### Collegare il foglio gia' associato a Google Forms
 
@@ -201,18 +207,21 @@ nel foglio i due ID scelti con i finalisti reali e gestire i qualificati.
 6. Copiare l'URL `/exec` in `submissionUrl`, sostituire i nomi dimostrativi
    in `teams`, impostare `status: "open"` e pubblicare il sito. Il ricevitore usa
    sempre la configurazione pubblicata: una modifica solo locale non basta.
-7. Provare dal sito con un codice di test presente nella sorgente codici,
+7. Provare dal sito con un nome squadra di test,
    controllando che la conferma corrisponda a una riga nel foglio e che un
    secondo invio restituisca duplicato. Per ripetere una prova, eliminare
    esplicitamente la relativa riga di test.
 
-La scheda **Pronostici sito** viene creata al primo invio valido. Le risposte
+La scheda **Pronostici squadre** viene creata al primo invio valido. Le risposte
 originali del Google Form non vengono toccate; non modificare le intestazioni
-della nuova scheda. Si salvano timestamp UTC, ID gioco, codice e ID/nomi delle
+della nuova scheda. Si salvano timestamp UTC, ID gioco, nome della squadra partecipante e ID/nomi delle
 due squadre. I nomi sono presi dal JSON dal server, non dai dati inviati dal browser.
 Non si creano vere risposte Google Forms e non scattano i suoi trigger di invio.
 Non mescolare i due canali per lo stesso gioco: la verifica duplicati riguarda
-solo **Pronostici sito**, non le risposte del vecchio modulo.
+solo **Pronostici squadre**, non le risposte del vecchio modulo.
+L'eventuale vecchia scheda **Pronostici sito**, basata su codici, viene lasciata
+intatta e non e' importata: un codice non viene interpretato come nome squadra.
+Non esiste migrazione automatica di vecchie risposte senza nome.
 
 `submissionUrl` deve essere un URL HTTPS di produzione
 `https://script.google.com/macros/s/IDENTIFICATIVO/exec`, non `/dev`.
@@ -226,8 +235,86 @@ il ricevitore rifiuta nuovi invii quando legge il gioco chiuso. Usare un nuovo
 ID gioco per un nuovo torneo, per non confondere i duplicati con quelli precedenti.
 Apps Script e' gratuito entro le quote Google; disponibilita', limiti dell'account
 e accesso anonimo dipendono da Google. Il foglio rimane privato, ma l'endpoint e i
-codici del JSON sono pubblici: chi conosce un codice puo' usarlo per primo.
-Non e' autenticazione forte ne' protezione da abuso delle quote.
+nomi qualificati sono pubblici. Un nome scritto liberamente non verifica
+l'identita': una persona puo' usare il nome altrui o inviare nomi intenzionalmente
+diversi. La deduplicazione riguarda solo il nome normalizzato, non la squadra
+reale. Non e' autenticazione forte ne' protezione da abuso delle quote.
+
+### Estrazione finale pubblica
+
+`finalDraw: true` nel pronostico mostra nella scheda pubblica un riquadro dedicato,
+anche quando il gioco e' `closed` e senza richiedere la password dei partecipanti.
+Non e' una pagina amministrativa separata: tutti vedono le squadre qualificate,
+le finaliste confermate e il risultato definitivo.
+
+I partecipanti compaiono con il nome scritto nel modulo del pronostico,
+non con codici e senza associazioni manuali nel JSON. Il nome rimane quello
+inserito anche quando si seleziona la lingua inglese; sono tradotti solo
+i testi di interfaccia e i nomi delle possibili finaliste configurati con `nameEn`.
+L'estrazione immediata a codice e i relativi premi rimangono indipendenti.
+
+#### Configurazione riservata
+
+1. Sostituire il codice del ricevitore Google con la versione aggiornata di
+   [google-predictions.gs](../scripts/google-predictions.gs).
+2. Nelle **proprieta' script**, accanto a `SPREADSHEET_ID` e `GAMES_CONFIG_URL`,
+   aggiungere **`FINAL_DRAW_PASSWORD`**: scegliere una password riservata
+   di 12-128 caratteri, diversa da quella dei partecipanti.
+   Non metterla nel JSON, nei file del sito, negli URL o in chat.
+3. Aggiornare la versione del deployment esistente, mantenendo lo stesso
+   URL `/exec`, esecuzione come proprietario e accesso anonimo per la lettura
+   pubblica e l'invio dei pronostici.
+4. Pubblicare il frontend e la configurazione aggiornata. Non basta aggiornare
+   soltanto il sito o soltanto lo script.
+
+Il server verifica la password per ogni operazione riservata. Il browser la
+invia solo nel corpo POST HTTPS e svuota il campo all'invio; non viene salvata
+nel foglio, nel browser o restituita dalle API. La password condivisa
+`accessPassword` del sito non autorizza il sorteggio.
+
+#### Svolgimento al torneo
+
+1. Raccogliere i pronostici e, prima dell'inizio delle partite, chiuderli
+   impostando `status: "closed"` e pubblicando il JSON.
+2. Quando si conoscono le finaliste Gold reali, aprire **Avvio riservato agli
+   organizzatori** nella scheda pubblica. Selezionare le due finaliste,
+   inserire la password riservata e premere **Prepara elenco e chiudi pronostici**.
+   Confermare solo dopo aver verificato finaliste, nomi e risposte.
+3. Il server congela finaliste ed elenco. Ogni nome squadra che ha indovinato almeno
+   una finalista compare una sola volta, anche indovinandole entrambe.
+   Le squadre escluse non compaiono nell'elenco degli estratti possibili;
+   il totale delle risposte ricevute e' disponibile prima della preparazione.
+   La preparazione impedisce anche nuovi invii al server, indipendentemente
+   dal fatto che la pagina dei partecipanti sia rimasta aperta.
+4. L'elenco dei qualificati e' pubblico **prima** del sorteggio. Per procedere,
+   inserire nuovamente la password e premere **Avvia estrazione finale**.
+5. Google estrae un solo vincitore pseudocasuale, con una possibilita' per
+   ciascuna squadra dell'elenco, e salva il risultato prima di confermarlo.
+   Tutti possono vedere il nome della squadra vincitrice e quelli dei partecipanti.
+
+La scheda privata **Estrazioni finali** conserva uno snapshot per gioco,
+con nomi qualificati, finaliste, data di preparazione e risultato (formato versione 2).
+Lock e lettura dello snapshot impediscono nuovi sorteggi su clic ripetuti,
+richieste concorrenti o timeout dopo una scrittura gia' avvenuta.
+Ricaricare la pagina o riavviare lo script non cambia il risultato.
+Non esiste un pulsante di reset: usare un nuovo ID gioco per un nuovo torneo.
+Non modificare o cancellare la scheda dei risultati, pena la perdita di queste
+garanzie. L'organizzatore mantiene tecnicamente il controllo del foglio:
+non e' un sistema di estrazione certificato o verificabile crittograficamente.
+Gli eventuali snapshot precedenti basati su codici (versione 1) vengono rifiutati
+senza cancellarli o rifare il sorteggio: usare un nuovo ID gioco per il nuovo formato.
+
+Se nessuno e' qualificato, si mostra l'elenco vuoto e non si estrae un vincitore.
+Un errore di scrittura/rete non produce un annuncio di successo: aggiornare
+il risultato prima di riprovare. Lo snapshot e' limitato a 45.000 caratteri
+per restare entro le dimensioni di una cella Google Sheets; superato il limite
+si riceve un errore, senza estrazione.
+
+Le pagine visibili aggiornano il riquadro ogni 20 secondi, e al ritorno sulla
+scheda, fino al completamento. E' disponibile anche **Aggiorna risultato**.
+I visitatori non scaricano l'elenco completo dei pronostici o la password
+riservata; la risposta pubblica contiene il conteggio e, dopo la preparazione,
+solo l'elenco qualificato e lo snapshot del sorteggio.
 
 ### Collegamento al Google Form (modalita' precedente)
 
@@ -236,12 +323,12 @@ Impostare `formUrl` con un URL HTTPS di Google Forms (`docs.google.com/forms/...
 oppure `forms.gle/...`). Il pulsante apre il modulo in una nuova scheda.
 Il sito non crea moduli, non raccoglie risposte e non calcola l'idoneita'.
 
-Nel modulo predisporre codice squadra e due selezioni di squadre distinte.
-Nel Google Sheet collegato controllare codici e doppioni: una risposta valida
-per codice squadra; definire prima dell'apertura quale tenere in caso di invii
+Nel modulo predisporre nome squadra e due selezioni di squadre distinte.
+Nel Google Sheet collegato controllare nomi e doppioni: una risposta valida
+per nome squadra; definire prima dell'apertura quale tenere in caso di invii
 multipli (consigliata la prima valida). Indicare una scadenza e chiudere anche
 il modulo alla scadenza: `closed` nel JSON disabilita solo il link sul sito.
-Un codice e' eleggibile automaticamente all'estrazione quando almeno una delle
+Una squadra e' eleggibile all'estrazione quando almeno una delle
 due squadre pronosticate raggiunge la finale Gold; verifica ed estrazione sono
 gestite dall'organizzatore nel foglio, non dal frontend.
 
@@ -250,8 +337,9 @@ gestite dall'organizzatore nel foglio, non dal frontend.
 - Il JSON e il JavaScript sono pubblici: codici e vincitori sono ispezionabili.
   `enabled: false` nasconde solo la scheda, non i dati scaricabili.
 - Il codice e' un identificativo informale, non una password o prova di identita'.
-- L'estrazione non ha uso unico, registro condiviso delle giocate o verifica dei ritiri.
-  Solo il pronostico via Apps Script registra un invio per codice e gioco.
+- L'estrazione immediata a codice non ha uso unico, registro condiviso delle
+  giocate o verifica dei ritiri. Il pronostico via Apps Script registra invece
+  un invio per nome normalizzato e gioco e un unico risultato dell'eventuale estrazione finale.
 - L'organizzatore deve verificare il codice e annotare i premi gia' consegnati
   in un registro separato. Screenshot e animazione non provano una vincita.
 - Non inserire nomi, telefoni, email o altri dati personali nel JSON pubblico.

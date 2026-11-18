@@ -59,7 +59,8 @@ body:has(dialog[open]) { overflow: hidden; }
 .game-access .primary { width: 100%; margin-top: 12px; }
 #game-prediction { display: inline-block; text-decoration: none; }
 #prediction-form > label { display: block; font-size: .85rem; font-weight: 700; margin-bottom: 8px; }
-#prediction-code { width: 100%; padding: 12px; border: 1px solid #697eab; border-radius: 10px; background: #091530; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+#prediction-team-name { width: 100%; padding: 12px; border: 1px solid #697eab; border-radius: 10px; background: #091530; color: #fff; }
+#prediction-name-help { color: var(--muted); font-size: .76rem; margin: 8px 0; line-height: 1.5; }
 #prediction-form fieldset { min-width: 0; border: 0; padding: 0; margin: 20px 0 16px; }
 #prediction-help { font-weight: 700; font-size: .9rem; }
 #prediction-count { margin: 6px 0 12px; color: var(--gold); font-size: .8rem; }
@@ -72,6 +73,26 @@ body:has(dialog[open]) { overflow: hidden; }
 #prediction-status { color: var(--muted); font-size: .85rem; line-height: 1.5; }
 #prediction-status:empty { display: none; }
 #prediction-status.prediction-saved { color: #8bf0b1; padding: 12px; background: #46d5860c; border: 1px solid #8bf0b160; border-radius: 10px; }
+.final-draw { margin-top: 16px; padding-top: 16px; border-top: 1px solid #ffffff24; }
+.final-draw p { font-size: .8rem; margin: 8px 0; }
+.final-draw .error { color: #ffb1b1; }
+.final-draw h4 { font-size: .82rem; margin: 14px 0 8px; }
+.final-draw ul { list-style: none; padding: 0; margin: 0 0 12px; max-height: 240px; overflow-y: auto; }
+.final-draw li { display: flex; justify-content: space-between; gap: 12px; padding: 8px; border-bottom: 1px solid #ffffff12; font-size: .8rem; overflow-wrap: anywhere; }
+.final-draw small { color: var(--muted); font-variant-numeric: tabular-nums; }
+.final-draw li.final-draw-won { color: var(--gold); background: #f5b80012; }
+.final-draw-winner { text-align: center; padding: 18px 12px; margin: 14px 0; border: 1px solid var(--gold); border-radius: 12px; background: radial-gradient(ellipse at 50% 0, #f5b80030, transparent), #091530; animation: ball-arrive .6s both; }
+.final-draw-winner p { text-transform: uppercase; letter-spacing: 1px; color: var(--gold); }
+.final-draw-winner strong { display: block; font-size: 1.4rem; overflow-wrap: anywhere; }
+.final-draw-winner small { display: block; margin-top: 6px; }
+[data-final-refresh] { font-size: .75rem; padding: 7px 10px; }
+.final-draw-admin { margin-top: 14px; font-size: .78rem; }
+.final-draw-admin summary { cursor: pointer; color: var(--muted); }
+.final-draw-admin label { display: block; margin: 12px 0 0; }
+.final-draw-admin label span { display: block; margin-bottom: 6px; }
+.final-draw-admin select, .final-draw-admin input { display: block; min-width: 0; width: 100%; padding: 10px; border: 1px solid #697eab; border-radius: 8px; background: #091530; color: #fff; font: inherit; }
+.final-draw-admin .primary { width: 100%; font-size: .8rem; }
+.final-draw-selectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 0 10px; }
 #game-description { margin: 10px 0 14px; font-size: .85rem; }
 .draw-steps { display: flex; justify-content: space-between; gap: 8px; padding: 10px 0 14px; margin: 0; list-style: none; border-top: 1px solid #ffffff12; color: #a7b6d2; font-size: .72rem; }
 .draw-steps li { display: flex; align-items: center; gap: 6px; }

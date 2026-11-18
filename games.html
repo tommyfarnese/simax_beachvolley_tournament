@@ -49,8 +49,9 @@
     <a id="game-prediction" class="primary play-link" target="_blank" rel="noopener noreferrer" hidden></a>
     <section id="prediction-panel" hidden>
       <form id="prediction-form" novalidate>
-        <label id="prediction-code-label" for="prediction-code"></label>
-        <input id="prediction-code" name="code" type="text" maxlength="80" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="prediction-error" required />
+        <label id="prediction-name-label" for="prediction-team-name"></label>
+        <input id="prediction-team-name" name="teamName" type="text" maxlength="100" autocomplete="off" autocapitalize="words" spellcheck="false" aria-describedby="prediction-name-help prediction-error" required />
+        <p id="prediction-name-help"></p>
         <fieldset aria-describedby="prediction-count prediction-error">
           <legend id="prediction-help"></legend>
           <p id="prediction-count" role="status" aria-live="polite"></p>
@@ -106,11 +107,42 @@
     </div>
     </div>
   </dialog>
+  <template id="final-draw-template">
+    <section class="final-draw">
+      <h3 data-final-text="title"></h3>
+      <p data-final-status role="status" aria-live="polite" tabindex="-1"></p>
+      <p data-final-error class="error" role="alert" tabindex="-1"></p>
+      <p data-final-finalists hidden></p>
+      <div data-final-roster hidden>
+        <h4 data-final-text="roster"></h4>
+        <ul data-final-list></ul>
+        <p data-final-empty data-final-text="noEligible" hidden></p>
+      </div>
+      <div data-final-winner class="final-draw-winner" role="status" aria-live="polite" tabindex="-1" hidden>
+        <p data-final-text="winner"></p>
+        <strong data-final-winner-name></strong>
+      </div>
+      <button type="button" data-final-refresh></button>
+      <details data-final-admin class="final-draw-admin">
+        <summary data-final-text="admin"></summary>
+        <form novalidate>
+          <div data-final-selectors class="final-draw-selectors">
+            <label><span data-final-text="first"></span><select name="first" required></select></label>
+            <label><span data-final-text="second"></span><select name="second" required></select></label>
+          </div>
+          <label><span data-final-text="password"></span><input name="password" type="password" autocomplete="off" maxlength="128" required /></label>
+          <p data-final-help></p>
+          <button type="submit" class="primary" data-final-submit></button>
+        </form>
+      </details>
+    </section>
+  </template>
   <footer>
     <p>SiMax Beach Volley Tournament</p>
     <a href="privacy.html">Privacy Policy</a> &middot; <a href="cookie.html">Cookie Policy</a>
   </footer>
   <script src="i18n.js"></script>
+  <script src="final-draw.js"></script>
   <script src="games.js"></script>
 </body>
 </html>

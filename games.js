@@ -5,6 +5,10 @@
     return code.trim().toUpperCase();
   }
 
+  function normalizeTeamName(name) {
+    return name.normalize('NFKC').trim().replace(/\s+/g, ' ');
+  }
+
   function localizedText(item, field, lang) {
     const english = item[`${field}En`];
     return lang === 'en' && typeof english === 'string' && english.trim() ? english : item[field];
@@ -67,6 +71,8 @@
         if (![prize.nameEn, prize.descriptionEn].every((value) => value === undefined || typeof value === 'string')) fail(`${context}: English prize translations must be strings.`);
       });
       if (game.type === 'prediction') {
+        if (game.finalDraw !== undefined && typeof game.finalDraw !== 'boolean') fail(`${context}: finalDraw must be boolean.`);
+        if (game.finalDraw === true && game.teams === undefined) fail(`${context}: finalDraw requires on-site teams.`);
         if (game.formUrl && !safeForm(game.formUrl)) fail(`${context}: invalid Google Forms URL.`);
         if (game.teams !== undefined) {
           if (!Array.isArray(game.teams) || game.teams.length < 2) fail(`${context}: teams must contain at least two teams.`);
@@ -77,7 +83,6 @@
                 (team.nameEn !== undefined && (typeof team.nameEn !== 'string' || team.nameEn.length > 100))) fail(`${context}: invalid or duplicate team.`);
             teams.add(team.id);
           });
-          if (!text(game.codeSourceGameId)) fail(`${context}: codeSourceGameId is required.`);
           if ((game.submissionUrl && !safeSubmission(game.submissionUrl)) ||
               (game.status === 'open' && !safeSubmission(game.submissionUrl))) fail(`${context}: a deployed Apps Script submissionUrl is required.`);
         } else if (game.status === 'open' && !safeForm(game.formUrl)) {
@@ -95,11 +100,6 @@
         if (entry.prizeId !== undefined && !prizes.has(entry.prizeId)) fail(`${context}: unknown prizeId.`);
       });
     });
-    config.games.filter((game) => game.type === 'prediction' && game.teams !== undefined).forEach((game) => {
-      if (!config.games.some((source) => source.id === game.codeSourceGameId && source.type === 'draw' && source.codes.length)) {
-        fail(`${game.id}: codeSourceGameId must reference a draw with participation codes.`);
-      }
-    });
     return config.games;
   }
 
@@ -112,7 +112,7 @@
   }
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { normalizeCode, localizedText, validateConfig, resolveCode };
+    module.exports = { normalizeCode, normalizeTeamName, localizedText, validateConfig, resolveCode };
   }
   if (typeof document === 'undefined') return;
 
@@ -134,13 +134,17 @@
     predictionHelp: 'Scegli esattamente due squadre per la finale Gold.',
     predictionCount: '{count}/2 squadre selezionate',
     predictionChoose: 'Seleziona due squadre diverse.',
+    predictionName: 'Nome della tua squadra',
+    predictionNameHelp: 'Una risposta per nome squadra. I nomi delle squadre qualificate saranno visibili a tutti.',
+    predictionNameRequired: 'Inserisci il nome della tua squadra.',
+    predictionNameInvalid: 'Inserisci un nome squadra valido di massimo 100 caratteri.',
     predictionSend: 'Invia pronostico',
     predictionSending: 'Invio in corso... Attendi la conferma prima di chiudere.',
-    predictionSaved: 'Pronostico registrato per il codice {code}!',
-    predictionDuplicate: 'Questo codice ha gia\u0027 inviato un pronostico. Le scelte precedenti non sono state modificate.',
+    predictionSaved: 'Pronostico registrato per {team}!',
+    predictionDuplicate: 'Questo nome squadra ha gia\u0027 inviato un pronostico. Le scelte precedenti non sono state modificate.',
     predictionClosed: 'Il pronostico non e\u0027 piu\u0027 aperto. Contatta gli organizzatori.',
     predictionBusy: 'Il servizio e\u0027 occupato. Riprova tra qualche secondo.',
-    predictionUnconfirmed: 'Non possiamo confermare la registrazione. Riprova con lo stesso codice: un eventuale invio gia\u0027 salvato non verra\u0027 duplicato. Se il problema continua, contatta gli organizzatori.',
+    predictionUnconfirmed: 'Non possiamo confermare la registrazione. Riprova con lo stesso nome squadra: un eventuale invio gia\u0027 salvato non verra\u0027 duplicato. Se il problema continua, contatta gli organizzatori.',
     win: 'Hai vinto!', lose: 'Questa volta non hai vinto.',
     collect: 'Mostra questo risultato e il codice agli organizzatori per verificare e ritirare il premio.',
     repeat: 'Lo stesso codice restituisce sempre lo stesso risultato. Non viene effettuata una nuova estrazione.'
@@ -163,13 +167,17 @@
     predictionHelp: 'Pick exactly two teams for the Gold final.',
     predictionCount: '{count}/2 teams selected',
     predictionChoose: 'Select two different teams.',
+    predictionName: 'Your team name',
+    predictionNameHelp: 'One response per team name. Qualified team names will be visible to everyone.',
+    predictionNameRequired: 'Enter your team name.',
+    predictionNameInvalid: 'Enter a valid team name of up to 100 characters.',
     predictionSend: 'Submit prediction',
     predictionSending: 'Sending... Wait for confirmation before closing.',
-    predictionSaved: 'Prediction recorded for code {code}!',
-    predictionDuplicate: 'This code has already submitted a prediction. The previous choices have not been changed.',
+    predictionSaved: 'Prediction recorded for {team}!',
+    predictionDuplicate: 'This team name has already submitted a prediction. The previous choices have not been changed.',
     predictionClosed: 'Predictions are no longer open. Contact the organisers.',
     predictionBusy: 'The service is busy. Please try again in a few seconds.',
-    predictionUnconfirmed: 'We cannot confirm your submission. Try again with the same code: an already saved entry will not be duplicated. If the problem persists, contact the organisers.',
+    predictionUnconfirmed: 'We cannot confirm your submission. Try again with the same team name: an already saved entry will not be duplicated. If the problem persists, contact the organisers.',
     win: 'You won!', lose: 'No prize this time.',
     collect: 'Show this result and your code to the organisers to verify and collect your prize.',
     repeat: 'The same code always returns the same result. No new draw takes place.'
@@ -195,7 +203,7 @@
   const predictionLink = document.getElementById('game-prediction');
   const predictionPanel = document.getElementById('prediction-panel');
   const predictionForm = document.getElementById('prediction-form');
-  const predictionInput = document.getElementById('prediction-code');
+  const predictionInput = document.getElementById('prediction-team-name');
   const predictionChoices = document.getElementById('prediction-teams');
   const predictionError = document.getElementById('prediction-error');
   const predictionStatus = document.getElementById('prediction-status');
@@ -333,7 +341,8 @@
 
   function renderPrediction() {
     const busy = predictionController !== null;
-    document.getElementById('prediction-code-label').textContent = t(selected.participation === 'team' ? 'teamCode' : 'individualCode');
+    document.getElementById('prediction-name-label').textContent = t('predictionName');
+    document.getElementById('prediction-name-help').textContent = t('predictionNameHelp');
     document.getElementById('prediction-help').textContent = t('predictionHelp');
     document.getElementById('prediction-count').textContent = t('predictionCount').replace('{count}', selectedTeams.size);
     predictionChoices.querySelectorAll('input').forEach((checkbox, index) => {
@@ -343,12 +352,12 @@
       checkbox.nextElementSibling.textContent = content(selected.teams[index], 'name');
     });
     predictionInput.disabled = busy || !!predictionOutcome;
-    predictionInput.setAttribute('aria-invalid', String(predictionErrorKey === 'required' || predictionErrorKey === 'invalid'));
+    predictionInput.setAttribute('aria-invalid', String(predictionErrorKey === 'predictionNameRequired' || predictionErrorKey === 'predictionNameInvalid'));
     predictionSubmit.disabled = busy || !!predictionOutcome;
     predictionSubmit.textContent = t('predictionSend');
     predictionForm.setAttribute('aria-busy', String(busy));
     predictionError.textContent = predictionErrorKey ? t(predictionErrorKey) : '';
-    predictionStatus.textContent = busy ? t('predictionSending') : predictionOutcome ? t(predictionOutcome).replace('{code}', normalizeCode(predictionInput.value)) : '';
+    predictionStatus.textContent = busy ? t('predictionSending') : predictionOutcome ? t(predictionOutcome).replace('{team}', normalizeTeamName(predictionInput.value)) : '';
     predictionStatus.classList.toggle('prediction-saved', predictionOutcome === 'predictionSaved');
   }
 
@@ -416,6 +425,9 @@
       const prizes = element('div', '', 'prizes');
       renderPrizes(prizes, game.prizes);
       card.append(prizes);
+      if (game.type === 'prediction' && game.finalDraw === true) {
+        card.append(window.SiMaxFinalDraw.render(game, window.SiteI18n.lang));
+      }
       if (game.status === 'open' && game.type === 'prediction' && game.teams === undefined && !accessPassword) {
         const link = element('a', t('form'), 'primary play-link');
         link.href = game.formUrl;
@@ -529,9 +541,8 @@
     event.preventDefault();
     if (!unlocked || !selected || selected.type !== 'prediction' || selected.teams === undefined ||
         predictionController || predictionOutcome) return;
-    const code = normalizeCode(predictionInput.value);
-    const source = games.find((game) => game.id === selected.codeSourceGameId);
-    predictionErrorKey = !code ? 'required' : !source.codes.some((entry) => normalizeCode(entry.code) === code) ? 'invalid' :
+    const teamName = normalizeTeamName(predictionInput.value);
+    predictionErrorKey = !teamName ? 'predictionNameRequired' : teamName.length > 100 || /[\u0000-\u001f\u007f]/.test(teamName) ? 'predictionNameInvalid' :
       selectedTeams.size !== 2 ? 'predictionChoose' : '';
     if (predictionErrorKey) {
       renderPrediction();
@@ -547,14 +558,14 @@
       const response = await fetch(selected.submissionUrl, {
         method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
         credentials: 'omit', referrerPolicy: 'no-referrer', signal: controller.signal,
-        body: JSON.stringify({ gameId: selected.id, code, teams: Array.from(selectedTeams) })
+        body: JSON.stringify({ gameId: selected.id, teamName, teams: Array.from(selectedTeams) })
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       if (predictionController !== controller) return;
       if (data.status === 'saved') predictionOutcome = 'predictionSaved';
       else if (data.status === 'duplicate') predictionOutcome = 'predictionDuplicate';
-      else if (data.status === 'invalid_code') predictionErrorKey = 'invalid';
+      else if (data.status === 'invalid_name') predictionErrorKey = 'predictionNameInvalid';
       else if (data.status === 'invalid_teams') predictionErrorKey = 'predictionChoose';
       else if (data.status === 'unavailable') predictionErrorKey = 'predictionClosed';
       else if (data.status === 'busy') predictionErrorKey = 'predictionBusy';

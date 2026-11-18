@@ -1,6 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { localizedText, validateConfig, resolveCode } = require('./games.js');
+const { validateFinalDraw } = require('./final-draw.js');
 
 function config() {
   return {
@@ -14,7 +15,7 @@ function config() {
       {
         id: 'prediction-test', enabled: true, status: 'upcoming', type: 'prediction', participation: 'team',
         title: 'Pronostico', description: 'Gioco di prova', tournament: 'Torneo', prizes: [],
-        formUrl: '', submissionUrl: '', codeSourceGameId: 'draw-test',
+        formUrl: '', submissionUrl: '',
         teams: [{ id: 'a', name: 'Squadra A', nameEn: 'Team A' }, { id: 'b', name: 'Squadra B' }]
       }
     ]
@@ -147,7 +148,7 @@ test('shared access password is optional and rejects malformed configuration', (
   assert.doesNotThrow(() => validateConfig(data));
 });
 
-test('on-site predictions require distinct named teams, a code source and a production Apps Script URL', () => {
+test('on-site predictions require distinct named teams and a production Apps Script URL', () => {
   const data = config();
   const prediction = data.games[1];
   prediction.status = 'open';
@@ -158,7 +159,6 @@ test('on-site predictions require distinct named teams, a code source and a prod
     { teams: [prediction.teams[0], prediction.teams[0]] },
     { teams: [{ id: 'a', name: '' }, prediction.teams[1]] },
     { teams: [{ id: 'a', name: 'Team A', nameEn: 5 }, prediction.teams[1]] },
-    { codeSourceGameId: prediction.id }, { codeSourceGameId: 'missing' },
     { submissionUrl: '' }, { submissionUrl: 'https://example.com/exec' },
     { submissionUrl: 'https://script.google.com.evil.test/macros/s/test/exec' },
     { submissionUrl: 'https://script.google.com/macros/s/test/dev' },
@@ -172,4 +172,30 @@ test('on-site predictions require distinct named teams, a code source and a prod
   prediction.submissionUrl = '';
   assert.doesNotThrow(() => validateConfig(data));
   assert.equal(localizedText(prediction.teams[0], 'name', 'en'), prediction.teams[0].nameEn);
+});
+
+test('predictions and final draws work without any code-based game or team-code mapping', () => {
+  const data = config();
+  const game = data.games[1];
+  game.finalDraw = true;
+  data.games = [game];
+  assert.doesNotThrow(() => validateConfig(data));
+  game.finalDraw = 'true';
+  assert.throws(() => validateConfig(data), /finalDraw must be boolean/);
+});
+
+test('public final result rejects mismatched winners, duplicate entrants and invalid lifecycle states', () => {
+  const team = { participantId: 'team a', name: 'Team A' };
+  const draw = {
+    version: 2, gameId: 'prediction', stage: 'completed', responseCount: 2,
+    finalists: [{ teamId: 'a', name: 'A' }, { teamId: 'b', name: 'B' }],
+    participants: [team], winner: team,
+    preparedAt: '2026-11-18T10:00:00.000Z', drawnAt: '2026-11-18T11:00:00.000Z'
+  };
+  assert.doesNotThrow(() => validateFinalDraw(draw, 'prediction'));
+  for (const change of [
+    { winner: { ...team, participantId: 'other' } }, { winner: { ...team, name: 'Wrong team' } },
+    { participants: [team, team] }, { stage: 'collecting' }, { stage: 'prepared' },
+    { gameId: 'another-game' }, { drawnAt: '' }, { responseCount: 0 }
+  ]) assert.throws(() => validateFinalDraw({ ...draw, ...change }, 'prediction'));
 });

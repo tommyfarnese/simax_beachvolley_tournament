@@ -4,7 +4,7 @@
     {
       "id": "estrazione-esempio",
       "enabled": true,
-      "status": "upcoming",
+      "status": "open",
       "type": "draw",
       "tournament": "Torneo di Natale",
       "tournamentEn": "Christmas Tournament",
@@ -96,7 +96,7 @@
     {
       "id": "pronostico-esempio",
       "enabled": true,
-      "status": "upcoming",
+      "status": "open",
       "type": "prediction",
       "tournament": "Torneo da configurare",
       "tournamentEn": "Tournament to be configured",
@@ -108,7 +108,7 @@
       "image": "",
       "formUrl": "https://forms.gle/bU2Der8ZB8JS1fCZ9",
       "submissionUrl": "https://script.google.com/macros/s/AKfycbz-6CFMmjaDlcVA-s1SDMn0jd5Z1t3MIOP_5dj-WIO1roZrdYBZ-vFQuoiuXBbxfX8MtA/exec",
-      "codeSourceGameId": "estrazione-esempio",
+      "finalDraw": true,
       "teams": [
         { "id": "squadra-1", "name": "Squadra 1", "nameEn": "Team 1" },
         { "id": "squadra-2", "name": "Squadra 2", "nameEn": "Team 2" },
